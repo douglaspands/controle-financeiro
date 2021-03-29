@@ -6,6 +6,10 @@ def runserver():
     os.system('python manage.py runserver')
 
 
+def test():
+    os.system('pytest')
+
+
 def migrate():
     os.system('python manage.py migrate')
 
@@ -21,7 +25,7 @@ def startapp():
 def makemigrations():
     cmd = 'python manage.py makemigrations'
     if len(sys.argv) > 1:
-        cmd = cmd + ' ' + ' '.join(sys.argv[1:]) 
+        cmd = cmd + ' ' + ' '.join(sys.argv[1:])
     os.system(cmd)
 
 

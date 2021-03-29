@@ -23,7 +23,7 @@ urlpatterns = [
     path('despesas/', include('despesas.urls'))
 ]
 
-if settings.DEBUG is True:
+if settings.SETTING_NAME in ['local', 'test']:
     import debug_toolbar
     from django.conf.urls.static import static
 

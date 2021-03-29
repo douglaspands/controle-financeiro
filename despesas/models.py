@@ -8,6 +8,9 @@ class Categoria(BaseModel):
     slug = models.SlugField(max_length=200, unique=True)
     descricao = models.TextField()
 
+    class Meta:
+        ordering = ['slug']
+
     def __str__(self):
         return f'{self.titulo}'
 
@@ -18,6 +21,9 @@ class Despesa(BaseModel):
     descricao = models.CharField(max_length=200)
     valor = models.DecimalField(max_digits=9, decimal_places=2)
     datahora = models.DateTimeField()
+
+    class Meta:
+        ordering = ['-datahora']
 
     def __str__(self):
         return f'{self.descricao}'

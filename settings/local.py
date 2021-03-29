@@ -1,6 +1,9 @@
 import os
 from decouple import config
-from .settings import *
+from .base import *
+
+
+SETTING_NAME = 'local'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -28,11 +31,12 @@ INSTALLED_APPS += [
     'debug_toolbar'
 ]
 
-MEDIA_URL = config('MEDIA_URL', default='/media/', cast=str)
-MEDIA_ROOT = config('MEDIA_ROOT', default=os.path.join(BASE_DIR, 'media'), cast=str)
-
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+
+MEDIA_URL = config('MEDIA_URL', default='/media/', cast=str)
+MEDIA_ROOT = config('MEDIA_ROOT', default=os.path.join(BASE_DIR, 'media'), cast=str)
