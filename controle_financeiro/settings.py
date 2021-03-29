@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -20,18 +21,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'hz7_sebfy*l%*=j1l)0mwo7z_u-*565&365@#4y-&*!ooihnw3'
+SECRET_KEY = config('SECRET_KEY', cast=str)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
-INSTALLED_APPS = [
-    'base',
-    'despesas',
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +38,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+MY_APPS = [
+    'base',
+    'despesas',
+]
+
+INSTALLED_APPS = MY_APPS + DJANGO_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -69,17 +75,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'controle_financeiro.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
 
 
 # Password validation
@@ -120,3 +115,59 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Logging
+LOG_LEVEL = config('DJANGO_LOG_LEVEL', default='INFO', cast=str)
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': '[%(asctime)s][%(levelname)s] %(name)s '
+            '%(filename)s:%(funcName)s:%(lineno)d | %(message)s',
+            'datefmt': '%Y-%m-%d %H:%M:%S'
+        },
+    },
+    'handlers': {
+        'default': {
+            'level': LOG_LEVEL,
+            'formatter': 'standard',
+            'class': 'logging.StreamHandler',
+            'stream': 'ext://sys.stderr'
+        },
+        'console': {
+            'formatter': 'standard',
+            'class': 'logging.StreamHandler',
+        },
+        'null': {
+            'formatter': 'standard',
+            'level': LOG_LEVEL,
+            'class': 'logging.NullHandler'
+        }
+    },
+    'loggers': {
+        '': {
+            'handlers': ['default'],
+            'level': LOG_LEVEL,
+            'propagate': True
+        },
+        'django': {
+            'handlers': ['default'],
+            'level': LOG_LEVEL,
+        },
+        'django.requests': {
+            'handlers': ['default'],
+            'level': LOG_LEVEL,
+        },
+        'django.db.backends': {
+            'handlers': ['default'],
+            'propagate': False,
+            'level': LOG_LEVEL,
+        },
+        'django.template': {
+            'handlers': ['default'],
+            'level': LOG_LEVEL
+        }
+    },
+}

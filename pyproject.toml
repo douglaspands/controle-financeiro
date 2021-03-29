@@ -12,6 +12,9 @@ python-decouple = "^3.4"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9.0"
+pytest-django = "^4.1.0"
+pytest-cov = "^2.11.1"
+django-debug-toolbar = "^3.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -24,3 +27,4 @@ startapp = "scripts:startapp"
 makemigrations = "scripts:makemigrations"
 requirements = "scripts:requirements"
 createsuperuser = "scripts:createsuperuser"
+collectstatic = "scripts:collectstatic"
