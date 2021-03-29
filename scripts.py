@@ -21,3 +21,6 @@ def makemigrations():
 
 def requirements():
     os.system('poetry export -f requirements.txt --output requirements.txt')
+
+def createsuperuser():
+    os.system('python manage.py createsuperuser')
