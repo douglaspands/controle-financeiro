@@ -2,22 +2,27 @@ import os
 import sys
 
 
+def shell_run(command: str):
+    cmd = f'cd ./controle_financeiro && {command}'
+    os.system(cmd)
+
+
 def runserver():
-    os.system('python manage.py runserver')
+    shell_run('python manage.py runserver')
 
 
 def test():
-    os.system('pytest')
+    shell_run('pytest')
 
 
 def migrate():
-    os.system('python manage.py migrate')
+    shell_run('python manage.py migrate')
 
 
 def startapp():
     try:
         app_name = sys.argv[1]
-        os.system(f'python manage.py startapp {app_name}')
+        shell_run(f'python manage.py startapp {app_name}')
     except BaseException:
         print('Need set name of app. Example: "poetry run startapp blog"')
 
@@ -26,7 +31,7 @@ def makemigrations():
     cmd = 'python manage.py makemigrations'
     if len(sys.argv) > 1:
         cmd = cmd + ' ' + ' '.join(sys.argv[1:])
-    os.system(cmd)
+    shell_run(cmd)
 
 
 def requirements():
@@ -34,8 +39,8 @@ def requirements():
 
 
 def createsuperuser():
-    os.system('python manage.py createsuperuser')
+    shell_run('python manage.py createsuperuser')
 
 
 def collectstatic():
-    os.system('python manage.py collectstatic')
+    shell_run('python manage.py collectstatic')
