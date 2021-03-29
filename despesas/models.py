@@ -4,12 +4,12 @@ from base.models import BaseModel
 
 class Categoria(BaseModel):
 
-    slug = models.SlugField(max_length=200)
     titulo = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=200, unique=True)
     descricao = models.TextField()
 
     def __str__(self):
-        return f'{self.pk} - {self.titulo}'
+        return f'{self.titulo}'
 
 
 class Despesa(BaseModel):
@@ -20,4 +20,4 @@ class Despesa(BaseModel):
     datahora = models.DateTimeField()
 
     def __str__(self):
-        return f'{self.pk} - {self.descricao[:20]}'
+        return f'{self.descricao}'

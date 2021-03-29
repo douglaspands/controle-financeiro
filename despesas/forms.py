@@ -15,13 +15,5 @@ class DespesaForm(ModelForm):
             'categorias': 'Categorias'
         }
         widgets = {
-            'datahora': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
+            'datahora': forms.DateTimeInput(format='%Y-%m-%dT%H:%M', attrs={'type': 'datetime-local'}),
         }
-
-    # def __init__(self, *args, **kwargs):
-    #     despesa = kwargs.pop('despesa', None)
-    #     super(DespesaForm, self).__init__(*args, **kwargs)
-    #     if isinstance(despesa, Despesa):
-    #         for key in self._meta.fields:
-    #             if hasattr(self.despesa, key):
-    #                 self.fields[key].initial = getattr(self.despesa, key)

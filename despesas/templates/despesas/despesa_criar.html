@@ -1,13 +1,9 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Despesas</title>
-</head>
-<body>
-    <h1>Criar Despesa</h1>
+{% extends "base/base.html" %}
+
+{% block titulo %}Despesas{% endblock %}
+
+{% block conteudo %}
+    <h2>Criar Despesa</h2>
     {% if form.subject.errors %}
     <ol>
     {% for error in form.subject.errors %}
@@ -17,7 +13,6 @@
     {% endif %}
     <form method="post">{% csrf_token %}
         {{ form.as_p }}
-        <input type="submit" value="Gravar">
+        <input class="btn btn-primary" role="button" type="submit" value="Gravar">
     </form>
-</body>
-</html>
+{% endblock %}

@@ -1,16 +1,18 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Despesas</title>
-</head>
-<body>
-    <h1>Excluir Despesa?</h1>
+{% extends "base/base.html" %}
+
+{% block titulo %}Despesas{% endblock %}
+
+{% block conteudo %}
+    <h2>Excluir Despesa?</h2>
+    {% if form.subject.errors %}
+    <ol>
+    {% for error in form.subject.errors %}
+        <li><strong>{{ error|escape }}</strong></li>
+    {% endfor %}
+    </ol>
+    {% endif %}    
     <form method="post">{% csrf_token %}
         Você tem certeza que quer apagar essa despesa?
-        <input type="submit" value="Apagar">
+        <input class="btn btn-primary" role="button" type="submit" value="Apagar">
     </form>
-</body>
-</html>
+{% endblock %}
