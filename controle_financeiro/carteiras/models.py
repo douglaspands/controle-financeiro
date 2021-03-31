@@ -24,3 +24,7 @@ class Carteira(BaseModel):
 
     def __str__(self):
         return f'{self.titulo}'
+
+    @property
+    def permite_parcelamento(self) -> bool:
+        return self.tipo.permite_parcelamento

@@ -22,7 +22,7 @@ class Despesa(BaseModel):
     descricao = models.CharField(max_length=200)
     valor = models.DecimalField(max_digits=9, decimal_places=2)
     datahora = models.DateTimeField()
-    parcelado = models.IntegerField(null=True)
+    parcelado = models.IntegerField(default=1)
     carteira = models.ForeignKey(Carteira, on_delete=models.CASCADE)
 
     class Meta:
@@ -30,3 +30,7 @@ class Despesa(BaseModel):
 
     def __str__(self):
         return f'{self.descricao}'
+
+    @property
+    def tem_parcelas(self) -> bool:
+        return self.carteira.permite_parcelamento
