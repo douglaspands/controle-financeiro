@@ -31,7 +31,7 @@ class CarteiraCriar(CreateView):
     model = Carteira
     form_class = CarteiraForm
     template_name = 'carteiras/carteira_criar.html'
-    success_url = reverse_lazy('carteiras:lista')
+    # success_url = reverse_lazy('carteiras:lista')
 
     def get_queryset(self):
         return Carteira.objects.select_related('tipo')
@@ -61,7 +61,7 @@ class CarteiraAtualizar(UpdateView):
         if form.is_valid():
             carteira = form.save(commit=False)
             carteira.slug = slugify(carteira.titulo)
-            form.save()
+            carteira.save()
             return redirect('carteiras:lista')
         else:
             return render(request, self.template_name, {'form': form})

@@ -2,6 +2,7 @@
 
 from django.db import migrations, models
 import django.db.models.deletion
+from django.template.defaultfilters import slugify
 
 
 def incluir_tipos(apps, schema):

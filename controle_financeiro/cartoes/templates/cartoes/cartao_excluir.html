@@ -1,0 +1,23 @@
+{% extends "base/base.html" %}
+
+{% block titulo %}Cartões{% endblock %}
+
+{% block conteudo %}
+    <h2>Excluir Cartão?</h2>
+    {% if form.subject.errors %}
+    <ol>
+    {% for error in form.subject.errors %}
+        <li><strong>{{ error|escape }}</strong></li>
+    {% endfor %}
+    </ol>
+    {% endif %}    
+    <form method="post">{% csrf_token %}
+        Você tem certeza que quer apagar essa despesa?
+        <p>
+            <input class="btn btn-primary" role="button" type="submit" value="Apagar">
+        </p>
+    </form>
+    <p>
+        <a class="btn btn-secondary" role="button" href="{% url 'cartoes:lista' %}">voltar</a>
+    </p>
+{% endblock %}

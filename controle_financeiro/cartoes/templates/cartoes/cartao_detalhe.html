@@ -1,0 +1,16 @@
+{% extends "base/base.html" %}
+
+{% block titulo %}Cartões{% endblock %}
+
+{% block conteudo %}
+    <h2>Detalhe Cartão</h2>
+    <p><strong>Titulo:</strong> {{ object.titulo }}</p>
+    <p><strong>Slug:</strong> {{ object.slug }}</p>
+    <p><strong>Limite:</strong> {{ object.limite }}</p>
+    <p><strong>Dia do Fechamento:</strong> {{ object.dia_fechamento }}</p>
+    <p><strong>Criado em:</strong> {{ object.criado_em }}</p>
+    <p><strong>Atualizado em:</strong> {{ object.atualizado_em }}</p>
+    <p>
+        <a class="btn btn-secondary" role="button" href="{% url 'cartoes:lista' %}">voltar</a>
+    </p>
+{% endblock %}

@@ -21,7 +21,8 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('carteiras/', include('carteiras.urls')),
-    path('despesas/', include('despesas.urls'))
+    path('despesas/', include('despesas.urls')),
+    path('cartoes/', include('cartoes.urls'))
 ]
 
 if settings.SETTING_NAME in ['local', 'test']:

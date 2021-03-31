@@ -1,31 +1,29 @@
 {% extends "base/base.html" %}
 {% load transformar_em_texto %}
 
-{% block titulo %}Carteiras{% endblock %}
+{% block titulo %}Cartões{% endblock %}
 
 {% block conteudo %}
-    <h2>Carteiras</h2>
+    <h2>Cartões</h2>
     <p>
-        <a class="btn btn-primary" role="button" href="{% url 'carteiras:criar' %}">Criar</a>
+        <a class="btn btn-primary" role="button" href="{% url 'cartoes:criar' %}">Criar</a>
     </p>
     {% if page_obj %}
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">Titulo</th>
-                <th scope="col">Tipo</th>
                 <th scope="col">Ações</th>
             </tr>
         </thead>
         <tbody>
-            {% for carteira in page_obj %}
+            {% for cartao in page_obj %}
             <tr>
-                <td>{{ carteira.titulo }}</td>
-                <td>{{ carteira.tipo }}</td>
+                <td>{{ cartao.titulo }}</td>
                 <td>
-                    <a class="btn btn-secondary" role="button" href="{% url 'carteiras:detalhe' carteira.id %}">detalhe</a>
-                    <a class="btn btn-secondary" role="button" href="{% url 'carteiras:editar' carteira.id %}">editar</a>
-                    <a class="btn btn-secondary" role="button" href="{% url 'carteiras:excluir' carteira.id %}">excluir</a>
+                    <a class="btn btn-secondary" role="button" href="{% url 'cartoes:detalhe' cartao.id %}">detalhe</a>
+                    <a class="btn btn-secondary" role="button" href="{% url 'cartoes:editar' cartao.id %}">editar</a>
+                    <a class="btn btn-secondary" role="button" href="{% url 'cartoes:excluir' cartao.id %}">excluir</a>
                 </td>
             </tr>
             {% endfor %}
