@@ -1,11 +1,12 @@
 from django.db import models
 from base.models import BaseModel
+from carteiras.models import Carteira
 
 
 class Categoria(BaseModel):
 
-    titulo = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=200, unique=True)
+    titulo = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=100, unique=True)
     descricao = models.TextField()
 
     class Meta:
@@ -21,6 +22,8 @@ class Despesa(BaseModel):
     descricao = models.CharField(max_length=200)
     valor = models.DecimalField(max_digits=9, decimal_places=2)
     datahora = models.DateTimeField()
+    parcelado = models.IntegerField(null=True)
+    carteira = models.ForeignKey(Carteira, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['-datahora']

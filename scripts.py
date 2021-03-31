@@ -1,9 +1,13 @@
 import os
 import sys
+import platform
 
 
 def shell_run(command: str):
-    cmd = f'cd ./controle_financeiro && {command}'
+    if platform.system() == 'Windows':
+        cmd = f'cd controle_financeiro & {command}'
+    else:
+        cmd = f'cd ./controle_financeiro && {command}'
     os.system(cmd)
 
 

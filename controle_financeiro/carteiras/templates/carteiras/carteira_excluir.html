@@ -1,0 +1,18 @@
+{% extends "base/base.html" %}
+
+{% block titulo %}Carteiras{% endblock %}
+
+{% block conteudo %}
+    <h2>Excluir Carteira?</h2>
+    {% if form.subject.errors %}
+    <ol>
+    {% for error in form.subject.errors %}
+        <li><strong>{{ error|escape }}</strong></li>
+    {% endfor %}
+    </ol>
+    {% endif %}    
+    <form method="post">{% csrf_token %}
+        Você tem certeza que quer apagar essa despesa?
+        <input class="btn btn-primary" role="button" type="submit" value="Apagar">
+    </form>
+{% endblock %}

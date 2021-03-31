@@ -9,39 +9,35 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('carteiras', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Categoria',
+            name='Tipo',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('criado_em', models.DateTimeField(auto_now_add=True)),
                 ('atualizado_em', models.DateTimeField(auto_now=True)),
                 ('titulo', models.CharField(max_length=100)),
                 ('slug', models.SlugField(max_length=100, unique=True)),
-                ('descricao', models.TextField()),
+                ('permite_parcelamento', models.BooleanField()),
             ],
             options={
-                'ordering': ['slug'],
+                'ordering': ['titulo'],
             },
         ),
         migrations.CreateModel(
-            name='Despesa',
+            name='Carteira',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('criado_em', models.DateTimeField(auto_now_add=True)),
                 ('atualizado_em', models.DateTimeField(auto_now=True)),
-                ('descricao', models.CharField(max_length=200)),
-                ('valor', models.DecimalField(decimal_places=2, max_digits=9)),
-                ('datahora', models.DateTimeField()),
-                ('parcelado', models.IntegerField(null=True)),
-                ('carteira', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='carteiras.carteira')),
-                ('categorias', models.ManyToManyField(blank=True, to='despesas.Categoria')),
+                ('titulo', models.CharField(max_length=100)),
+                ('slug', models.SlugField(max_length=100, unique=True)),
+                ('tipo', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='carteiras.tipo')),
             ],
             options={
-                'ordering': ['-datahora'],
+                'ordering': ['titulo'],
             },
         ),
     ]

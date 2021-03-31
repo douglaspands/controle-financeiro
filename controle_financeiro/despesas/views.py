@@ -5,11 +5,13 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from .forms import DespesaForm
 from .models import Despesa
 
+from datetime import datetime
+
 
 class DespesaLista(ListView):
     model = Despesa
     template_name = 'despesas/despesa_lista.html'
-    fields = ['categorias', 'descricao', 'valor', 'datahora']
+    fields = ['categorias', 'descricao', 'valor', 'datahora', 'carteira']
     paginate_by = 25
 
     def get_queryset(self):
@@ -18,7 +20,6 @@ class DespesaLista(ListView):
 
 class DespesaDetalhe(DetailView):
     model = Despesa
-    form_class = DespesaForm
     template_name = 'despesas/despesa_detalhe.html'
 
 
@@ -27,6 +28,12 @@ class DespesaCriar(CreateView):
     form_class = DespesaForm
     template_name = 'despesas/despesa_criar.html'
     success_url = reverse_lazy('despesas:lista')
+
+    def get_initial(self):
+        initial = super(DespesaCriar, self).get_initial()
+        initial.update({'parcelado': 1,
+                        'datahora': datetime.now()})
+        return initial
 
 
 class DespesaAtualizar(UpdateView):
