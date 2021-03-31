@@ -13,6 +13,11 @@
     {% endif %}    
     <form method="post">{% csrf_token %}
         Você tem certeza que quer apagar essa despesa?
-        <input class="btn btn-primary" role="button" type="submit" value="Apagar">
+        <p>
+            <input class="btn btn-primary" role="button" type="submit" value="Apagar">
+        </p>
     </form>
+    <p>
+        <a class="btn btn-secondary" role="button" href="{% url 'despesas:lista' %}">voltar</a>
+    </p>
 {% endblock %}

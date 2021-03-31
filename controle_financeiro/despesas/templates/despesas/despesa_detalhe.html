@@ -4,15 +4,15 @@
 {% block titulo %}Despesas{% endblock %}
 
 {% block conteudo %}
-<h2>Detalhe Despesa</h2>
-<p><strong>Data e Hora:</strong> {{ object.datahora|date:'d/m/Y H:i' }}</p>
-<p><strong>Descrição:</strong> {{ object.descricao }}</p>
-<p><strong>Valor:</strong> {{ object.valor }}</p>
-<p><strong>Categoria:</strong> {{ object.categorias|queryset_para_texto }}</p>
-<p><strong>Carteira:</strong> {{ object.carteira }}</p>
-<p><strong>Criado em:</strong> {{ object.criado_em }}</p>
-<p><strong>Atualizado em:</strong> {{ object.atualizado_em }}</p>
-<p>
-    <a class="btn btn-primary" role="button" href="{% url 'despesas:lista' %}">voltar</a>
-</p>
+    <h2>Detalhe Despesa</h2>
+    <p><strong>Data e Hora:</strong> {{ object.datahora|date:'d/m/Y H:i' }}</p>
+    <p><strong>Descrição:</strong> {{ object.descricao }}</p>
+    <p><strong>Valor:</strong> {{ object.valor }}</p>
+    <p><strong>Categoria:</strong> {{ object.categorias|queryset_para_texto }}</p>
+    <p><strong>Carteira:</strong> {{ object.carteira }}</p>
+    <p><strong>Criado em:</strong> {{ object.criado_em }}</p>
+    <p><strong>Atualizado em:</strong> {{ object.atualizado_em }}</p>
+    <p>
+        <a class="btn btn-secondary" role="button" href="{% url 'despesas:lista' %}">voltar</a>
+    </p>
 {% endblock %}

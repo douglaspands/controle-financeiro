@@ -13,6 +13,11 @@
     {% endif %}
     <form method="post">{% csrf_token %}
         {{ form.as_p }}
-        <input class="btn btn-primary" role="button" type="submit" value="Gravar">
+        <p>
+            <input class="btn btn-primary" role="button" type="submit" value="Gravar">
+        </p>
     </form>
+    <p>
+        <a class="btn btn-secondary" role="button" href="{% url 'carteiras:lista' %}">voltar</a>
+    </p>
 {% endblock %}

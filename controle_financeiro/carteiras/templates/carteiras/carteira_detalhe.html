@@ -3,13 +3,13 @@
 {% block titulo %}Carteiras{% endblock %}
 
 {% block conteudo %}
-<h2>Detalhe Carteira</h2>
-<p><strong>Titulo:</strong> {{ object.titulo }}</p>
-<p><strong>Slug:</strong> {{ object.slug }}</p>
-<p><strong>Tipo:</strong> {{ object.tipo }}</p>
-<p><strong>Criado em:</strong> {{ object.criado_em }}</p>
-<p><strong>Atualizado em:</strong> {{ object.atualizado_em }}</p>
-<p>
-    <a class="btn btn-primary" role="button" href="{% url 'carteiras:lista' %}">voltar</a>
-</p>
+    <h2>Detalhe Carteira</h2>
+    <p><strong>Titulo:</strong> {{ object.titulo }}</p>
+    <p><strong>Slug:</strong> {{ object.slug }}</p>
+    <p><strong>Tipo:</strong> {{ object.tipo }}</p>
+    <p><strong>Criado em:</strong> {{ object.criado_em }}</p>
+    <p><strong>Atualizado em:</strong> {{ object.atualizado_em }}</p>
+    <p>
+        <a class="btn btn-secondary" role="button" href="{% url 'carteiras:lista' %}">voltar</a>
+    </p>
 {% endblock %}

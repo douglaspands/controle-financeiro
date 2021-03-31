@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.template.defaultfilters import slugify
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView
@@ -35,24 +36,35 @@ class CarteiraCriar(CreateView):
     def get_queryset(self):
         return Carteira.objects.select_related('tipo')
 
+    def post(self, request: HttpRequest) -> HttpResponse:
+        form = CarteiraForm(request.POST)
+        if form.is_valid():
+            carteira = form.save(commit=False)
+            carteira.slug = slugify(carteira.titulo)
+            form.save()
+            return redirect('carteiras:lista')
+        else:
+            return render(request, self.template_name, {'form': form})
+
 
 class CarteiraAtualizar(UpdateView):
     model = Carteira
     form_class = CarteiraForm
     template_name = 'carteiras/carteira_atualizar.html'
-    success_url = reverse_lazy('carteiras:lista')
 
     def get_queryset(self):
         return Carteira.objects.select_related('tipo')
 
-    # def post(self, request, pk):
-    #     form = CarteiraForm(request.POST, pk=pk)
-    #     if form.is_valid():
-    #         form.cleaned_data['slug'] = slugify(form.cleaned_data['titulo'])
-    #         form.save()
-    #         return redirect('carteiras:lista')
-    #     else:
-    #         return render(request, self.template_name, {'form': form})
+    def post(self, request: HttpRequest, pk: int) -> HttpResponse:
+        instance = get_object_or_404(Carteira, pk=pk)
+        form = CarteiraForm(request.POST, instance=instance)
+        if form.is_valid():
+            carteira = form.save(commit=False)
+            carteira.slug = slugify(carteira.titulo)
+            form.save()
+            return redirect('carteiras:lista')
+        else:
+            return render(request, self.template_name, {'form': form})
 
 
 class CarteiraExcluir(DeleteView):
