@@ -30,6 +30,13 @@ ALLOWED_HOSTS = ['*']
 
 # Application definition
 
+MY_APPS = [
+    'base',
+    'carteiras',
+    'cartoes',
+    'despesas',
+]
+
 DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -37,11 +44,6 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-]
-
-MY_APPS = [
-    'base',
-    'despesas',
 ]
 
 INSTALLED_APPS = MY_APPS + DJANGO_APPS

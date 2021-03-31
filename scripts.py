@@ -1,10 +1,16 @@
 import os
 import sys
+import platform
+from typing import List, Union
 
 
-def shell_run(command: str):
-    cmd = f'cd ./controle_financeiro && {command}'
-    os.system(cmd)
+def shell_run(command: Union[str, List[str]]):
+    and_ = ' & ' if platform.system() == 'Windows' else ' && '
+    folder = 'cd controle_financeiro'
+    args_cmd = and_.join(command if isinstance(command, list) else [command])
+    final_cmd = folder + and_ + args_cmd
+    print(args_cmd)
+    os.system(final_cmd)
 
 
 def runserver():
@@ -13,6 +19,10 @@ def runserver():
 
 def test():
     shell_run('pytest')
+
+
+def lint():
+    shell_run(['flake8 .', 'mypy .'])
 
 
 def migrate():
@@ -44,3 +54,14 @@ def createsuperuser():
 
 def collectstatic():
     shell_run('python manage.py collectstatic')
+
+
+def djangoshell():
+    shell_run('python manage.py shell')
+
+
+def dbshell():
+    cmd = 'python manage.py dbshell'
+    if len(sys.argv) > 1:
+        cmd = cmd + f" '{sys.argv[1]}'"
+    shell_run(cmd)

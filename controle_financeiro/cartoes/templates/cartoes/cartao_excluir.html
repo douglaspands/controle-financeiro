@@ -1,9 +1,9 @@
 {% extends "base/base.html" %}
 
-{% block titulo %}Despesas{% endblock %}
+{% block titulo %}Cartões{% endblock %}
 
 {% block conteudo %}
-    <h2>Excluir Despesa?</h2>
+    <h2>Excluir Cartão?</h2>
     {% if form.subject.errors %}
     <ol>
     {% for error in form.subject.errors %}
@@ -18,6 +18,6 @@
         </p>
     </form>
     <p>
-        <a class="btn btn-secondary" role="button" href="{% url 'despesas:lista' %}">voltar</a>
+        <a class="btn btn-secondary" role="button" href="{% url 'cartoes:lista' %}">voltar</a>
     </p>
 {% endblock %}
