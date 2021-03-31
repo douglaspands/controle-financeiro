@@ -35,6 +35,7 @@ MY_APPS = [
     'carteiras',
     'cartoes',
     'despesas',
+    'usuarios',
 ]
 
 DJANGO_APPS = [
