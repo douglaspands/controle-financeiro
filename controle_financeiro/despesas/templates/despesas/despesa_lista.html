@@ -1,14 +1,16 @@
 {% extends "base/base.html" %}
 {% load transformar_em_texto %}
+{% load humanize %}
 
 {% block titulo %}Despesas{% endblock %}
 
 {% block conteudo %}
     <h2>Despesas</h2>
-    <p>
-        <a class="btn btn-primary" role="button" href="{% url 'despesas:criar' %}">Criar</a>
-    </p>
-    {% if page_obj %}
+    <div style="float: right;">
+        <p>
+            <a class="btn btn-primary" role="button" href="{% url 'despesas:criar' %}">Criar</a>
+        </p>
+    </div>    
     <table class="table">
         <thead>
             <tr>
@@ -24,22 +26,19 @@
             {% for despesa in page_obj %}
             <tr>
                 <td>{{ despesa.datahora|date:'d/m/Y H:i' }}</td>
-                <td>{{ despesa.descricao }}</td>
-                <td>{{ despesa.valor }}</td>
-                <td>{{ despesa.categorias|queryset_para_texto }}</td>
+                <td>{{ despesa.descricao|truncatechars:14 }}</td>
+                <td>{{ despesa.valor|intcomma }}</td>
+                <td>{{ despesa.categorias|queryset_para_texto|truncatechars:14 }}</td>
                 <td>{{ despesa.carteira }}</td>
                 <td>
-                    <a class="btn btn-secondary" role="button" href="{% url 'despesas:detalhe' despesa.id %}">detalhe</a>
-                    <a class="btn btn-secondary" role="button" href="{% url 'despesas:editar' despesa.id %}">editar</a>
-                    <a class="btn btn-secondary" role="button" href="{% url 'despesas:excluir' despesa.id %}">excluir</a>
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'despesas:detalhe' despesa.id %}">detalhe</a>
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'despesas:editar' despesa.id %}">editar</a>
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'despesas:excluir' despesa.id %}">excluir</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    {% else %}
-    <p>Sem despesas.</p>
-    {% endif %}
     <p>
         <div class="pagination">
             <span class="step-links">

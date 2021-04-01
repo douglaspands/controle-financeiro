@@ -5,10 +5,11 @@
 
 {% block conteudo %}
     <h2>Carteiras</h2>
-    <p>
-        <a class="btn btn-primary" role="button" href="{% url 'carteiras:criar' %}">Criar</a>
-    </p>
-    {% if page_obj %}
+    <div style="float: right;">
+        <p>
+            <a class="btn btn-primary" role="button" href="{% url 'carteiras:criar' %}">Criar</a>
+        </p>
+    </div>
     <table class="table">
         <thead>
             <tr>
@@ -23,17 +24,14 @@
                 <td>{{ carteira.titulo }}</td>
                 <td>{{ carteira.tipo }}</td>
                 <td>
-                    <a class="btn btn-secondary" role="button" href="{% url 'carteiras:detalhe' carteira.id %}">detalhe</a>
-                    <a class="btn btn-secondary" role="button" href="{% url 'carteiras:editar' carteira.id %}">editar</a>
-                    <a class="btn btn-secondary" role="button" href="{% url 'carteiras:excluir' carteira.id %}">excluir</a>
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:detalhe' carteira.id %}">detalhe</a>
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:editar' carteira.id %}">editar</a>
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:excluir' carteira.id %}">excluir</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    {% else %}
-    <p>Sem Carteiras.</p>
-    {% endif %}
     <p>
         <div class="pagination">
             <span class="step-links">

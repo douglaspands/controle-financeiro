@@ -19,10 +19,12 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
+    path('', include('home.urls')),
     path('admin/', admin.site.urls),
     path('carteiras/', include('carteiras.urls')),
+    path('cartoes/', include('cartoes.urls')),
     path('despesas/', include('despesas.urls')),
-    path('cartoes/', include('cartoes.urls'))
+
 ]
 
 if settings.SETTING_NAME in ['local', 'test']:

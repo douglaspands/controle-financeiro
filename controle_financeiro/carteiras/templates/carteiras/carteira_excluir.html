@@ -3,7 +3,7 @@
 {% block titulo %}Carteiras{% endblock %}
 
 {% block conteudo %}
-    <h2>Excluir Carteira?</h2>
+    <h2>Excluir Carteira</h2>
     {% if form.subject.errors %}
     <ol>
     {% for error in form.subject.errors %}
@@ -12,12 +12,14 @@
     </ol>
     {% endif %}    
     <form method="post">{% csrf_token %}
-        Você tem certeza que quer apagar essa despesa?
+        <p>
+            Você tem certeza que quer apagar a carteira <strong>{{ object.titulo|truncatechars:30 }}</strong>?
+        </p>
         <p>
             <input class="btn btn-primary" role="button" type="submit" value="Apagar">
         </p>
     </form>
-    <p>
-        <a class="btn btn-secondary" role="button" href="{% url 'carteiras:lista' %}">voltar</a>
-    </p>
+    <div style="float: right;">
+        <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:lista' %}">Voltar</a>
+    </div>
 {% endblock %}

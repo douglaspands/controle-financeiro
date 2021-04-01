@@ -35,7 +35,12 @@ MY_APPS = [
     'carteiras',
     'cartoes',
     'despesas',
-    'usuarios',
+    'contas',
+    'home',
+]
+
+THIRD_PARTY_APPS = [
+    'crispy_forms',
 ]
 
 DJANGO_APPS = [
@@ -45,9 +50,14 @@ DJANGO_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+    'django.contrib.humanize',
 ]
 
-INSTALLED_APPS = MY_APPS + DJANGO_APPS
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + MY_APPS
+
+SITE_ID = 1
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -121,7 +131,9 @@ STATIC_URL = '/static/'
 
 
 # Logging
+
 LOG_LEVEL = config('DJANGO_LOG_LEVEL', default='INFO', cast=str)
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -174,3 +186,7 @@ LOGGING = {
         }
     },
 }
+
+# CRISPY
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

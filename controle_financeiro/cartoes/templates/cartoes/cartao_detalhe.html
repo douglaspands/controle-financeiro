@@ -1,16 +1,40 @@
 {% extends "base/base.html" %}
+{% load transformar_em_texto %}
+{% load humanize %}
 
 {% block titulo %}Cartões{% endblock %}
 
 {% block conteudo %}
-    <h2>Detalhe Cartão</h2>
-    <p><strong>Titulo:</strong> {{ object.titulo }}</p>
-    <p><strong>Slug:</strong> {{ object.slug }}</p>
-    <p><strong>Limite:</strong> {{ object.limite }}</p>
-    <p><strong>Dia do Fechamento:</strong> {{ object.dia_fechamento }}</p>
-    <p><strong>Criado em:</strong> {{ object.criado_em }}</p>
-    <p><strong>Atualizado em:</strong> {{ object.atualizado_em }}</p>
-    <p>
-        <a class="btn btn-secondary" role="button" href="{% url 'cartoes:lista' %}">voltar</a>
-    </p>
+    <h2>Detalhes Do Cartão</h2>
+    <form>
+        <fieldset disabled>
+          <div class="mb-3">
+            <label for="inputTitulo" class="form-label">Titulo</label>
+            <input type="text" id="inputTitulo" class="form-control" value="{{ object.titulo }}">
+          </div>
+          <div class="mb-3">
+            <label for="inputSlug" class="form-label">Slug</label>
+            <input type="text" id="inputSlug" class="form-control" value="{{ object.slug }}">
+          </div>
+          <div class="mb-3">
+            <label for="inputLimite" class="form-label">Limite</label>
+            <input type="text" id="inputLimite" class="form-control" value="{{ object.limite|intcomma }}">
+          </div>
+          <div class="mb-3">
+            <label for="inputDiaFechamento" class="form-label">Dia do Fechamento</label>
+            <input type="text" id="inputDiaFechamento" class="form-control" value="{{ object.dia_fechamento }}">
+          </div>
+          <div class="mb-3">
+            <label for="inputCriadoEm" class="form-label">Criado em</label>
+            <input type="datetime-local" id="inputCriadoEm" class="form-control" value="{{ object.criado_em|datetime_para_texto }}">
+          </div>
+          <div class="mb-3">
+            <label for="inputAtualizadoEm" class="form-label">Atualizado em</label>
+            <input type="datetime-local" id="inputAtualizadoEm" class="form-control" value="{{ object.atualizado_em|datetime_para_texto }}">
+          </div>
+        </fieldset>
+      </form>
+      <div style="float: right;">
+        <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:lista' %}">Voltar</a>
+    </div>
 {% endblock %}

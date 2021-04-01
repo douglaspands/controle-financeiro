@@ -1,18 +1,40 @@
 {% extends "base/base.html" %}
 {% load transformar_em_texto %}
+{% load humanize %}
 
 {% block titulo %}Despesas{% endblock %}
 
 {% block conteudo %}
-    <h2>Detalhe Despesa</h2>
-    <p><strong>Data e Hora:</strong> {{ object.datahora|date:'d/m/Y H:i' }}</p>
-    <p><strong>Descrição:</strong> {{ object.descricao }}</p>
-    <p><strong>Valor:</strong> {{ object.valor }}</p>
-    <p><strong>Categoria:</strong> {{ object.categorias|queryset_para_texto }}</p>
-    <p><strong>Carteira:</strong> {{ object.carteira }}</p>
-    <p><strong>Criado em:</strong> {{ object.criado_em }}</p>
-    <p><strong>Atualizado em:</strong> {{ object.atualizado_em }}</p>
-    <p>
-        <a class="btn btn-secondary" role="button" href="{% url 'despesas:lista' %}">voltar</a>
-    </p>
+    <h2>Detalhes Da Despesa</h2>
+    <form>
+        <fieldset disabled>
+          <div class="mb-3">
+            <label for="inputDataHora" class="form-label">Data e Hora</label>
+            <input type="datetime-local" id="inputDataHora" class="form-control" value="{{ object.datahora|datetime_para_texto }}">
+          </div>
+          <div class="mb-3">
+            <label for="inputDescricao" class="form-label">Descrição</label>
+            <input type="text" id="inputDescricao" class="form-control" value="{{ object.descricao|safe }}">
+          </div>
+          <div class="mb-3">
+            <label for="inputValor" class="form-label">Valor</label>
+            <input type="text" id="inputValor" class="form-control" value="R$ {{ object.valor|intcomma }}">
+          </div>
+          <div class="mb-3">
+            <label for="inputCategoria" class="form-label">Categoria</label>
+            <input type="text" id="inputCategoria" class="form-control" value="{{ object.categorias|queryset_para_texto }}">
+          </div>
+          <div class="mb-3">
+            <label for="inputCriadoEm" class="form-label">Criado em</label>
+            <input type="datetime-local" id="inputCriadoEm" class="form-control" value="{{ object.criado_em|datetime_para_texto }}">
+          </div>
+          <div class="mb-3">
+            <label for="inputAtualizadoEm" class="form-label">Atualizado em</label>
+            <input type="datetime-local" id="inputAtualizadoEm" class="form-control" value="{{ object.atualizado_em|datetime_para_texto }}">
+          </div>
+        </fieldset>
+      </form>
+      <div style="float: right;">
+        <a class="btn btn-outline-primary" role="button" href="{% url 'despesas:lista' %}">Voltar</a>
+    </div>    
 {% endblock %}

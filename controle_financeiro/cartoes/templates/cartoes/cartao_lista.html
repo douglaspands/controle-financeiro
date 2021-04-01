@@ -1,18 +1,21 @@
 {% extends "base/base.html" %}
-{% load transformar_em_texto %}
+{% load humanize %}
 
 {% block titulo %}Cartões{% endblock %}
 
 {% block conteudo %}
     <h2>Cartões</h2>
-    <p>
-        <a class="btn btn-primary" role="button" href="{% url 'cartoes:criar' %}">Criar</a>
-    </p>
-    {% if page_obj %}
+    <div style="float: right;">
+        <p>
+            <a class="btn btn-primary" role="button" href="{% url 'cartoes:criar' %}">Criar</a>
+        </p>
+    </div>
     <table class="table">
         <thead>
             <tr>
                 <th scope="col">Titulo</th>
+                <th scope="col">Dia do Fechamento</th>
+                <th scope="col">Limite</th>
                 <th scope="col">Ações</th>
             </tr>
         </thead>
@@ -20,18 +23,17 @@
             {% for cartao in page_obj %}
             <tr>
                 <td>{{ cartao.titulo }}</td>
+                <td>{{ cartao.dia_fechamento }}</td>
+                <td>{{ cartao.limite|intcomma }}</td>
                 <td>
-                    <a class="btn btn-secondary" role="button" href="{% url 'cartoes:detalhe' cartao.id %}">detalhe</a>
-                    <a class="btn btn-secondary" role="button" href="{% url 'cartoes:editar' cartao.id %}">editar</a>
-                    <a class="btn btn-secondary" role="button" href="{% url 'cartoes:excluir' cartao.id %}">excluir</a>
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:detalhe' cartao.id %}">detalhe</a>
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:editar' cartao.id %}">editar</a>
+                    <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:excluir' cartao.id %}">excluir</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-    {% else %}
-    <p>Sem Carteiras.</p>
-    {% endif %}
     <p>
         <div class="pagination">
             <span class="step-links">

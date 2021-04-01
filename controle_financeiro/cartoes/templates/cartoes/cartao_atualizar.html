@@ -1,4 +1,5 @@
 {% extends "base/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block titulo %}Cartões{% endblock %}
 
@@ -12,12 +13,10 @@
     </ol>
     {% endif %}
     <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <p>
-            <input class="btn btn-primary" role="button" type="submit" value="Atualizar">
-        </p>
+        {{ form|crispy }}
+        <input class="btn btn-primary" role="button" type="submit" value="Atualizar">
     </form>
-    <p>
-        <a class="btn btn-secondary" role="button" href="{% url 'cartoes:lista' %}">voltar</a>
-    </p>
+    <div style="float: right;">
+        <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:lista' %}">Voltar</a>
+    </div>
 {% endblock %}

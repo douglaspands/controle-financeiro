@@ -12,12 +12,14 @@
     </ol>
     {% endif %}    
     <form method="post">{% csrf_token %}
-        Você tem certeza que quer apagar essa despesa?
+        <p>
+            Você tem certeza que quer apagar a despesa <strong>{{ object.descricao|truncatechars:30 }}</strong>?
+        </p>
         <p>
             <input class="btn btn-primary" role="button" type="submit" value="Apagar">
         </p>
     </form>
-    <p>
-        <a class="btn btn-secondary" role="button" href="{% url 'despesas:lista' %}">voltar</a>
-    </p>
+    <div style="float: right;">
+        <a class="btn btn-outline-primary" role="button" href="{% url 'despesas:lista' %}">Voltar</a>
+    </div>
 {% endblock %}

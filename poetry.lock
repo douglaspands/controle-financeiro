@@ -92,6 +92,14 @@ argon2 = ["argon2-cffi (>=16.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-crispy-forms"
+version = "1.11.2"
+description = "Best way to have Django DRY forms"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[[package]]
 name = "django-debug-toolbar"
 version = "3.2"
 description = "A configurable set of panels that display various debug information about the current request/response."
@@ -465,7 +473,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "57b8e0b5a5dc3af1cec9ed1e2e5a546e0c28e15b02819d68c4f0b50456d06de9"
+content-hash = "c8890a4f851b19a288ba5278520a50b4435cce0366b7de271c91627491134c0a"
 
 [metadata.files]
 appnope = [
@@ -553,6 +561,10 @@ decorator = [
 django = [
     {file = "Django-3.1.7-py3-none-any.whl", hash = "sha256:baf099db36ad31f970775d0be5587cc58a6256a6771a44eb795b554d45f211b8"},
     {file = "Django-3.1.7.tar.gz", hash = "sha256:32ce792ee9b6a0cbbec340123e229ac9f765dff8c2a4ae9247a14b2ba3a365a7"},
+]
+django-crispy-forms = [
+    {file = "django-crispy-forms-1.11.2.tar.gz", hash = "sha256:88efa857ce6111bd696cc4f74057539a3456102fe9c3a3ece8868e1e4579e70a"},
+    {file = "django_crispy_forms-1.11.2-py3-none-any.whl", hash = "sha256:3db71ab06d17ec9d0195c086d3ad454da300ac268752ac3a4f63d72f7a490254"},
 ]
 django-debug-toolbar = [
     {file = "django-debug-toolbar-3.2.tar.gz", hash = "sha256:84e2607d900dbd571df0a2acf380b47c088efb787dce9805aefeb407341961d2"},
