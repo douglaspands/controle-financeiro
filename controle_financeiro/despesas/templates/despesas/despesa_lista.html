@@ -1,5 +1,6 @@
 {% extends "base/base.html" %}
 {% load transformar_em_texto %}
+{% load despesa_calculos %}
 {% load humanize %}
 
 {% block titulo %}Despesas{% endblock %}
@@ -27,7 +28,7 @@
             <tr>
                 <td>{{ despesa.datahora|date:'d/m/Y H:i' }}</td>
                 <td>{{ despesa.descricao|truncatechars:14 }}</td>
-                <td>{{ despesa.valor|intcomma }}</td>
+                <td>{{ despesa|calcular_parcela|intcomma }}</td>
                 <td>{{ despesa.categorias|queryset_para_texto|truncatechars:14 }}</td>
                 <td>{{ despesa.carteira }}</td>
                 <td>

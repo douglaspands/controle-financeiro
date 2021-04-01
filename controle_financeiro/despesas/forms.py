@@ -11,8 +11,8 @@ class DespesaForm(ModelForm):
         fields = ['descricao', 'valor', 'parcelado', 'carteira', 'datahora', 'categorias']
         labels = {
             'descricao': 'Descrição',
-            'valor': 'Valor',
-            'Qtde Parcelas': 'parcelado',
+            'valor': 'Valor Total da Compra',
+            'parcelado': 'Parcelas',
             'carteira': 'Carteira',
             'datahora': 'Data e Hora',
             'categorias': 'Categorias'

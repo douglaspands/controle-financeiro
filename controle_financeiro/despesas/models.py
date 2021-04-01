@@ -1,6 +1,8 @@
-from django.db import models
+from decimal import Decimal
+
 from base.models import BaseModel
 from carteiras.models import Carteira
+from django.db import models
 
 
 class Categoria(BaseModel):
@@ -34,3 +36,7 @@ class Despesa(BaseModel):
     @property
     def tem_parcelas(self) -> bool:
         return self.carteira.permite_parcelamento
+
+    @property
+    def valor_parcela(self) -> Decimal:
+        return self.valor / self.parcelado

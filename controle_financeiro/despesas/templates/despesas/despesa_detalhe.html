@@ -1,5 +1,6 @@
 {% extends "base/base.html" %}
 {% load transformar_em_texto %}
+{% load despesa_calculos %}
 {% load humanize %}
 
 {% block titulo %}Despesas{% endblock %}
@@ -17,8 +18,13 @@
             <input type="text" id="inputDescricao" class="form-control" value="{{ object.descricao|safe }}">
           </div>
           <div class="mb-3">
+            <label for="inputParcelado" class="form-label">Parcelado</label>
+            <input type="text" id="inputParcelado" class="form-control" value="{{ object.parcelado }}">
+          </div>
+          <div class="mb-3">
             <label for="inputValor" class="form-label">Valor</label>
-            <input type="text" id="inputValor" class="form-control" value="R$ {{ object.valor|intcomma }}">
+            <input type="text" id="inputValor" class="form-control" aria-describedby="valorAjuda" value="R$ {{ object|calcular_parcela|intcomma }}">
+            <small id="valorAjuda" class="form-text text-muted">Se for parcelado, será apresentado o valor da parcela.</small>
           </div>
           <div class="mb-3">
             <label for="inputCategoria" class="form-label">Categoria</label>
