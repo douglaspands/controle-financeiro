@@ -2,8 +2,15 @@
 
 {% block titulo %}HomePage{% endblock %}
 
+{% block cabecalho %}
+<div class="container">
+    <h1>Controle Financeiro</h1>
+    <p>Ferramenta de apoio para seu controle financeiro.</p>
+</div>
+{% endblock %}
+
 {% block conteudo %}
-    <h2>HomePage</h2>
+<div>
     <p>
         <a href="{% url 'carteiras:listar' %}">Carteiras</a>
     </p>
@@ -13,4 +20,5 @@
     <p>
         <a href="{% url 'despesas:listar' %}">Despesas</a>
     </p>
+</div>
 {% endblock %}

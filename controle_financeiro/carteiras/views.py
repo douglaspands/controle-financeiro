@@ -14,7 +14,7 @@ class CarteiraLista(ListView):
     template_name = 'carteiras/carteira_lista.html'
     fields = ['titulo', 'tipo']
     context_object_name = 'carteiras'
-    paginate_by = 2
+    paginate_by = 20
 
     def get_queryset(self):
         return Carteira.objects.select_related('tipo')

@@ -13,7 +13,7 @@ class DespesaLista(ListView):
     template_name = 'despesas/despesa_lista.html'
     context_object_name = 'despesas'
     fields = ['categorias', 'descricao', 'valor', 'datahora', 'carteira']
-    paginate_by = 25
+    paginate_by = 20
 
     def get_queryset(self):
         return Despesa.objects.prefetch_related('categorias')

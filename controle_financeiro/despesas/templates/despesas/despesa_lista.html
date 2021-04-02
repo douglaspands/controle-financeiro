@@ -13,51 +13,35 @@
 {% endblock %}
 
 {% block conteudo %}
-    <div style="float: right;">
-        <p>
-            <a class="btn btn-primary" role="button" href="{% url 'despesas:criar' %}">Criar</a>
-        </p>
-    </div>    
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Data</th>
-                <th scope="col">Descrição</th>
-                <th scope="col">Valor</th>
-                <th scope="col">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for despesa in despesas %}
-            <tr onclick="window.location='{% url 'despesas:detalhar' despesa.id %}'">
-                <td>{{ despesa.datahora|date:'d/m/Y H:i' }}</td>
-                <td>{{ despesa.descricao|truncatechars:14 }}</td>
-                <td>{{ despesa|calcular_parcela|intcomma }}</td>
-                <td>
-                    <a href="{% url 'despesas:editar' despesa.id %}">editar</a>
-                    <a href="{% url 'despesas:excluir' despesa.id %}">excluir</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div style="float: right;">
     <p>
-        <div class="pagination">
-            <span class="step-links">
-                {% if page_obj.has_previous %}
-                    <a href="?page=1">&laquo; primeira</a>
-                    <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
-                {% endif %}
-        
-                <span class="current">
-                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
-                </span>
-        
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">próxima</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}">última &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
+        <a class="btn btn-primary" role="button" href="{% url 'despesas:criar' %}">Criar</a>
     </p>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Data</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">Valor</th>
+            <th scope="col">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for despesa in despesas %}
+        <tr onclick="window.location='{% url 'despesas:detalhar' despesa.id %}'">
+            <td>{{ despesa.datahora|date:'d/m/Y H:i' }}</td>
+            <td>{{ despesa.descricao|truncatechars:14 }}</td>
+            <td>{{ despesa|calcular_parcela|intcomma }}</td>
+            <td>
+                <a href="{% url 'despesas:editar' despesa.id %}">editar</a>
+                <a href="{% url 'despesas:excluir' despesa.id %}">excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% include 'base/paginacao.html' %}
+
 {% endblock %}

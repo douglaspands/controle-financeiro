@@ -16,7 +16,7 @@ class CartaoLista(ListView):
     template_name = 'cartoes/cartao_lista.html'
     fields = ['titulo', 'carteira']
     context_object_name = 'cartoes'
-    paginate_by = 25
+    paginate_by = 20
 
     def get_queryset(self):
         return Cartao.objects.select_related('carteira')
