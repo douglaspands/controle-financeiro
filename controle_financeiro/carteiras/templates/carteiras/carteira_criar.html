@@ -15,8 +15,8 @@
     <form method="post">{% csrf_token %}
         {{ form|crispy }}
         <input class="btn btn-primary" role="button" type="submit" value="Gravar">
+        <div style="float: right;">
+            <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:lista' %}">Cancelar</a>
+        </div>
     </form>
-    <div style="float: right;">
-        <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:lista' %}">Voltar</a>
-    </div>
 {% endblock %}

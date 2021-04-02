@@ -14,21 +14,16 @@
         <thead>
             <tr>
                 <th scope="col">Titulo</th>
-                <th scope="col">Dia do Fechamento</th>
-                <th scope="col">Limite</th>
                 <th scope="col">Ações</th>
             </tr>
         </thead>
         <tbody>
             {% for cartao in page_obj %}
-            <tr>
+            <tr onclick="window.location='{% url 'cartoes:detalhe' cartao.id %}'">
                 <td>{{ cartao.titulo }}</td>
-                <td>{{ cartao.dia_fechamento }}</td>
-                <td>{{ cartao.limite|intcomma }}</td>
                 <td>
-                    <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:detalhe' cartao.id %}">detalhe</a>
-                    <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:editar' cartao.id %}">editar</a>
-                    <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:excluir' cartao.id %}">excluir</a>
+                    <a href="{% url 'cartoes:editar' cartao.id %}">editar</a>
+                    <a href="{% url 'cartoes:excluir' cartao.id %}">excluir</a>
                 </td>
             </tr>
             {% endfor %}

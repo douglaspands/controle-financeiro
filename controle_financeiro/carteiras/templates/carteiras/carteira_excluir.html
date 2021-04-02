@@ -15,11 +15,9 @@
         <p>
             Você tem certeza que quer apagar a carteira <strong>{{ object.titulo|truncatechars:30 }}</strong>?
         </p>
-        <p>
-            <input class="btn btn-primary" role="button" type="submit" value="Apagar">
-        </p>
+        <input class="btn btn-primary" role="button" type="submit" value="Apagar">
+        <div style="float: right;">
+            <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:lista' %}">Cancelar</a>
+        </div>
     </form>
-    <div style="float: right;">
-        <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:lista' %}">Voltar</a>
-    </div>
 {% endblock %}
