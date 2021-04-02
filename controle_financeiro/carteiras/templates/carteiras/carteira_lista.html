@@ -3,8 +3,18 @@
 
 {% block titulo %}Carteiras{% endblock %}
 
+{% block cabecalho %}
+<div class="container">
+    <div class="bd-intro ps-lg-4">
+        <div class="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
+            <h1 class="bd-title" id="content">Carteira</h1>
+        </div>
+        <p class="bd-lead">Lista de carteiras registradas.</p>
+    </div>
+</div>
+{% endblock %}
+
 {% block conteudo %}
-    <h2>Carteiras</h2>
     <div style="float: right;">
         <p>
             <a class="btn btn-primary" role="button" href="{% url 'carteiras:criar' %}">Criar</a>

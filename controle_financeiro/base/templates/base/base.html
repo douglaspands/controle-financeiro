@@ -9,6 +9,10 @@
 </head>
 <body>
     {% include 'base/navbar.html' %}
+    <br>
+    {% block cabecalho %}
+    {% endblock %}
+    <br>
     <main class="container">
         {% block conteudo%}
         {% endblock %}
