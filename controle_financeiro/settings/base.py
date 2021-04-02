@@ -34,8 +34,8 @@ MY_APPS = [
     'base',
     'carteiras',
     'cartoes',
-    'despesas',
     'contas',
+    'despesas',
     'home',
 ]
 

@@ -23,8 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('carteiras/', include('carteiras.urls')),
     path('cartoes/', include('cartoes.urls')),
+    path('contas/', include('contas.urls')),
     path('despesas/', include('despesas.urls')),
-
 ]
 
 if settings.SETTING_NAME in ['local', 'test']:
