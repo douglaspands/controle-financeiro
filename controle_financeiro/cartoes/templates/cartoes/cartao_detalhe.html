@@ -6,12 +6,8 @@
 
 {% block cabecalho %}
 <div class="container">
-    <div class="bd-intro ps-lg-4">
-        <div class="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
-            <h1 class="bd-title" id="content">Cartão</h1>
-        </div>
-        <p class="bd-lead">Detalhamento do cartão registrado.</p>
-    </div>
+  <h1>Cartão</h1>
+  <p>Detalhamento do cartão registrado.</p>
 </div>
 {% endblock %}
 
@@ -20,39 +16,39 @@
   <fieldset disabled>
     <div class="mb-3">
       <label for="inputTitulo" class="form-label">Titulo</label>
-      <input type="text" id="inputTitulo" class="form-control" value="{{ object.titulo }}">
+      <input type="text" id="inputTitulo" class="form-control" value="{{ cartao.titulo }}">
     </div>
     <div class="mb-3">
       <label for="inputSlug" class="form-label">Slug</label>
-      <input type="text" id="inputSlug" class="form-control" value="{{ object.slug }}">
+      <input type="text" id="inputSlug" class="form-control" value="{{ cartao.slug }}">
     </div>
     <div class="mb-3">
       <label for="inputLimite" class="form-label">Limite</label>
-      <input type="text" id="inputLimite" class="form-control" value="{{ object.limite|intcomma }}">
+      <input type="text" id="inputLimite" class="form-control" value="{{ cartao.limite|intcomma }}">
     </div>
     <div class="mb-3">
       <label for="inputDiaFechamento" class="form-label">Dia do Fechamento</label>
-      <input type="text" id="inputDiaFechamento" class="form-control" value="{{ object.dia_fechamento }}">
+      <input type="text" id="inputDiaFechamento" class="form-control" value="{{ cartao.dia_fechamento }}">
     </div>
     <div class="mb-3">
       <label for="inputCriadoEm" class="form-label">Criado em</label>
       <input type="datetime-local" id="inputCriadoEm" class="form-control"
-        value="{{ object.criado_em|datetime_para_texto }}">
+        value="{{ cartao.criado_em|datetime_para_texto }}">
     </div>
     <div class="mb-3">
       <label for="inputAtualizadoEm" class="form-label">Atualizado em</label>
       <input type="datetime-local" id="inputAtualizadoEm" class="form-control"
-        value="{{ object.atualizado_em|datetime_para_texto }}">
+        value="{{ cartao.atualizado_em|datetime_para_texto }}">
     </div>
   </fieldset>
 </form>
 <div style="float: left; margin-left: 3px;">
-  <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:editar' object.id %}">Editar</a>
+  <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:editar' cartao.id %}">Editar</a>
 </div>
 <div style="float: left; margin-left: 3px;">
-  <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:excluir' object.id %}">Excluir</a>
+  <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:excluir' cartao.id %}">Excluir</a>
 </div>
 <div style="float: right; margin-left: 3px;">
-  <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:lista' %}">Voltar</a>
+  <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:listar' %}">Voltar</a>
 </div>
 {% endblock %}

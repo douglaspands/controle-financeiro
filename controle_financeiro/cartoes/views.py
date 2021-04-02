@@ -15,6 +15,7 @@ class CartaoLista(ListView):
     model = Cartao
     template_name = 'cartoes/cartao_lista.html'
     fields = ['titulo', 'carteira']
+    context_object_name = 'cartoes'
     paginate_by = 25
 
     def get_queryset(self):
@@ -24,6 +25,7 @@ class CartaoLista(ListView):
 class CartaoDetalhe(DetailView):
     model = Cartao
     template_name = 'cartoes/cartao_detalhe.html'
+    context_object_name = 'cartao'
 
     def get_queryset(self):
         return Cartao.objects.select_related('carteira')
@@ -33,7 +35,7 @@ class CartaoCriar(CreateView):
     model = Cartao
     form_class = CartaoForm
     template_name = 'cartoes/cartao_criar.html'
-    # success_url = reverse_lazy('cartoes:lista')
+    context_object_name = 'cartao'
 
     def get_queryset(self):
         return Cartao.objects.select_related('carteira')
@@ -53,7 +55,7 @@ class CartaoCriar(CreateView):
             carteira.save()
             cartao.carteira = carteira
             cartao.save()
-            return redirect('cartoes:lista')
+            return redirect('cartoes:listar')
         else:
             return render(request, self.template_name, {'form': form})
 
@@ -62,6 +64,7 @@ class CartaoAtualizar(UpdateView):
     model = Cartao
     form_class = CartaoForm
     template_name = 'cartoes/cartao_atualizar.html'
+    context_object_name = 'cartao'
 
     def get_queryset(self):
         return Cartao.objects.select_related('carteira')
@@ -80,7 +83,7 @@ class CartaoAtualizar(UpdateView):
             carteira.save()
             cartao.carteira = carteira
             cartao.save()
-            return redirect('cartoes:lista')
+            return redirect('cartoes:listar')
         else:
             return render(request, self.template_name, {'form': form})
 
@@ -89,4 +92,5 @@ class CartaoExcluir(DeleteView):
     model = Cartao
     form_class = CartaoForm
     template_name = 'cartoes/cartao_excluir.html'
-    success_url = reverse_lazy('cartoes:lista')
+    context_object_name = 'cartao'
+    success_url = reverse_lazy('cartoes:listar')

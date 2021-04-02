@@ -7,12 +7,8 @@
 
 {% block cabecalho %}
 <div class="container">
-    <div class="bd-intro ps-lg-4">
-        <div class="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
-            <h1 class="bd-title" id="content">Cartão</h1>
-        </div>
-        <p class="bd-lead">Detalhamento da despesa registrada.</p>
-    </div>
+  <h1>Despesa</h1>
+  <p>Detalhamento da despesa registrada.</p>
 </div>
 {% endblock %}
 
@@ -22,15 +18,15 @@
     <div class="mb-3">
       <label for="inputDataHora" class="form-label">Data e Hora</label>
       <input type="datetime-local" id="inputDataHora" class="form-control"
-        value="{{ object.datahora|datetime_para_texto }}">
+        value="{{ despesa.datahora|datetime_para_texto }}">
     </div>
     <div class="mb-3">
       <label for="inputDescricao" class="form-label">Descrição</label>
-      <input type="text" id="inputDescricao" class="form-control" value="{{ object.descricao|safe }}">
+      <input type="text" id="inputDescricao" class="form-control" value="{{ despesa.descricao|safe }}">
     </div>
     <div class="mb-3">
       <label for="inputParcelado" class="form-label">Parcelado</label>
-      <input type="text" id="inputParcelado" class="form-control" value="{{ object.parcelado }}">
+      <input type="text" id="inputParcelado" class="form-control" value="{{ despesa.parcelado }}">
     </div>
     <div class="mb-3">
       <label for="inputValor" class="form-label">Valor</label>
@@ -40,27 +36,27 @@
     </div>
     <div class="mb-3">
       <label for="inputCategoria" class="form-label">Categoria</label>
-      <input type="text" id="inputCategoria" class="form-control" value="{{ object.categorias|queryset_para_texto }}">
+      <input type="text" id="inputCategoria" class="form-control" value="{{ despesa.categorias|queryset_para_texto }}">
     </div>
     <div class="mb-3">
       <label for="inputCriadoEm" class="form-label">Criado em</label>
       <input type="datetime-local" id="inputCriadoEm" class="form-control"
-        value="{{ object.criado_em|datetime_para_texto }}">
+        value="{{ despesa.criado_em|datetime_para_texto }}">
     </div>
     <div class="mb-3">
       <label for="inputAtualizadoEm" class="form-label">Atualizado em</label>
       <input type="datetime-local" id="inputAtualizadoEm" class="form-control"
-        value="{{ object.atualizado_em|datetime_para_texto }}">
+        value="{{ despesa.atualizado_em|datetime_para_texto }}">
     </div>
   </fieldset>
 </form>
 <div style="float: left; margin-left: 3px;">
-  <a class="btn btn-outline-primary" role="button" href="{% url 'despesas:editar' object.id %}">Editar</a>
+  <a class="btn btn-outline-primary" role="button" href="{% url 'despesas:editar' despesa.id %}">Editar</a>
 </div>
 <div style="float: left; margin-left: 3px;">
-  <a class="btn btn-outline-primary" role="button" href="{% url 'despesas:excluir' object.id %}">Excluir</a>
+  <a class="btn btn-outline-primary" role="button" href="{% url 'despesas:excluir' despesa.id %}">Excluir</a>
 </div>
 <div style="float: right; margin-left: 3px;">
-  <a class="btn btn-outline-primary" role="button" href="{% url 'despesas:lista' %}">Voltar</a>
+  <a class="btn btn-outline-primary" role="button" href="{% url 'despesas:listar' %}">Voltar</a>
 </div>
 {% endblock %}

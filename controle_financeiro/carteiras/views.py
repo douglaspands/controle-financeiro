@@ -13,7 +13,8 @@ class CarteiraLista(ListView):
     model = Carteira
     template_name = 'carteiras/carteira_lista.html'
     fields = ['titulo', 'tipo']
-    paginate_by = 25
+    context_object_name = 'carteiras'
+    paginate_by = 2
 
     def get_queryset(self):
         return Carteira.objects.select_related('tipo')
@@ -22,6 +23,7 @@ class CarteiraLista(ListView):
 class CarteiraDetalhe(DetailView):
     model = Carteira
     template_name = 'carteiras/carteira_detalhe.html'
+    context_object_name = 'carteira'
 
     def get_queryset(self):
         return Carteira.objects.select_related('tipo')
@@ -31,6 +33,7 @@ class CarteiraCriar(CreateView):
     model = Carteira
     form_class = CarteiraForm
     template_name = 'carteiras/carteira_criar.html'
+    context_object_name = 'carteira'
 
     def get_queryset(self):
         return Carteira.objects.select_related('tipo')
@@ -41,7 +44,7 @@ class CarteiraCriar(CreateView):
             carteira = form.save(commit=False)
             carteira.slug = slugify(carteira.titulo)
             form.save()
-            return redirect('carteiras:lista')
+            return redirect('carteiras:listar')
         else:
             return render(request, self.template_name, {'form': form})
 
@@ -50,6 +53,7 @@ class CarteiraAtualizar(UpdateView):
     model = Carteira
     form_class = CarteiraForm
     template_name = 'carteiras/carteira_atualizar.html'
+    context_object_name = 'carteira'
 
     def get_queryset(self):
         return Carteira.objects.select_related('tipo')
@@ -61,7 +65,7 @@ class CarteiraAtualizar(UpdateView):
             carteira = form.save(commit=False)
             carteira.slug = slugify(carteira.titulo)
             carteira.save()
-            return redirect('carteiras:lista')
+            return redirect('carteiras:listar')
         else:
             return render(request, self.template_name, {'form': form})
 
@@ -70,4 +74,5 @@ class CarteiraExcluir(DeleteView):
     model = Carteira
     form_class = CarteiraForm
     template_name = 'carteiras/carteira_excluir.html'
-    success_url = reverse_lazy('carteiras:lista')
+    success_url = reverse_lazy('carteiras:listar')
+    context_object_name = 'carteira'

@@ -11,6 +11,7 @@ from datetime import datetime
 class DespesaLista(ListView):
     model = Despesa
     template_name = 'despesas/despesa_lista.html'
+    context_object_name = 'despesas'
     fields = ['categorias', 'descricao', 'valor', 'datahora', 'carteira']
     paginate_by = 25
 
@@ -21,13 +22,15 @@ class DespesaLista(ListView):
 class DespesaDetalhe(DetailView):
     model = Despesa
     template_name = 'despesas/despesa_detalhe.html'
+    context_object_name = 'despesa'
 
 
 class DespesaCriar(CreateView):
     model = Despesa
     form_class = DespesaForm
     template_name = 'despesas/despesa_criar.html'
-    success_url = reverse_lazy('despesas:lista')
+    success_url = reverse_lazy('despesas:listar')
+    context_object_name = 'despesa'
 
     def get_initial(self):
         initial = super(DespesaCriar, self).get_initial()
@@ -40,11 +43,13 @@ class DespesaAtualizar(UpdateView):
     model = Despesa
     form_class = DespesaForm
     template_name = 'despesas/despesa_atualizar.html'
-    success_url = reverse_lazy('despesas:lista')
+    success_url = reverse_lazy('despesas:listar')
+    context_object_name = 'despesa'
 
 
 class DespesaExcluir(DeleteView):
     model = Despesa
     form_class = DespesaForm
     template_name = 'despesas/despesa_excluir.html'
-    success_url = reverse_lazy('despesas:lista')
+    success_url = reverse_lazy('despesas:listar')
+    context_object_name = 'despesa'

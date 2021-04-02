@@ -19,12 +19,12 @@ from django.contrib import admin
 from django.urls import include, path
 
 urlpatterns = [
-    path('', include('home.urls')),
+    path('', include('home.urls', namespace='home')),
     path('admin/', admin.site.urls),
-    path('carteiras/', include('carteiras.urls')),
-    path('cartoes/', include('cartoes.urls')),
-    path('contas/', include('contas.urls')),
-    path('despesas/', include('despesas.urls')),
+    path('carteiras/', include('carteiras.urls', namespace='carteiras')),
+    path('cartoes/', include('cartoes.urls', namespace='cartoes')),
+    path('contas/', include('contas.urls', namespace='contas')),
+    path('despesas/', include('despesas.urls', namespace='despesas')),
 ]
 
 if settings.SETTING_NAME in ['local', 'test']:

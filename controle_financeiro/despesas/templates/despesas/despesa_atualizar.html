@@ -5,28 +5,24 @@
 
 {% block cabecalho %}
 <div class="container">
-    <div class="bd-intro ps-lg-4">
-        <div class="d-md-flex flex-md-row-reverse align-items-center justify-content-between">
-            <h1 class="bd-title" id="content">Despesa</h1>
-        </div>
-        <p class="bd-lead">Atualizar despesa registrada.</p>
-    </div>
+    <h1>Despesa</h1>
+    <p>Atualizar despesa registrada.</p>
 </div>
 {% endblock %}
 
 {% block conteudo %}
-    {% if form.subject.errors %}
-    <ol>
+{% if form.subject.errors %}
+<ol>
     {% for error in form.subject.errors %}
-        <li><strong>{{ error|escape }}</strong></li>
+    <li><strong>{{ error|escape }}</strong></li>
     {% endfor %}
-    </ol>
-    {% endif %}
-    <form method="post">{% csrf_token %}
-        {{ form|crispy }}
-        <input class="btn btn-primary" role="button" type="submit" value="Atualizar">
-        <div style="float: right;">
-            <a class="btn btn-outline-primary" role="button" href="{% url 'despesas:lista' %}">Cancelar</a>
-        </div>
-    </form>
+</ol>
+{% endif %}
+<form method="post">{% csrf_token %}
+    {{ form|crispy }}
+    <input class="btn btn-primary" role="button" type="submit" value="Atualizar">
+    <div style="float: right;">
+        <a class="btn btn-outline-primary" role="button" href="{% url 'despesas:listar' %}">Cancelar</a>
+    </div>
+</form>
 {% endblock %}
