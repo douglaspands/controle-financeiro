@@ -190,3 +190,8 @@ LOGGING = {
 # CRISPY
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+# NEW USER MODEL
+
+AUTH_USER_MODEL = "contas.Usuario"
