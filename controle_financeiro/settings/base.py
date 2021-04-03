@@ -31,12 +31,13 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 MY_APPS = [
+    'autenticacoes',
     'base',
     'carteiras',
     'cartoes',
-    'contas',
     'despesas',
     'home',
+    'usuarios',
 ]
 
 THIRD_PARTY_APPS = [
@@ -194,7 +195,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # NEW USER MODEL
 
-AUTH_USER_MODEL = "contas.Usuario"
+AUTH_USER_MODEL = "usuarios.Usuario"
 
 
 # AUTH

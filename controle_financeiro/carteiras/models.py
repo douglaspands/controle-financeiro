@@ -1,5 +1,5 @@
 from base.models import BaseModel
-from contas.models import Usuario
+from usuarios.models import Usuario
 from django.db import models
 
 

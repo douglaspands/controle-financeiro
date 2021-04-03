@@ -68,3 +68,10 @@ def dbshell():
     if len(sys.argv) > 1:
         cmd = cmd + f" '{sys.argv[1]}'"
     shell_run(cmd)
+
+
+def command():
+    cmd = 'python manage.py'
+    if len(sys.argv) > 1:
+        cmd = cmd + ' ' + ' '.join(sys.argv[1:])
+    shell_run(cmd)

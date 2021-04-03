@@ -4,8 +4,8 @@ from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
 from django.views.generic import TemplateView, View
 
-from .forms import UsuarioRegistroForm
-from .models import Usuario
+from .forms import RegistroForm
+from usuarios.models import Usuario
 
 
 class LogoutConfirmar(TemplateView):
@@ -13,8 +13,8 @@ class LogoutConfirmar(TemplateView):
 
 
 class UsuarioCriar(View):
-    form_class = UsuarioRegistroForm
-    template_name = 'contas/usuario_criar.html'
+    form_class = RegistroForm
+    template_name = 'autenticacoes/usuario_criar.html'
     context_object_name = 'usuario'
 
     def get(self, request: HttpRequest) -> HttpResponse:
@@ -35,6 +35,6 @@ class UsuarioCriar(View):
             grupo = Group.objects.get(id=1)
             grupo.user_set.add(usuario)
             grupo.save()
-            return render(request, 'contas/usuario_criar_concluido.html', {})
+            return render(request, 'autenticacoes/usuario_criar_concluido.html', {})
         else:
             return render(request, self.template_name, {'form': form})

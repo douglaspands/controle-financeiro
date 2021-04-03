@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block conteudo %}
-<form method="get" action="{% url 'contas:logout' %}">{% csrf_token %}
+<form method="get" action="{% url 'autenticacoes:logout' %}">{% csrf_token %}
   <input class="btn btn-primary" role="button" type="submit" value="Logout">
   <div style="float: right;">
       <a class="btn btn-outline-primary" role="button" href="{% url 'home:index' %}">Cancelar</a>

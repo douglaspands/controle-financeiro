@@ -2,7 +2,7 @@ from datetime import date, datetime
 
 from base.models import BaseModel
 from carteiras.models import Carteira
-from contas.models import Usuario
+from usuarios.models import Usuario
 from dateutil.relativedelta import relativedelta
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models

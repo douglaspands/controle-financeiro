@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from base.models import BaseModel
 from carteiras.models import Carteira
-from contas.models import Usuario
+from usuarios.models import Usuario
 from django.db import models
 
 
