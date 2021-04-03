@@ -18,7 +18,7 @@ def runserver():
 
 
 def test():
-    shell_run('pytest')
+    shell_run('python manage.py test')
 
 
 def lint():

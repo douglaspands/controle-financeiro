@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "controle-financeiro"
-version = "0.3.0"
+version = "0.4.0"
 description = "Controle finaceiro de contas"
 authors = ["Douglas Panhota <douglaspands@gmail.com>"]
 license = "MIT"
@@ -14,12 +14,11 @@ django-crispy-forms = "^1.11.2"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^3.9.0"
-pytest-django = "^4.1.0"
-pytest-cov = "^2.11.1"
 django-debug-toolbar = "^3.2"
 mypy = "^0.812"
 ipython = "^7.22.0"
 black = {version = "^20.8b1", allow-prereleases = true}
+coverage = "^5.5"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

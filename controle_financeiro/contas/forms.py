@@ -59,9 +59,7 @@ class UsuarioRegistroForm(forms.Form):
     def clean_username(self):
         if not re.search(self.REGEX_USERNAME, self.cleaned_data['username']):
             raise forms.ValidationError(_('Favor use somente letras, números e períodos.'))
-        if Usuario.objects.filter(
-            username__exact=self.cleaned_data['username']
-        ).exists():
+        if Usuario.objects.filter(username__exact=self.cleaned_data['username']).exists():
             raise forms.ValidationError(_('Já existe um usuário com o mesmo nome.'))
         else:
             return self.cleaned_data['username']
