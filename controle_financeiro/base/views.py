@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
-# Create your views here.
+
+class LoginRequiredBase(LoginRequiredMixin):
+    login_url = reverse_lazy('contas:login')
+    redirect_field_name = 'redirect_to'

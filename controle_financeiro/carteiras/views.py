@@ -1,3 +1,4 @@
+from base.views import LoginRequiredBase
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.defaultfilters import slugify
@@ -9,7 +10,7 @@ from .forms import CarteiraForm
 from .models import Carteira
 
 
-class CarteiraLista(ListView):
+class CarteiraLista(LoginRequiredBase, ListView):
     model = Carteira
     template_name = 'carteiras/carteira_lista.html'
     fields = ['titulo', 'tipo']
@@ -20,7 +21,7 @@ class CarteiraLista(ListView):
         return Carteira.objects.select_related('tipo')
 
 
-class CarteiraDetalhe(DetailView):
+class CarteiraDetalhe(LoginRequiredBase, DetailView):
     model = Carteira
     template_name = 'carteiras/carteira_detalhe.html'
     context_object_name = 'carteira'
@@ -29,7 +30,7 @@ class CarteiraDetalhe(DetailView):
         return Carteira.objects.select_related('tipo')
 
 
-class CarteiraCriar(CreateView):
+class CarteiraCriar(LoginRequiredBase, CreateView):
     model = Carteira
     form_class = CarteiraForm
     template_name = 'carteiras/carteira_criar.html'
@@ -49,7 +50,7 @@ class CarteiraCriar(CreateView):
             return render(request, self.template_name, {'form': form})
 
 
-class CarteiraAtualizar(UpdateView):
+class CarteiraAtualizar(LoginRequiredBase, UpdateView):
     model = Carteira
     form_class = CarteiraForm
     template_name = 'carteiras/carteira_atualizar.html'
@@ -70,7 +71,7 @@ class CarteiraAtualizar(UpdateView):
             return render(request, self.template_name, {'form': form})
 
 
-class CarteiraExcluir(DeleteView):
+class CarteiraExcluir(LoginRequiredBase, DeleteView):
     model = Carteira
     form_class = CarteiraForm
     template_name = 'carteiras/carteira_excluir.html'

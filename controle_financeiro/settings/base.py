@@ -195,3 +195,15 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 # NEW USER MODEL
 
 AUTH_USER_MODEL = "contas.Usuario"
+
+
+# AUTH
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/contas/logout/concluido/'
+
+
+# EMAIL
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+

@@ -11,4 +11,4 @@ class BaseModel(models.Model):
         abstract = True
 
     def get_absolute_url(self):
-        return reverse('detalhe', kwargs={'pk': self.pk})
+        return reverse('detalhar', kwargs={'pk': self.pk})

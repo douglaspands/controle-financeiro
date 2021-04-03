@@ -1,3 +1,5 @@
+from base.views import LoginRequiredBase
+from carteiras.models import Carteira, Tipo
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.defaultfilters import slugify
@@ -7,11 +9,9 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from .forms import CartaoForm
 from .models import Cartao
-from carteiras.models import Carteira
-from carteiras.models import Tipo
 
 
-class CartaoLista(ListView):
+class CartaoLista(LoginRequiredBase, ListView):
     model = Cartao
     template_name = 'cartoes/cartao_lista.html'
     fields = ['titulo', 'carteira']
@@ -22,7 +22,7 @@ class CartaoLista(ListView):
         return Cartao.objects.select_related('carteira')
 
 
-class CartaoDetalhe(DetailView):
+class CartaoDetalhe(LoginRequiredBase, DetailView):
     model = Cartao
     template_name = 'cartoes/cartao_detalhe.html'
     context_object_name = 'cartao'
@@ -31,7 +31,7 @@ class CartaoDetalhe(DetailView):
         return Cartao.objects.select_related('carteira')
 
 
-class CartaoCriar(CreateView):
+class CartaoCriar(LoginRequiredBase, CreateView):
     model = Cartao
     form_class = CartaoForm
     template_name = 'cartoes/cartao_criar.html'
@@ -60,7 +60,7 @@ class CartaoCriar(CreateView):
             return render(request, self.template_name, {'form': form})
 
 
-class CartaoAtualizar(UpdateView):
+class CartaoAtualizar(LoginRequiredBase, UpdateView):
     model = Cartao
     form_class = CartaoForm
     template_name = 'cartoes/cartao_atualizar.html'
@@ -88,7 +88,7 @@ class CartaoAtualizar(UpdateView):
             return render(request, self.template_name, {'form': form})
 
 
-class CartaoExcluir(DeleteView):
+class CartaoExcluir(LoginRequiredBase, DeleteView):
     model = Cartao
     form_class = CartaoForm
     template_name = 'cartoes/cartao_excluir.html'

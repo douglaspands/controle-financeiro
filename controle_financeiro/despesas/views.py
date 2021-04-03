@@ -1,3 +1,6 @@
+from datetime import datetime
+
+from base.views import LoginRequiredBase
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -5,10 +8,8 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from .forms import DespesaForm
 from .models import Despesa
 
-from datetime import datetime
 
-
-class DespesaLista(ListView):
+class DespesaLista(LoginRequiredBase, ListView):
     model = Despesa
     template_name = 'despesas/despesa_lista.html'
     context_object_name = 'despesas'
@@ -19,13 +20,13 @@ class DespesaLista(ListView):
         return Despesa.objects.prefetch_related('categorias')
 
 
-class DespesaDetalhe(DetailView):
+class DespesaDetalhe(LoginRequiredBase, DetailView):
     model = Despesa
     template_name = 'despesas/despesa_detalhe.html'
     context_object_name = 'despesa'
 
 
-class DespesaCriar(CreateView):
+class DespesaCriar(LoginRequiredBase, CreateView):
     model = Despesa
     form_class = DespesaForm
     template_name = 'despesas/despesa_criar.html'
@@ -39,7 +40,7 @@ class DespesaCriar(CreateView):
         return initial
 
 
-class DespesaAtualizar(UpdateView):
+class DespesaAtualizar(LoginRequiredBase, UpdateView):
     model = Despesa
     form_class = DespesaForm
     template_name = 'despesas/despesa_atualizar.html'
@@ -47,7 +48,7 @@ class DespesaAtualizar(UpdateView):
     context_object_name = 'despesa'
 
 
-class DespesaExcluir(DeleteView):
+class DespesaExcluir(LoginRequiredBase, DeleteView):
     model = Despesa
     form_class = DespesaForm
     template_name = 'despesas/despesa_excluir.html'
