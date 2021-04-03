@@ -18,7 +18,10 @@ def runserver():
 
 
 def test():
-    shell_run('python manage.py test')
+    cmd = 'python manage.py test'
+    if len(sys.argv) > 1:
+        cmd = cmd + ' ' + ' '.join(sys.argv[1:])
+    shell_run(cmd)
 
 
 def lint():
