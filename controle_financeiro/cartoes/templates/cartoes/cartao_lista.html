@@ -1,54 +1,41 @@
 {% extends "base/base.html" %}
-{% load transformar_em_texto %}
+{% load humanize %}
 
 {% block titulo %}Cartões{% endblock %}
 
+{% block cabecalho %}
+<div class="container">
+    <h1>Cartão</h1>
+    <p>Lista de cartões registrados.</p>
+</div>
+{% endblock %}
+
 {% block conteudo %}
-    <h2>Cartões</h2>
+<div style="float: right;">
     <p>
         <a class="btn btn-primary" role="button" href="{% url 'cartoes:criar' %}">Criar</a>
     </p>
-    {% if page_obj %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Titulo</th>
-                <th scope="col">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for cartao in page_obj %}
-            <tr>
-                <td>{{ cartao.titulo }}</td>
-                <td>
-                    <a class="btn btn-secondary" role="button" href="{% url 'cartoes:detalhe' cartao.id %}">detalhe</a>
-                    <a class="btn btn-secondary" role="button" href="{% url 'cartoes:editar' cartao.id %}">editar</a>
-                    <a class="btn btn-secondary" role="button" href="{% url 'cartoes:excluir' cartao.id %}">excluir</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-    <p>Sem Carteiras.</p>
-    {% endif %}
-    <p>
-        <div class="pagination">
-            <span class="step-links">
-                {% if page_obj.has_previous %}
-                    <a href="?page=1">&laquo; primeira</a>
-                    <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
-                {% endif %}
-        
-                <span class="current">
-                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
-                </span>
-        
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">próxima</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}">última &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
-    </p>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Titulo</th>
+            <th scope="col">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for cartao in cartoes %}
+        <tr onclick="window.location='{% url 'cartoes:detalhar' cartao.id %}'">
+            <td>{{ cartao.titulo }}</td>
+            <td>
+                <a href="{% url 'cartoes:editar' cartao.id %}">editar</a>
+                <a href="{% url 'cartoes:excluir' cartao.id %}">excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% include 'base/paginacao.html' %}
+
 {% endblock %}

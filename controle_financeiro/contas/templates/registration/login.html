@@ -1,0 +1,33 @@
+{% extends "base/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block titulo %}Login{% endblock %}
+
+{% block cabecalho %}
+<div class="container">
+  <h1>Usuario</h1>
+  <p>Efetue o login para desfrutar de conteudos exclusivos.</p>
+</div>
+{% endblock %}
+
+{% block conteudo %}
+{% if next %}
+{% if user.is_authenticated %}
+<p>Sua conta não tem acesso a esta pagina. Para seguir,
+  favor faça login com uma conta que tem acesso.</p>  
+{% else %}
+<p>Favor faça o login para ver essa pagina.</p>
+{% endif %}
+{% endif %}
+<form method="post" action="{% url 'contas:login' %}">
+  {% csrf_token %}
+  {{ form|crispy }}
+  <input class="btn btn-primary" role="button" type="submit" value="Login">
+</form>
+{% if form.errors %}
+<p>Seu usuario e senha não foram encontrados. Favor tente novamente.</p>
+{% endif %}
+<br>
+<p><a href="{% url 'contas:mudar_senha' %}">Esqueceu a senha?</a></p>
+<p><a href="{% url 'contas:criar' %}">Deseja criar um usuario?</a></p>
+{% endblock %}

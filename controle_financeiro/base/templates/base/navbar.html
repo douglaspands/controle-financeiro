@@ -1,0 +1,37 @@
+{% load dom_efeitos %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'home:index' %}">ControleFinanceiro</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                {% if request.user.is_authenticated %}
+                <li class="nav-item{{ view|nav_item_active:'carteiras' }}">
+                    <a class="nav-link" href="{% url 'carteiras:listar' %}">Carteiras{% if view|span_sr_only:'carteiras' %} <span class="sr-only">(current)</span>{% endif %}</a>
+                </li>
+                <li class="nav-item{{ view|nav_item_active:'cartoes' }}">
+                    <a class="nav-link" href="{% url 'cartoes:listar' %}">Cartoes{% if view|span_sr_only:'cartoes' %}
+                        <span class="sr-only">(current)</span>{% endif %}</a>
+                </li>
+                <li class="nav-item{{ view|nav_item_active:'despesas' }}">
+                    <a class="nav-link" href="{% url 'despesas:listar' %}">Despesas{% if view|span_sr_only:'despesas' %} <span class="sr-only">(current)</span>{% endif %}</a>
+                </li>
+                <li class="nav-item{{ view|nav_item_active:'registration' }}">
+                    <a class="nav-link" href="{% url 'contas:logout_confirmar' %}">
+                        Logout - {% if request.user.first_name %}{{ request.user.first_name }}{% else %}{{
+                        request.user.username }}{% endif %}{% if view|span_sr_only:'registration' %} <span class="sr-only">(current)</span>{% endif %}
+                    </a>
+                </li>
+                {% else %}
+                <li class="nav-item{{ view|nav_item_active:'registration' }}">
+                    <a class="nav-link" href="{% url 'contas:login' %}">Login{% if view|span_sr_only:'registration' %} <span class="sr-only">(current)</span>{% endif %}</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

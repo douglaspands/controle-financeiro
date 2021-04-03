@@ -3,54 +3,41 @@
 
 {% block titulo %}Carteiras{% endblock %}
 
+{% block cabecalho %}
+<div class="container">
+    <h1>Carteira</h1>
+    <p>Lista de carteiras registradas.</p>
+</div>
+{% endblock %}
+
 {% block conteudo %}
-    <h2>Carteiras</h2>
+<div style="float: right;">
     <p>
         <a class="btn btn-primary" role="button" href="{% url 'carteiras:criar' %}">Criar</a>
     </p>
-    {% if page_obj %}
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Titulo</th>
-                <th scope="col">Tipo</th>
-                <th scope="col">Ações</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for carteira in page_obj %}
-            <tr>
-                <td>{{ carteira.titulo }}</td>
-                <td>{{ carteira.tipo }}</td>
-                <td>
-                    <a class="btn btn-secondary" role="button" href="{% url 'carteiras:detalhe' carteira.id %}">detalhe</a>
-                    <a class="btn btn-secondary" role="button" href="{% url 'carteiras:editar' carteira.id %}">editar</a>
-                    <a class="btn btn-secondary" role="button" href="{% url 'carteiras:excluir' carteira.id %}">excluir</a>
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    {% else %}
-    <p>Sem Carteiras.</p>
-    {% endif %}
-    <p>
-        <div class="pagination">
-            <span class="step-links">
-                {% if page_obj.has_previous %}
-                    <a href="?page=1">&laquo; primeira</a>
-                    <a href="?page={{ page_obj.previous_page_number }}">anterior</a>
-                {% endif %}
-        
-                <span class="current">
-                    Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}.
-                </span>
-        
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">próxima</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}">última &raquo;</a>
-                {% endif %}
-            </span>
-        </div>
-    </p>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Titulo</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for carteira in carteiras %}
+        <tr onclick="window.location='{% url 'carteiras:detalhar' carteira.id %}'">
+            <td>{{ carteira.titulo }}</td>
+            <td>{{ carteira.tipo }}</td>
+            <td>
+                <a href="{% url 'carteiras:editar' carteira.id %}">editar</a>
+                <a href="{% url 'carteiras:excluir' carteira.id %}">excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% include 'base/paginacao.html' %}
+
 {% endblock %}

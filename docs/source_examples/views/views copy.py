@@ -40,7 +40,7 @@ class DespesaCriar(DespesaDetalhe):
         form = DespesaForm(request.POST)
         if form.is_valid():
             form.save()
-            return reverse_lazy('despesas:lista')
+            return reverse_lazy('despesas:listar')
         else:
             return self.get(request, form=form)
 
@@ -54,7 +54,7 @@ class DespesaCriar(DespesaDetalhe):
 #     model = Despesa
 #     template_name = 'despesas/despesa_criar.html'
 #     # fields = ['categorias', 'descricao', 'valor', 'datahora']
-#     success_url = reverse_lazy('despesas:lista')
+#     success_url = reverse_lazy('despesas:listar')
 #     form_class = DespesaForm
 
 
@@ -62,11 +62,11 @@ class DespesaAtualizar(UpdateView):
     model = Despesa
     template_name = 'despesas/despesa_atualizar.html'
     fields = ['categorias', 'descricao', 'valor', 'datahora']
-    success_url = reverse_lazy('despesas:lista')
+    success_url = reverse_lazy('despesas:listar')
 
 
 class DespesaExcluir(DeleteView):
     model = Despesa
     template_name = 'despesas/despesa_excluir.html'
     fields = ['categorias', 'descricao', 'valor', 'datahora']
-    success_url = reverse_lazy('despesas:lista')
+    success_url = reverse_lazy('despesas:listar')

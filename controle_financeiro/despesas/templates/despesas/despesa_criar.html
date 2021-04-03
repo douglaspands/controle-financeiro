@@ -1,23 +1,28 @@
 {% extends "base/base.html" %}
+{% load crispy_forms_tags %}
 
 {% block titulo %}Despesas{% endblock %}
 
+{% block cabecalho %}
+<div class="container">
+    <h1>Despesa</h1>
+    <p>Cadastre sua despesa.</p>
+</div>
+{% endblock %}
+
 {% block conteudo %}
-    <h2>Criar Despesa</h2>
-    {% if form.subject.errors %}
-    <ol>
+{% if form.subject.errors %}
+<ol>
     {% for error in form.subject.errors %}
-        <li><strong>{{ error|escape }}</strong></li>
+    <li><strong>{{ error|escape }}</strong></li>
     {% endfor %}
-    </ol>
-    {% endif %}
-    <form method="post">{% csrf_token %}
-        {{ form.as_p }}
-        <p>
-            <input class="btn btn-primary" role="button" type="submit" value="Gravar">
-        </p>
-    </form>
-    <p>
-        <a class="btn btn-secondary" role="button" href="{% url 'despesas:lista' %}">voltar</a>
-    </p>
+</ol>
+{% endif %}
+<form method="post">{% csrf_token %}
+    {{ form|crispy }}
+    <input class="btn btn-primary" role="button" type="submit" value="Gravar">
+    <div style="float: right;">
+        <a class="btn btn-outline-primary" role="button" href="{% url 'despesas:listar' %}">Cancelar</a>
+    </div>
+</form>
 {% endblock %}

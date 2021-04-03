@@ -1,5 +1,6 @@
-from django.db import models
 from base.models import BaseModel
+from contas.models import Usuario
+from django.db import models
 
 
 class Tipo(BaseModel):
@@ -8,22 +9,23 @@ class Tipo(BaseModel):
     permite_parcelamento = models.BooleanField()
 
     class Meta:
-        ordering = ['titulo']
+        ordering = ["titulo"]
 
     def __str__(self):
-        return f'{self.titulo}'
+        return f"{self.titulo}"
 
 
 class Carteira(BaseModel):
     titulo = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True)
     tipo = models.ForeignKey(Tipo, on_delete=models.CASCADE)
+    criador = models.ForeignKey(Usuario, on_delete=models.CASCADE)
 
     class Meta:
-        ordering = ['titulo']
+        ordering = ["titulo"]
 
     def __str__(self):
-        return f'{self.titulo}'
+        return f"{self.titulo}"
 
     @property
     def permite_parcelamento(self) -> bool:

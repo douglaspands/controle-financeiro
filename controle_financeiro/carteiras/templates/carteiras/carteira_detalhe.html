@@ -1,15 +1,50 @@
 {% extends "base/base.html" %}
+{% load transformar_em_texto %}
 
 {% block titulo %}Carteiras{% endblock %}
 
+{% block cabecalho %}
+<div class="container">
+  <h1>Carteira</h1>
+  <p>Detalhamento da carteira registrada.</p>
+</div>
+{% endblock %}
+
 {% block conteudo %}
-    <h2>Detalhe Carteira</h2>
-    <p><strong>Titulo:</strong> {{ object.titulo }}</p>
-    <p><strong>Slug:</strong> {{ object.slug }}</p>
-    <p><strong>Tipo:</strong> {{ object.tipo }}</p>
-    <p><strong>Criado em:</strong> {{ object.criado_em }}</p>
-    <p><strong>Atualizado em:</strong> {{ object.atualizado_em }}</p>
-    <p>
-        <a class="btn btn-secondary" role="button" href="{% url 'carteiras:lista' %}">voltar</a>
-    </p>
+<form>
+  <fieldset disabled>
+    <div class="mb-3">
+      <label for="inputTitulo" class="form-label">Titulo</label>
+      <input type="text" id="inputTitulo" class="form-control" value="{{ carteira.titulo }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputSlug" class="form-label">Slug</label>
+      <input type="text" id="inputSlug" class="form-control" value="{{ carteira.slug }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputLimite" class="form-label">Limite</label>
+      <input type="text" id="inputLimite" class="form-control" value="{{ carteira.tipo }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputCriadoEm" class="form-label">Criado em</label>
+      <input type="datetime-local" id="inputCriadoEm" class="form-control"
+        value="{{ carteira.criado_em|datetime_para_texto }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputAtualizadoEm" class="form-label">Atualizado em</label>
+      <input type="datetime-local" id="inputAtualizadoEm" class="form-control"
+        value="{{ carteira.atualizado_em|datetime_para_texto }}">
+    </div>
+  </fieldset>
+</form>
+<div style="float: left; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:editar' carteira.id %}">Editar</a>
+</div>
+<div style="float: left; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:excluir' carteira.id %}">Excluir</a>
+</div>
+<div style="float: right; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:listar' %}">Voltar</a>
+</div>
+
 {% endblock %}

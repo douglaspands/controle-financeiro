@@ -12,7 +12,3 @@ Aplicação para controle financeiro construido em Python 3.8 e Django 3.1.
 ```bash
 python manage.py runserver
 ```
-
-## Rotas disponiveis
-
-- CRUD de Despesas: `/despesas`
