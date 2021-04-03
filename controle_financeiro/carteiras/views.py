@@ -18,7 +18,7 @@ class CarteiraLista(LoginRequiredBase, ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return Carteira.objects.select_related('tipo')
+        return Carteira.objects.select_related('tipo').filter(criador=self.request.user)
 
 
 class CarteiraDetalhe(LoginRequiredBase, DetailView):
@@ -27,7 +27,7 @@ class CarteiraDetalhe(LoginRequiredBase, DetailView):
     context_object_name = 'carteira'
 
     def get_queryset(self):
-        return Carteira.objects.select_related('tipo')
+        return Carteira.objects.select_related('tipo').filter(criador=self.request.user)
 
 
 class CarteiraCriar(LoginRequiredBase, CreateView):
@@ -37,13 +37,14 @@ class CarteiraCriar(LoginRequiredBase, CreateView):
     context_object_name = 'carteira'
 
     def get_queryset(self):
-        return Carteira.objects.select_related('tipo')
+        return Carteira.objects.select_related('tipo').filter(criador=self.request.user)
 
     def post(self, request: HttpRequest) -> HttpResponse:
         form = CarteiraForm(request.POST)
         if form.is_valid():
             carteira = form.save(commit=False)
             carteira.slug = slugify(carteira.titulo)
+            carteira.criador = request.user
             form.save()
             return redirect('carteiras:listar')
         else:
@@ -57,7 +58,7 @@ class CarteiraAtualizar(LoginRequiredBase, UpdateView):
     context_object_name = 'carteira'
 
     def get_queryset(self):
-        return Carteira.objects.select_related('tipo')
+        return Carteira.objects.select_related('tipo').filter(criador=self.request.user)
 
     def post(self, request: HttpRequest, pk: int) -> HttpResponse:
         instance = get_object_or_404(Carteira, pk=pk)
@@ -77,3 +78,6 @@ class CarteiraExcluir(LoginRequiredBase, DeleteView):
     template_name = 'carteiras/carteira_excluir.html'
     success_url = reverse_lazy('carteiras:listar')
     context_object_name = 'carteira'
+
+    def get_queryset(self):
+        return Carteira.objects.select_related('tipo').filter(criador=self.request.user)

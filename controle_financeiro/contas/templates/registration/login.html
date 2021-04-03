@@ -10,10 +10,6 @@
 {% endblock %}
 
 {% block conteudo %}
-{% if form.errors %}
-<p>Seu usuario e senha não foram encontrados. Favor tente novamente.</p>
-{% endif %}
-
 {% if next %}
 {% if user.is_authenticated %}
 <p>Sua conta não tem acesso a esta pagina. Para seguir,
@@ -38,7 +34,9 @@
   <input type="submit" value="login" />
   <input type="hidden" name="next" value="{{ next }}" />
 </form>
-
+{% if form.errors %}
+<p>Seu usuario e senha não foram encontrados. Favor tente novamente.</p>
+{% endif %}
 <p><a href="{% url 'contas:mudar_senha' %}">Esqueceu a senha?</a></p>
 <p><a href="{% url 'contas:criar' %}">Deseja criar um usuario?</a></p>
 {% endblock %}
