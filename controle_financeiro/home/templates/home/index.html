@@ -11,6 +11,7 @@
 
 {% block conteudo %}
 <div>
+    {% if request.user.is_authenticated %}
     <p>
         <a href="{% url 'carteiras:listar' %}">Carteiras</a>
     </p>
@@ -20,5 +21,10 @@
     <p>
         <a href="{% url 'despesas:listar' %}">Despesas</a>
     </p>
+    {% else %}
+    <p>
+        <a href="{% url 'contas:login' %}">Favor efetue o login</a>
+    </p>
+    {% endif %}
 </div>
 {% endblock %}

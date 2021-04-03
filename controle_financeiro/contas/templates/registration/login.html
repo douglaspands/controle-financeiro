@@ -39,5 +39,6 @@
   <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
-<p><a href="{% url 'contas:recuperar_senha' %}">Esqueceu a senha?</a></p>
+<p><a href="{% url 'contas:mudar_senha' %}">Esqueceu a senha?</a></p>
+<p><a href="{% url 'contas:criar' %}">Deseja criar um usuario?</a></p>
 {% endblock %}

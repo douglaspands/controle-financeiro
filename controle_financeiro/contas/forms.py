@@ -1,5 +1,5 @@
 from django.contrib.auth import forms
-from django.forms import ModelForm, Form
+from django.forms import ModelForm
 
 from .models import Usuario
 
@@ -14,7 +14,7 @@ class UsuarioCriarAdminForm(forms.UserCreationForm):
         model = Usuario
 
 
-class UsuarioRegistroForm(ModelForm):
+class UsuarioCriarForm(ModelForm):
     class Meta:
         model = Usuario
         fields = [
@@ -30,17 +30,4 @@ class UsuarioRegistroForm(ModelForm):
             'first_name': 'Nome',
             'last_name': 'Sobrenome',
             'email': 'Email',
-        }
-
-
-class UsuarioLoginForm(Form):
-    class Meta:
-        model = Usuario
-        fields = [
-            'username',
-            'password',
-        ]
-        labels = {
-            'username': 'Usuario',
-            'password': 'Senha',
         }
