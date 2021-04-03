@@ -9,7 +9,7 @@ from django.contrib.auth.views import (
     PasswordResetView,
 )
 from django.urls import path
-from .views import LogoutConfirmar, LogoutConcluido, UsuarioCriar
+from .views import LogoutConfirmar, UsuarioCriar
 
 app_name = "contas"
 
@@ -18,7 +18,6 @@ urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
     path("logout/", LogoutView.as_view(), name="logout"),
     path("logout/confirmar/", LogoutConfirmar.as_view(), name="logout_confirmar"),
-    path("logout/concluido/", LogoutConcluido.as_view(), name="logout_concluido"),
     path("mudar_senha/", PasswordChangeView.as_view(), name="mudar_senha"),
     path(
         "mudar_senha/concluido/",

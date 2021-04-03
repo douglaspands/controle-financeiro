@@ -200,10 +200,9 @@ AUTH_USER_MODEL = "contas.Usuario"
 # AUTH
 
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/contas/logout/concluido/'
+LOGOUT_REDIRECT_URL = '/'
 
 
 # EMAIL
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
