@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.utils.translation import gettext_lazy as _
@@ -16,6 +18,8 @@ class UsuarioCriarAdminForm(UserCreationForm):
 
 
 class UsuarioRegistroForm(forms.Form):
+    
+    REGEX_USERNAME = r'^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$'
 
     username = forms.CharField(
         max_length=100,
@@ -53,7 +57,11 @@ class UsuarioRegistroForm(forms.Form):
     )
 
     def clean_username(self):
-        if Usuario.objects.filter(username__exact=self.cleaned_data['username']).exists():
+        if not re.search(self.REGEX_USERNAME, self.cleaned_data['username']):
+            raise forms.ValidationError(_('Favor use somente letras, números e períodos.'))
+        if Usuario.objects.filter(
+            username__exact=self.cleaned_data['username']
+        ).exists():
             raise forms.ValidationError(_('Já existe um usuário com o mesmo nome.'))
         else:
             return self.cleaned_data['username']

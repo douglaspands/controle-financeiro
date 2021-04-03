@@ -9,13 +9,13 @@ from .models import Usuario
 
 
 class LogoutConfirmar(TemplateView):
-    template_name = "registration/logout_confirmar.html"
+    template_name = 'registration/logout_confirmar.html'
 
 
 class UsuarioCriar(View):
     form_class = UsuarioRegistroForm
-    template_name = "contas/usuario_criar.html"
-    context_object_name = "usuario"
+    template_name = 'contas/usuario_criar.html'
+    context_object_name = 'usuario'
 
     def get(self, request: HttpRequest) -> HttpResponse:
         form = self.form_class()
