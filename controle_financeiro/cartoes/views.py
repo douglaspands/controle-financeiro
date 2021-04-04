@@ -9,41 +9,44 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from .forms import CartaoForm
 from .models import Cartao
+from carteiras.models import Tipo
 
 
 class CartaoLista(LoginRequiredBase, ListView):
     model = Cartao
-    template_name = "cartoes/cartao_lista.html"
-    fields = ["titulo", "carteira"]
-    context_object_name = "cartoes"
+    template_name = 'cartoes/cartao_lista.html'
+    fields = ['titulo', 'carteira']
+    context_object_name = 'cartoes'
     paginate_by = 20
 
     def get_queryset(self):
-        return Cartao.objects.select_related("carteira").filter(
+        return Cartao.objects.select_related('carteira').filter(
             criador=self.request.user
         )
 
 
 class CartaoDetalhe(LoginRequiredBase, DetailView):
     model = Cartao
-    template_name = "cartoes/cartao_detalhe.html"
-    context_object_name = "cartao"
+    template_name = 'cartoes/cartao_detalhe.html'
+    context_object_name = 'cartao'
 
     def get_queryset(self):
-        return Cartao.objects.select_related("carteira").filter(
-            criador=self.request.user
+        return Cartao.objects.select_related('carteira', 'carteira__tipo').filter(
+            criador=self.request.user,
+            carteira__tipo__grupo=Tipo.GRUPO_CARTAO
         )
 
 
 class CartaoCriar(LoginRequiredBase, CreateView):
     model = Cartao
     form_class = CartaoForm
-    template_name = "cartoes/cartao_criar.html"
-    context_object_name = "cartao"
+    template_name = 'cartoes/cartao_criar.html'
+    context_object_name = 'cartao'
 
     def get_queryset(self):
-        return Cartao.objects.select_related("carteira").filter(
-            criador=self.request.user
+        return Cartao.objects.select_related('carteira').filter(
+            criador=self.request.user,
+            carteira__tipo__grupo=Tipo.GRUPO_CARTAO
         )
 
     def post(self, request: HttpRequest) -> HttpResponse:
@@ -51,30 +54,31 @@ class CartaoCriar(LoginRequiredBase, CreateView):
         if form.is_valid():
             cartao = form.save(commit=False)
             cartao.slug = slugify(cartao.titulo)
-            titulo_ = f"Cartão: {cartao.titulo}"
+            titulo_ = f'Cartão: {cartao.titulo}'
             slug_ = slugify(titulo_)
             carteira = Carteira(
-                titulo=titulo_, slug=slug_, tipo=Tipo.objects.get(slug="cartao-credito")
+                titulo=titulo_, slug=slug_, tipo=Tipo.objects.get(slug='cartao')
             )
             carteira.criador = request.user
             carteira.save()
             cartao.carteira = carteira
             cartao.criador = request.user
             cartao.save()
-            return redirect("cartoes:listar")
+            return redirect('cartoes:listar')
         else:
-            return render(request, self.template_name, {"form": form})
+            return render(request, self.template_name, {'form': form})
 
 
 class CartaoAtualizar(LoginRequiredBase, UpdateView):
     model = Cartao
     form_class = CartaoForm
-    template_name = "cartoes/cartao_atualizar.html"
-    context_object_name = "cartao"
+    template_name = 'cartoes/cartao_atualizar.html'
+    context_object_name = 'cartao'
 
     def get_queryset(self):
-        return Cartao.objects.select_related("carteira").filter(
-            criador=self.request.user
+        return Cartao.objects.select_related('carteira').filter(
+            criador=self.request.user,
+            carteira__tipo__grupo=Tipo.GRUPO_CARTAO
         )
 
     def post(self, request: HttpRequest, pk: int) -> HttpResponse:
@@ -84,26 +88,27 @@ class CartaoAtualizar(LoginRequiredBase, UpdateView):
             cartao = form.save(commit=False)
             cartao.slug = slugify(cartao.titulo)
             carteira = cartao.carteira
-            titulo_ = f"Cartão: {cartao.titulo}"
+            titulo_ = f'Cartão: {cartao.titulo}'
             slug_ = slugify(titulo_)
             carteira.titulo = titulo_
             carteira.slug = slug_
             carteira.save()
             cartao.carteira = carteira
             cartao.save()
-            return redirect("cartoes:listar")
+            return redirect('cartoes:listar')
         else:
-            return render(request, self.template_name, {"form": form})
+            return render(request, self.template_name, {'form': form})
 
 
 class CartaoExcluir(LoginRequiredBase, DeleteView):
     model = Cartao
     form_class = CartaoForm
-    template_name = "cartoes/cartao_excluir.html"
-    context_object_name = "cartao"
-    success_url = reverse_lazy("cartoes:listar")
+    template_name = 'cartoes/cartao_excluir.html'
+    context_object_name = 'cartao'
+    success_url = reverse_lazy('cartoes:listar')
 
     def get_queryset(self):
-        return Cartao.objects.select_related("carteira").filter(
-            criador=self.request.user
+        return Cartao.objects.select_related('carteira').filter(
+            criador=self.request.user,
+            carteira__tipo__grupo=Tipo.GRUPO_CARTAO
         )

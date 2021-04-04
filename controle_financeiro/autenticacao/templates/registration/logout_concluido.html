@@ -1,0 +1,14 @@
+{% extends "base/base.html" %}
+
+{% block titulo %}Logout{% endblock %}
+
+{% block cabecalho %}
+<div class="container">
+  <h1>Usuario</h1>
+  <p>Voce foi desconectado!</p>
+</div>
+{% endblock %}
+
+{% block conteudo %}
+<a href="{% url 'autenticacao:login'%}">Clique aqui para fazer o login novamente.</a>
+{% endblock %}

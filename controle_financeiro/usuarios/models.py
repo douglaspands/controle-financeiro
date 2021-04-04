@@ -2,4 +2,7 @@ from django.contrib.auth.models import AbstractUser
 
 
 class Usuario(AbstractUser):
-    pass
+    GRUPO_CONSUMIDOR = 'Consumidor'
+    GRUPO_ESCOLHAS = [
+        (GRUPO_CONSUMIDOR, 'Consumidor')
+    ]

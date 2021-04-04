@@ -1,14 +1,22 @@
 from datetime import date, datetime
 
 from base.models import BaseModel
-from carteiras.models import Carteira
+from carteiras.models import CarteiraMixin
 from usuarios.models import Usuario
 from dateutil.relativedelta import relativedelta
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 
-class Cartao(BaseModel):
+class Cartao(CarteiraMixin, BaseModel):
+
+    PERMISSAO_PARCELAMENTO_POSITIVO = True
+    PERMISSAO_PARCELAMENTO_NEGATIVO = False
+
+    ESCOLHAS_PERMISSAO_PARCELAMENTO = [
+        (PERMISSAO_PARCELAMENTO_POSITIVO, 'Sim'),
+        (PERMISSAO_PARCELAMENTO_NEGATIVO, 'Não')
+    ]
 
     titulo = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True)
@@ -20,7 +28,7 @@ class Cartao(BaseModel):
             MinValueValidator(1)
         ]
     )
-    carteira = models.ForeignKey(Carteira, on_delete=models.CASCADE)
+    pode_parcelar = models.BooleanField(choices=ESCOLHAS_PERMISSAO_PARCELAMENTO)
     criador = models.ForeignKey(Usuario, on_delete=models.CASCADE)
 
     class Meta:

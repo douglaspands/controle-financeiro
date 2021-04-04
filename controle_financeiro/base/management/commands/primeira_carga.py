@@ -1,8 +1,9 @@
 from django.core.management.base import BaseCommand, CommandError
 
 from django.contrib.auth.models import Group
-from despesas.models import Categoria
+from lancamentos.models import Categoria
 from carteiras.models import Tipo
+from usuarios.models import Usuario
 
 
 class Command(BaseCommand):
@@ -13,7 +14,7 @@ class Command(BaseCommand):
 
         try:
             grupo = Group(
-                name='Consumidor',
+                name=Usuario.GRUPO_CONSUMIDOR,
             )
             grupo.save()
 
@@ -29,27 +30,23 @@ class Command(BaseCommand):
             categoria = Categoria(titulo='Serviços', slug='servicos', descricao='')
             categoria.save()
 
-            tipo = Tipo(
-                titulo='Conta Bancaria', slug='conta-bancaria', permite_parcelamento=False
-            )
+            tipo = Tipo(titulo='Conta', slug='conta', grupo=Tipo.GRUPO_CONTA)
             tipo.save()
 
-            tipo = Tipo(titulo='Carteira', slug='carteira', permite_parcelamento=False)
+            tipo = Tipo(titulo='Carteira', slug='carteira', grupo=Tipo.GRUPO_CONTA)
             tipo.save()
 
-            tipo = Tipo(
-                titulo='Cartao de Credito', slug='cartao-credito', permite_parcelamento=True
-            )
+            tipo = Tipo(titulo='Cartão', slug='cartao', grupo=Tipo.GRUPO_CARTAO)
             tipo.save()
 
-            tipo = Tipo(
-                titulo='Cartao de Beneficio',
-                slug='cartao-beneficio',
-                permite_parcelamento=False,
-            )
+            tipo = Tipo(titulo='Cartão Credito', slug='cartao-credito', grupo=Tipo.GRUPO_CARTAO)
             tipo.save()
 
-        except:
+            tipo = Tipo(titulo='Cartao de Beneficio', slug='cartao-beneficio', grupo=Tipo.GRUPO_CARTAO)
+            tipo.save()
+
+        except Exception as error:
+            self.stdout.write(self.style.ERROR(str(error)))
             raise CommandError('Erro ao tentar dar a primeira carga')
 
         self.stdout.write(self.style.SUCCESS('Primeira carga feita com sucesso.'))

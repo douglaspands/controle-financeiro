@@ -1,13 +1,12 @@
 from django.contrib import admin
+from .models import Categoria, Lancamento
 
-from .models import Carteira, Tipo
 
-
-@admin.register(Tipo)
+@admin.register(Categoria)
 class CategoriaAdmin(admin.ModelAdmin):
-    list_display = ('titulo', 'slug',)
+    list_display = ('titulo', 'slug', 'atualizado_em')
     prepopulated_fields = {'slug': ('titulo',)}
     date_hierarchy = 'atualizado_em'
 
 
-admin.site.register(Carteira)
+admin.site.register(Lancamento)

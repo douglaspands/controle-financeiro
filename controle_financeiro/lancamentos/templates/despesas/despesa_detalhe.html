@@ -1,0 +1,62 @@
+{% extends "base/base.html" %}
+{% load transformar_em_texto %}
+{% load Lancamento_calculos %}
+{% load humanize %}
+
+{% block titulo %}lancamentos{% endblock %}
+
+{% block cabecalho %}
+<div class="container">
+  <h1>Lancamento</h1>
+  <p>Detalhamento da Lancamento registrada.</p>
+</div>
+{% endblock %}
+
+{% block conteudo %}
+<form>
+  <fieldset disabled>
+    <div class="mb-3">
+      <label for="inputDataHora" class="form-label">Data e Hora</label>
+      <input type="datetime-local" id="inputDataHora" class="form-control"
+        value="{{ Lancamento.datahora|datetime_para_texto }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputDescricao" class="form-label">Descrição</label>
+      <input type="text" id="inputDescricao" class="form-control" value="{{ Lancamento.descricao|safe }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputParcelado" class="form-label">Parcelado</label>
+      <input type="text" id="inputParcelado" class="form-control" value="{{ Lancamento.parcelado }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputValor" class="form-label">Valor</label>
+      <input type="text" id="inputValor" class="form-control" aria-describedby="valorAjuda"
+        value="R$ {{ object|calcular_parcela|intcomma }}">
+      <small id="valorAjuda" class="form-text text-muted">Se for parcelado, será apresentado o valor da parcela.</small>
+    </div>
+    <div class="mb-3">
+      <label for="inputCategoria" class="form-label">Categoria</label>
+      <input type="text" id="inputCategoria" class="form-control" value="{{ Lancamento.categorias|queryset_para_texto }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputCriadoEm" class="form-label">Criado em</label>
+      <input type="datetime-local" id="inputCriadoEm" class="form-control"
+        value="{{ Lancamento.criado_em|datetime_para_texto }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputAtualizadoEm" class="form-label">Atualizado em</label>
+      <input type="datetime-local" id="inputAtualizadoEm" class="form-control"
+        value="{{ Lancamento.atualizado_em|datetime_para_texto }}">
+    </div>
+  </fieldset>
+</form>
+<div style="float: left; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button" href="{% url 'lancamentos:editar' Lancamento.id %}">Editar</a>
+</div>
+<div style="float: left; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button" href="{% url 'lancamentos:excluir' Lancamento.id %}">Excluir</a>
+</div>
+<div style="float: right; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button" href="{% url 'lancamentos:listar' %}">Voltar</a>
+</div>
+{% endblock %}

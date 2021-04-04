@@ -6,7 +6,7 @@ import django.db.models.deletion
 
 def incluir_categorias(apps, schema):
 
-    Categoria = apps.get_model('despesas', 'Categoria')
+    Categoria = apps.get_model('lancamentos', 'Categoria')
 
     categoria = Categoria(
         titulo='Presente',
@@ -61,7 +61,7 @@ class Migration(migrations.Migration):
             },
         ),
         migrations.CreateModel(
-            name='Despesa',
+            name='Lancamento',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('criado_em', models.DateTimeField(auto_now_add=True)),
@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
                 ('datahora', models.DateTimeField()),
                 ('parcelado', models.IntegerField(default=1)),
                 ('carteira', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='carteiras.carteira')),
-                ('categorias', models.ManyToManyField(blank=True, to='despesas.Categoria')),
+                ('categorias', models.ManyToManyField(blank=True, to='lancamentos.Categoria')),
             ],
             options={
                 'ordering': ['-datahora'],

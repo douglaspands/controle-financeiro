@@ -21,10 +21,10 @@ from django.urls import include, path
 urlpatterns = [
     path('', include('home.urls', namespace='home')),
     path('admin/', admin.site.urls),
-    path('carteiras/', include('carteiras.urls', namespace='carteiras')),
+    # path('carteiras/', include('carteiras.urls', namespace='carteiras')),
     path('cartoes/', include('cartoes.urls', namespace='cartoes')),
-    path('autenticacoes/', include('autenticacoes.urls', namespace='autenticacoes')),
-    path('despesas/', include('despesas.urls', namespace='despesas')),
+    path('autenticacao/', include('autenticacao.urls', namespace='autenticacao')),
+    path('lancamentos/', include('lancamentos.urls', namespace='lancamentos')),
 ]
 
 if settings.SETTING_NAME in ['local', 'test']:

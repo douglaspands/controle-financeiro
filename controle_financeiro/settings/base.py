@@ -31,11 +31,11 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 MY_APPS = [
-    'autenticacoes',
+    'autenticacao',
     'base',
     'carteiras',
     'cartoes',
-    'despesas',
+    'lancamentos',
     'home',
     'usuarios',
 ]

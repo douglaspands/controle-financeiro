@@ -8,6 +8,7 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from .forms import CarteiraForm
 from .models import Carteira
+from .models import Tipo
 
 
 class CarteiraLista(LoginRequiredBase, ListView):
@@ -18,7 +19,11 @@ class CarteiraLista(LoginRequiredBase, ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return Carteira.objects.select_related('tipo').filter(criador=self.request.user)
+        return (
+            Carteira.objects.select_related('tipo')
+            .exclude(tipo__grupo=Tipo.GRUPO_CARTAO)
+            .filter(criador=self.request.user)
+        )
 
 
 class CarteiraDetalhe(LoginRequiredBase, DetailView):
@@ -27,7 +32,11 @@ class CarteiraDetalhe(LoginRequiredBase, DetailView):
     context_object_name = 'carteira'
 
     def get_queryset(self):
-        return Carteira.objects.select_related('tipo').filter(criador=self.request.user)
+        return (
+            Carteira.objects.select_related('tipo')
+            .exclude(tipo__grupo=Tipo.GRUPO_CARTAO)
+            .filter(criador=self.request.user)
+        )
 
 
 class CarteiraCriar(LoginRequiredBase, CreateView):
@@ -37,7 +46,12 @@ class CarteiraCriar(LoginRequiredBase, CreateView):
     context_object_name = 'carteira'
 
     def get_queryset(self):
-        return Carteira.objects.select_related('tipo').filter(criador=self.request.user)
+        return (
+            Carteira.objects.select_related('tipo')
+            .exclude()
+            .exclude(tipo__grupo=Tipo.GRUPO_CARTAO)
+            .filter(criador=self.request.user)
+        )
 
     def post(self, request: HttpRequest) -> HttpResponse:
         form = CarteiraForm(request.POST)
@@ -58,7 +72,11 @@ class CarteiraAtualizar(LoginRequiredBase, UpdateView):
     context_object_name = 'carteira'
 
     def get_queryset(self):
-        return Carteira.objects.select_related('tipo').filter(criador=self.request.user)
+        return (
+            Carteira.objects.select_related('tipo')
+            .exclude(tipo__grupo=Tipo.GRUPO_CARTAO)
+            .filter(criador=self.request.user)
+        )
 
     def post(self, request: HttpRequest, pk: int) -> HttpResponse:
         instance = get_object_or_404(Carteira, pk=pk)
@@ -80,4 +98,8 @@ class CarteiraExcluir(LoginRequiredBase, DeleteView):
     context_object_name = 'carteira'
 
     def get_queryset(self):
-        return Carteira.objects.select_related('tipo').filter(criador=self.request.user)
+        return (
+            Carteira.objects.select_related('tipo')
+            .exclude(tipo__grupo=Tipo.GRUPO_CARTAO)
+            .filter(criador=self.request.user)
+        )

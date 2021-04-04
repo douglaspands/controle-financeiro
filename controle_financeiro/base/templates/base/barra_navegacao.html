@@ -17,19 +17,19 @@
                     <a class="nav-link" href="{% url 'cartoes:listar' %}">Cartoes{% if request|span_sr_only:'cartoes' %}
                         <span class="sr-only">(current)</span>{% endif %}</a>
                 </li>
-                <li class="nav-item{{ request|nav_item_active:'despesas' }}">
-                    <a class="nav-link" href="{% url 'despesas:listar' %}">Despesas{% if request|span_sr_only:'despesas' %} <span class="sr-only">(current)</span>{% endif %}</a>
+                <li class="nav-item{{ request|nav_item_active:'lancamentos' }}">
+                    <a class="nav-link" href="{% url 'lancamentos:listar' %}">lancamentos{% if request|span_sr_only:'lancamentos' %} <span class="sr-only">(current)</span>{% endif %}</a>
                 </li>
-                <li class="nav-item{{ request|nav_item_active:'registration,autenticacoes' }}">
-                    <a class="nav-link" href="{% url 'autenticacoes:logout_confirmar' %}">
+                <li class="nav-item{{ request|nav_item_active:'registration,autenticacao' }}">
+                    <a class="nav-link" href="{% url 'autenticacao:logout_confirmar' %}">
                         {% if request.user.first_name %}{{ request.user.first_name }}{% else %}{{
-                        request.user.username }}{% endif %}{% if request|span_sr_only:'registration,autenticacoes' %} <span class="sr-only">(current)</span>{% endif %}
+                        request.user.username }}{% endif %}{% if request|span_sr_only:'registration,autenticacao' %} <span class="sr-only">(current)</span>{% endif %}
                         > Logout
                     </a>
                 </li>
                 {% else %}
-                <li class="nav-item{{ request|nav_item_active:'registration,autenticacoes' }}">
-                    <a class="nav-link" href="{% url 'autenticacoes:login' %}">Login/Registrar{% if request|span_sr_only:'registration,autenticacoes' %} <span class="sr-only">(current)</span>{% endif %}</a>
+                <li class="nav-item{{ request|nav_item_active:'registration,autenticacao' }}">
+                    <a class="nav-link" href="{% url 'autenticacao:login' %}">Login/Registrar{% if request|span_sr_only:'registration,autenticacao' %} <span class="sr-only">(current)</span>{% endif %}</a>
                 </li>
                 {% endif %}
             </ul>
