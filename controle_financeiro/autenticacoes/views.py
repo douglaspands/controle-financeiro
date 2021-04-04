@@ -32,7 +32,7 @@ class UsuarioCriar(View):
                 email=form.cleaned_data['email'],
             )
             usuario.save()
-            grupo = Group.objects.get(id=1)
+            grupo, foi_criado = Group.objects.get_or_create(name='Consumidor')
             grupo.user_set.add(usuario)
             grupo.save()
             return render(request, 'autenticacoes/usuario_criar_concluido.html', {})

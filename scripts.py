@@ -17,11 +17,26 @@ def runserver():
     shell_run('python manage.py runserver')
 
 
-def test():
-    cmd = 'python manage.py test'
-    if len(sys.argv) > 1:
-        cmd = cmd + ' ' + ' '.join(sys.argv[1:])
+def test(accept_args=True):
+    cmd = ("coverage run "
+           "--omit=*/venv/*,*/migrations/*,*/tests/*,*/settings/* "
+           "--source='.' manage.py test --settings=settings.test")
+    if accept_args is True:
+        if len(sys.argv) > 1:
+            cmd = cmd + ' ' + ' '.join(sys.argv[1:])
     shell_run(cmd)
+
+
+def coverage():
+    cmd = 'coverage report -m'
+    shell_run(cmd)
+    cmd = 'coverage html'
+    shell_run(cmd)
+
+
+def testcov():
+    test(accept_args=False)
+    coverage()
 
 
 def lint():

@@ -28,6 +28,8 @@ build-backend = "poetry.core.masonry.api"
 [tool.poetry.scripts]
 runserver = "scripts:runserver"
 test = "scripts:test"
+coverage = "scripts:coverage"
+testcov = "scripts:testcov"
 lint = "scripts:lint"
 migrate = "scripts:migrate"
 startapp = "scripts:startapp"
