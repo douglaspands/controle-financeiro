@@ -5,10 +5,10 @@
 {% block cabecalho %}
 <div class="container">
   <h1>Usuario</h1>
-  <p>Voce foi desconectado!</p>
+  <p>Foi criado o usuario com sucesso!</p>
 </div>
 {% endblock %}
 
 {% block conteudo %}
-<a href="{% url 'contas:login'%}">Clique aqui para fazer o login novamente.</a>
+<a href="{% url 'autenticacoes:login'%}">Clique aqui para fazer o login!</a>
 {% endblock %}

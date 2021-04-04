@@ -3,5 +3,5 @@ from django.urls import reverse_lazy
 
 
 class LoginRequiredBase(LoginRequiredMixin):
-    login_url = reverse_lazy('contas:login')
+    login_url = reverse_lazy('autenticacoes:login')
     redirect_field_name = 'redirect_to'

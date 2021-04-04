@@ -19,7 +19,7 @@
 <p>Favor faça o login para ver essa pagina.</p>
 {% endif %}
 {% endif %}
-<form method="post" action="{% url 'contas:login' %}">
+<form method="post" action="{% url 'autenticacoes:login' %}">
   {% csrf_token %}
   {{ form|crispy }}
   <input class="btn btn-primary" role="button" type="submit" value="Login">
@@ -28,6 +28,6 @@
 <p>Seu usuario e senha não foram encontrados. Favor tente novamente.</p>
 {% endif %}
 <br>
-<p><a href="{% url 'contas:mudar_senha' %}">Esqueceu a senha?</a></p>
-<p><a href="{% url 'contas:criar' %}">Deseja criar um usuario?</a></p>
+<p><a href="{% url 'autenticacoes:mudar_senha' %}">Esqueceu a senha?</a></p>
+<p><a href="{% url 'autenticacoes:criar' %}">Deseja criar um usuario?</a></p>
 {% endblock %}
