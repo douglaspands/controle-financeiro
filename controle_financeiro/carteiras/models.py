@@ -1,50 +1,34 @@
 from base.models import BaseModel
-from usuarios.models import Usuario
+from pessoas.models import Pessoa
 from django.db import models
-
-
-class Tipo(BaseModel):
-
-    GRUPO_CARTEIRA = 'CARTEIRA'
-    GRUPO_CARTAO = 'CARTAO'
-
-    GRUPOS_ESCOLHAS = [
-        (GRUPO_CARTEIRA, 'Carteira'),
-        (GRUPO_CARTAO, 'Cartão'),
-    ]
-
-    titulo = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=100, unique=True)
-    grupo = models.CharField(max_length=20, choices=GRUPOS_ESCOLHAS)
-
-    class Meta:
-        ordering = ['titulo']
-
-    def __str__(self):
-        return f'{self.titulo}'
 
 
 class Carteira(BaseModel):
 
-    titulo = models.CharField(max_length=100)
+    nome = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True)
-    tipo = models.ForeignKey(Tipo, on_delete=models.CASCADE)
-    criador = models.ForeignKey(Usuario, on_delete=models.CASCADE)
+
+    pessoa = models.ForeignKey(Pessoa, on_delete=models.CASCADE, related_name="pessoa")
 
     class Meta:
-        ordering = ['titulo']
+        ordering = ["nome"]
 
     def __str__(self):
-        return f'{self.titulo}'
+        return f"{self.nome}"
 
 
-class CarteiraMixin(models.Model):
+class Porta(models.Model):
 
-    carteira = models.ForeignKey(Carteira, on_delete=models.CASCADE)
+    CONTA = "CONTA"
+    CARTAO = "CARTAO"
 
-    class Meta:
-        abstract = True
+    TIPOS_ESCOLHAS = [
+        (CONTA, "Conta"),
+        (CARTAO, "Cartão"),
+    ]
 
-    @property
-    def tipo(self) -> str:
-        return self.carteira.tipo
+    tipo = models.CharField(max_length=20, choices=TIPOS_ESCOLHAS)
+
+    carteira = models.ForeignKey(
+        Carteira, on_delete=models.CASCADE, related_name="porta_meio"
+    )
