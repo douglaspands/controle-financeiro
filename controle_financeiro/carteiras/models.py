@@ -12,6 +12,9 @@ class Carteira(BaseModel):
 
     class Meta:
         ordering = ["nome"]
+        indexes = [
+            models.Index(fields=["slug"]),
+        ]
 
     def __str__(self):
         return f"{self.nome}"
@@ -30,5 +33,13 @@ class Porta(models.Model):
     tipo = models.CharField(max_length=20, choices=TIPOS_ESCOLHAS)
 
     carteira = models.ForeignKey(
-        Carteira, on_delete=models.CASCADE, related_name="porta_meio"
+        Carteira, on_delete=models.CASCADE, related_name="porta"
     )
+
+    @property
+    def e_cartao(self) -> bool:
+        return bool(self.cartao)
+
+    @property
+    def e_conta(self) -> bool:
+        return bool(self.conta)

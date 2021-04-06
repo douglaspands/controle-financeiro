@@ -7,8 +7,7 @@ class CarteiraForm(ModelForm):
 
     class Meta:
         model = Carteira
-        fields = ['titulo', 'tipo']
+        fields = ['nome']
         labels = {
-            'titulo': 'Titulo',
-            'tipo': 'Tipo'
+            'nome': 'Nome',
         }

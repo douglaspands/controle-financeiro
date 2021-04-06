@@ -36,9 +36,9 @@ MY_APPS = [
     "carteiras",
     "cartoes",
     "contas",
-    "home",
     "lancamentos",
     "pessoas",
+    "publico",
     "usuarios",
 ]
 

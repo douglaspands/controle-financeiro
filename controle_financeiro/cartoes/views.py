@@ -1,5 +1,5 @@
 from base.views import LoginRequiredBase
-from carteiras.models import Carteira, Tipo
+from carteiras.models import Carteira
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.defaultfilters import slugify
@@ -9,7 +9,6 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from .forms import CartaoForm
 from .models import Cartao
-from carteiras.models import Tipo
 
 
 class CartaoLista(LoginRequiredBase, ListView):
@@ -32,8 +31,7 @@ class CartaoDetalhe(LoginRequiredBase, DetailView):
 
     def get_queryset(self):
         return Cartao.objects.select_related('carteira', 'carteira__tipo').filter(
-            criador=self.request.user,
-            carteira__tipo__grupo=Tipo.GRUPO_CARTAO
+            criador=self.request.user
         )
 
 
@@ -45,8 +43,7 @@ class CartaoCriar(LoginRequiredBase, CreateView):
 
     def get_queryset(self):
         return Cartao.objects.select_related('carteira').filter(
-            criador=self.request.user,
-            carteira__tipo__grupo=Tipo.GRUPO_CARTAO
+            criador=self.request.user
         )
 
     def post(self, request: HttpRequest) -> HttpResponse:
@@ -57,7 +54,7 @@ class CartaoCriar(LoginRequiredBase, CreateView):
             titulo_ = f'Cartão: {cartao.titulo}'
             slug_ = slugify(titulo_)
             carteira = Carteira(
-                titulo=titulo_, slug=slug_, tipo=Tipo.objects.get(slug='cartao')
+                titulo=titulo_, slug=slug_
             )
             carteira.criador = request.user
             carteira.save()
@@ -77,8 +74,7 @@ class CartaoAtualizar(LoginRequiredBase, UpdateView):
 
     def get_queryset(self):
         return Cartao.objects.select_related('carteira').filter(
-            criador=self.request.user,
-            carteira__tipo__grupo=Tipo.GRUPO_CARTAO
+            criador=self.request.user
         )
 
     def post(self, request: HttpRequest, pk: int) -> HttpResponse:
@@ -109,6 +105,5 @@ class CartaoExcluir(LoginRequiredBase, DeleteView):
 
     def get_queryset(self):
         return Cartao.objects.select_related('carteira').filter(
-            criador=self.request.user,
-            carteira__tipo__grupo=Tipo.GRUPO_CARTAO
+            criador=self.request.user
         )

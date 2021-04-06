@@ -2,7 +2,7 @@ from django.urls import path
 
 from .views import IndexView
 
-app_name = 'home'
+app_name = 'publico'
 
 urlpatterns = [
     path('', IndexView.as_view(), name='index'),

@@ -25,10 +25,13 @@ class Cartao(BaseModel):
     )
     pode_parcelar = models.BooleanField(choices=ESCOLHAS_PERMISSAO_PARCELAMENTO)
 
-    porta = models.ForeignKey(Porta, on_delete=models.CASCADE, related_name="cartao")
+    porta = models.OneToOneField(Porta, on_delete=models.CASCADE, related_name="cartao")
 
     class Meta:
         ordering = ["nome"]
+        indexes = [
+            models.Index(fields=["slug"]),
+        ]
 
     def __str__(self):
         return f"{self.nome}"

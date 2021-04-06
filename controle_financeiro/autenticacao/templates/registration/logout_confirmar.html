@@ -13,7 +13,7 @@
 <form method="get" action="{% url 'autenticacao:logout' %}">{% csrf_token %}
   <input class="btn btn-primary" role="button" type="submit" value="Logout">
   <div style="float: right;">
-      <a class="btn btn-outline-primary" role="button" href="{% url 'home:index' %}">Cancelar</a>
+      <a class="btn btn-outline-primary" role="button" href="{% url 'publico:index' %}">Cancelar</a>
   </div>
 </form>
 {% endblock %}
