@@ -1,0 +1,54 @@
+{% extends "base/base.html" %}
+{% load transformar_em_texto %}
+{% load humanize %}
+
+{% block titulo %}Cartões{% endblock %}
+
+{% block cabecalho %}
+<div class="container">
+  <h1>Cartão</h1>
+  <p>Detalhamento do cartão registrado.</p>
+</div>
+{% endblock %}
+
+{% block conteudo %}
+<form>
+  <fieldset disabled>
+    <div class="mb-3">
+      <label for="inputTitulo" class="form-label">Titulo</label>
+      <input type="text" id="inputTitulo" class="form-control" value="{{ cartao.titulo }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputSlug" class="form-label">Slug</label>
+      <input type="text" id="inputSlug" class="form-control" value="{{ cartao.slug }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputLimite" class="form-label">Limite</label>
+      <input type="text" id="inputLimite" class="form-control" value="{{ cartao.limite|intcomma }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputDiaFechamento" class="form-label">Dia do Fechamento</label>
+      <input type="text" id="inputDiaFechamento" class="form-control" value="{{ cartao.dia_fechamento }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputCriadoEm" class="form-label">Criado em</label>
+      <input type="datetime-local" id="inputCriadoEm" class="form-control"
+        value="{{ cartao.criado_em|datetime_para_texto }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputAtualizadoEm" class="form-label">Atualizado em</label>
+      <input type="datetime-local" id="inputAtualizadoEm" class="form-control"
+        value="{{ cartao.atualizado_em|datetime_para_texto }}">
+    </div>
+  </fieldset>
+</form>
+<div style="float: left; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:editar' cartao.id %}">Editar</a>
+</div>
+<div style="float: left; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:excluir' cartao.id %}">Excluir</a>
+</div>
+<div style="float: right; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:listar' %}">Voltar</a>
+</div>
+{% endblock %}

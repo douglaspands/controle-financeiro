@@ -36,6 +36,7 @@ MY_APPS = [
     "carteiras",
     "cartoes",
     "contas",
+    "gerenciamento",
     "lancamentos",
     "pessoas",
     "publico",
@@ -195,7 +196,7 @@ AUTH_USER_MODEL = "usuarios.Usuario"
 
 # AUTH
 
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "/gerenciamento/"
 LOGOUT_REDIRECT_URL = "/"
 
 

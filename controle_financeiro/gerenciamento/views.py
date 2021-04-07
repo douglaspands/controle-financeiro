@@ -1,3 +1,6 @@
-from django.shortcuts import render
+from base.views import LoginRequiredBase
+from django.views.generic import TemplateView
 
-# Create your views here.
+
+class IndexView(LoginRequiredBase, TemplateView):
+    template_name = 'gerenciamento/index.html'

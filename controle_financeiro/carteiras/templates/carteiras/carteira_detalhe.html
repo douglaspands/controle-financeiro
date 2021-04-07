@@ -14,37 +14,21 @@
 <form>
   <fieldset disabled>
     <div class="mb-3">
-      <label for="inputTitulo" class="form-label">Titulo</label>
-      <input type="text" id="inputTitulo" class="form-control" value="{{ carteira.titulo }}">
-    </div>
-    <div class="mb-3">
-      <label for="inputSlug" class="form-label">Slug</label>
-      <input type="text" id="inputSlug" class="form-control" value="{{ carteira.slug }}">
-    </div>
-    <div class="mb-3">
-      <label for="inputLimite" class="form-label">Limite</label>
-      <input type="text" id="inputLimite" class="form-control" value="{{ carteira.tipo }}">
-    </div>
-    <div class="mb-3">
-      <label for="inputCriadoEm" class="form-label">Criado em</label>
-      <input type="datetime-local" id="inputCriadoEm" class="form-control"
-        value="{{ carteira.criado_em|datetime_para_texto }}">
-    </div>
-    <div class="mb-3">
-      <label for="inputAtualizadoEm" class="form-label">Atualizado em</label>
-      <input type="datetime-local" id="inputAtualizadoEm" class="form-control"
-        value="{{ carteira.atualizado_em|datetime_para_texto }}">
+      <label for="inputTitulo" class="form-label">Nome</label>
+      <input type="text" id="inputTitulo" class="form-control" value="{{ carteira.nome }}">
     </div>
   </fieldset>
 </form>
+{% if carteira.tem_cartoes %}
 <div style="float: left; margin-left: 3px;">
-  <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:editar' carteira.id %}">Editar</a>
+  <a class="btn btn-outline-primary" role="button" href="{% url 'gerenciamento_carteiras_cartoes:listar' carteira.slug %}">Listar Cartões</a>
 </div>
+{% else %}
 <div style="float: left; margin-left: 3px;">
-  <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:excluir' carteira.id %}">Excluir</a>
+  <a class="btn btn-outline-primary" role="button" href="{% url 'gerenciamento_carteiras_cartoes:criar' carteira.slug %}">Criar Primeiro Cartão</a>
 </div>
+{% endif %}
 <div style="float: right; margin-left: 3px;">
-  <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:listar' %}">Voltar</a>
+  <button class="btn btn-outline-primary" role="button" onclick="window.history.back();">Voltar</button>
 </div>
-
 {% endblock %}

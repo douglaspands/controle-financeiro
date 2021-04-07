@@ -1,8 +1,8 @@
-from django.urls import include, path
+from django.urls import path
+from .views import IndexView
 
-app_name = 'gerenciamento'
+app_name = "gerenciamento"
 
 urlpatterns = [
-    # path('', include('publico.urls', namespace='publico')),
-    path('carteiras/', include('carteiras.urls', namespace='carteiras')),
+    path("", IndexView.as_view(), name="index"),
 ]

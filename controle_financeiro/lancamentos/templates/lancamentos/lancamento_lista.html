@@ -28,13 +28,13 @@
         </tr>
     </thead>
     <tbody>
-        {% for Lancamento in lancamentos %}
-        <tr onclick="window.location='{% url 'lancamentos:detalhar' Lancamento.id %}'">
-            <td>{{ Lancamento.datahora|date:'d/m/Y H:i' }}</td>
-            <td>{{ Lancamento.descricao|truncatechars:14 }}</td>
-            <td>{{ Lancamento|calcular_parcela|intcomma }}</td>
+        {% for lancamento in lancamentos %}
+        <tr onclick="window.location='{% url 'lancamentos:detalhar' lancamento.id %}'">
+            <td>{{ lancamento.datahora|date:'d/m/Y H:i' }}</td>
+            <td>{{ lancamento.descricao|truncatechars:14 }}</td>
+            <td>{{ lancamento|calcular_parcela|intcomma }}</td>
             <td>
-                <a href="{% url 'lancamentos:editar' Lancamento.id %}">editar</a>
+                <a href="{% url 'lancamentos:editar' lancamento.id %}">editar</a>
                 <a href="{% url 'lancamentos:excluir' Lancamento.id %}">excluir</a>
             </td>
         </tr>

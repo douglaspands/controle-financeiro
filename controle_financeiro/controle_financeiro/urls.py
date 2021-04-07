@@ -18,18 +18,32 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import include, path
 
+
 urlpatterns = [
-    path('', include('publico.urls', namespace='publico')),
-    path('admin/', admin.site.urls),
-    path('gerenciamento/', include('gerenciamento.urls', namespace='gerenciamento')),
+    path("", include("publico.urls", namespace="publico")),
+    path("admin/", admin.site.urls),
+    path("autenticacao/", include("autenticacao.urls", namespace="autenticacao")),
+    path("gerenciamento/", include("gerenciamento.urls", namespace="gerenciamento")),
+    path(
+        "gerenciamento/carteiras/",
+        include("carteiras.urls", namespace="gerenciamento_carteiras"),
+    ),
+    path(
+        "gerenciamento/carteiras/<slug:carteira_slug>/cartoes/",
+        include("cartoes.urls", namespace="gerenciamento_carteiras_cartoes"),
+    ),
+    path(
+        "gerenciamento/carteiras/<slug:carteira_slug>/cartoes/<slug:cartao_slug>/lancamentos/",
+        include("lancamentos.urls", namespace="gerenciamento_carteiras_cartoes_lancamentos"),
+    ),
 ]
 
-if settings.SETTING_NAME in ['local', 'test']:
+if settings.SETTING_NAME in ["local", "test"]:
     import debug_toolbar
     from django.conf.urls.static import static
 
     urlpatterns += [
-        url(r'^__debug__/', include(debug_toolbar.urls, namespace='djdt')),
+        url(r"^__debug__/", include(debug_toolbar.urls, namespace="djdt")),
     ]
 
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

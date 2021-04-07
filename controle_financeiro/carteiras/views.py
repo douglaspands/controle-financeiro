@@ -18,16 +18,13 @@ class CarteiraLista(LoginRequiredBase, ListView):
     paginate_by = 20
 
     def get_queryset(self):
-        return Carteira.objects.filter(criador=self.request.user)
+        return Carteira.objects.filter(pessoa_id=self.request.user.pessoa.pk)
 
 
 class CarteiraDetalhe(LoginRequiredBase, DetailView):
     model = Carteira
     template_name = 'carteiras/carteira_detalhe.html'
     context_object_name = 'carteira'
-
-    def get_queryset(self):
-        return Carteira.objects.filter(criador=self.request.user)
 
 
 class CarteiraCriar(LoginRequiredBase, CreateView):
@@ -36,17 +33,17 @@ class CarteiraCriar(LoginRequiredBase, CreateView):
     template_name = 'carteiras/carteira_criar.html'
     context_object_name = 'carteira'
 
-    def get_queryset(self):
-        return Carteira.objects.filter(criador=self.request.user)
+    # def get_queryset(self):
+    #     return Carteira.objects.filter(pessoa_id=self.request.user.pessoa.pk)
 
     def post(self, request: HttpRequest) -> HttpResponse:
         form = CarteiraForm(request.POST)
         if form.is_valid():
             carteira = form.save(commit=False)
-            carteira.slug = slugify(carteira.titulo)
-            carteira.criador = request.user
+            carteira.slug = slugify(carteira.nome)
+            carteira.pessoa = request.user.pessoa
             form.save()
-            return redirect('carteiras:listar')
+            return redirect('gerenciamento_carteiras:listar')
         else:
             return render(request, self.template_name, {'form': form})
 
@@ -57,17 +54,17 @@ class CarteiraAtualizar(LoginRequiredBase, UpdateView):
     template_name = 'carteiras/carteira_atualizar.html'
     context_object_name = 'carteira'
 
-    def get_queryset(self):
-        return Carteira.objects.filter(criador=self.request.user)
+    # def get_queryset(self):
+    #     return Carteira.objects.filter(pessoa_id=self.request.user.pessoa.pk)
 
-    def post(self, request: HttpRequest, pk: int) -> HttpResponse:
-        instance = get_object_or_404(Carteira, pk=pk)
+    def post(self, request: HttpRequest, slug: str) -> HttpResponse:
+        instance = get_object_or_404(Carteira, slug=slug)
         form = CarteiraForm(request.POST, instance=instance)
         if form.is_valid():
             carteira = form.save(commit=False)
-            carteira.slug = slugify(carteira.titulo)
+            carteira.slug = slugify(carteira.nome)
             carteira.save()
-            return redirect('carteiras:listar')
+            return redirect('gerenciamento_carteiras:listar')
         else:
             return render(request, self.template_name, {'form': form})
 
@@ -76,10 +73,10 @@ class CarteiraExcluir(LoginRequiredBase, DeleteView):
     model = Carteira
     form_class = CarteiraForm
     template_name = 'carteiras/carteira_excluir.html'
-    success_url = reverse_lazy('carteiras:listar')
+    success_url = reverse_lazy('gerenciamento_carteiras:listar')
     context_object_name = 'carteira'
 
     def get_queryset(self):
         return (
-            Carteira.objects.filter(criador=self.request.user)
+            Carteira.objects.filter(pessoa_id=self.request.user.pessoa.pk)
         )

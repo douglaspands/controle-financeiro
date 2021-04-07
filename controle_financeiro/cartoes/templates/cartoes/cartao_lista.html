@@ -13,29 +13,30 @@
 {% block conteudo %}
 <div style="float: right;">
     <p>
-        <a class="btn btn-primary" role="button" href="{% url 'cartoes:criar' %}">Criar</a>
+        <a class="btn btn-primary" role="button" href="{% url 'gerenciamento_carteiras_cartoes:criar' carteira_slug %}">Criar</a>
     </p>
 </div>
 <table class="table">
     <thead>
         <tr>
-            <th scope="col">Titulo</th>
+            <th scope="col">Nome</th>
             <th scope="col">Ações</th>
         </tr>
     </thead>
     <tbody>
         {% for cartao in cartoes %}
-        <tr onclick="window.location='{% url 'cartoes:detalhar' cartao.id %}'">
-            <td>{{ cartao.titulo }}</td>
+        <tr onclick="window.location='{% url 'gerenciamento_carteiras_cartoes:detalhar' carteira_slug cartao.slug %}'">
+            <td>{{ cartao.nome }}</td>
             <td>
-                <a href="{% url 'cartoes:editar' cartao.id %}">editar</a>
-                <a href="{% url 'cartoes:excluir' cartao.id %}">excluir</a>
+                <a href="{% url 'gerenciamento_carteiras_cartoes:editar' carteira_slug cartao.slug %}">editar</a>
+                <a href="{% url 'gerenciamento_carteiras_cartoes:excluir' carteira_slug cartao.slug %}">excluir</a>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-
 {% include 'base/paginacao.html' %}
-
+<div style="float: right;">
+    <button class="btn btn-outline-primary" role="button" onclick="window.history.back();">Voltar</button>
+</div>
 {% endblock %}

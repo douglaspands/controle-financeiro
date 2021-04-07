@@ -18,11 +18,11 @@
 {% endif %}
 <form method="post">{% csrf_token %}
     <p>
-        Você tem certeza que quer apagar a carteira <strong>{{ carteira.titulo|truncatechars:30 }}</strong>?
+        Você tem certeza que quer apagar a carteira <strong>{{ carteira.nome }}</strong>?
     </p>
     <input class="btn btn-primary" role="button" type="submit" value="Apagar">
     <div style="float: right;">
-        <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:listar' %}">Cancelar</a>
+        <button class="btn btn-outline-primary" role="button" onclick="window.history.back();">Voltar</button>
     </div>
 </form>
 {% endblock %}

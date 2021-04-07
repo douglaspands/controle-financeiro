@@ -50,3 +50,7 @@ class Cartao(BaseModel):
             data_fechamento = data_fechamento + relativedelta(months=1)
 
         return data_fechamento
+
+    @property
+    def tem_lancamentos(self) -> bool:
+        return self.porta.lancamentos.exists()

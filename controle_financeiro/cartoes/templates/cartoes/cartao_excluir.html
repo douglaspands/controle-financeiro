@@ -16,13 +16,13 @@
     {% endfor %}
 </ol>
 {% endif %}
-<form method="post">{% csrf_token %}
+<form method="post" action="{% url 'gerenciamento_carteiras_cartoes:excluir' carteira_slug cartao.slug %}">{% csrf_token %}
     <p>
-        Você tem certeza que quer apagar o cartão <strong>{{ cartao.titulo|truncatechars:30 }}</strong>?
+        Você tem certeza que quer apagar o cartão <strong>{{ cartao.nome }}</strong>?
     </p>
     <input class="btn btn-primary" role="button" type="submit" value="Apagar">
     <div style="float: right;">
-        <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:listar' %}">Cancelar</a>
+        <button class="btn btn-outline-primary" role="button" onclick="window.history.back();">Voltar</button>
     </div>
 </form>
 {% endblock %}

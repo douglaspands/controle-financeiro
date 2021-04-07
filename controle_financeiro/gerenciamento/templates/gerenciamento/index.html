@@ -1,0 +1,20 @@
+{% extends "base/base.html" %}
+
+{% block titulo %}PublicoPage{% endblock %}
+
+{% block cabecalho %}
+<div class="container">
+    <h1>Gerenciamento</h1>
+    <p>Comece a controlar suas finanças por aqui.</p>
+</div>
+{% endblock %}
+
+{% block conteudo %}
+<div>
+    {% if request.user.is_authenticated %}
+    <p>
+        <a href="{% url 'gerenciamento_carteiras:listar' %}">Carteiras</a>
+    </p>
+    {% endif %}
+</div>
+{% endblock %}

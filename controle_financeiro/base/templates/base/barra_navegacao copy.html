@@ -11,7 +11,14 @@
             <ul class="navbar-nav">
                 {% if request.user.is_authenticated %}
                 <li class="nav-item{{ request|nav_item_active:'carteiras' }}">
-                    <a class="nav-link" href="{% url 'gerenciamento:index' %}">Gerenciamento</a>
+                    <a class="nav-link" href="{% url 'gerenciamento_carteiras:listar' %}">Carteiras{% if request|span_sr_only:'carteiras' %} <span class="sr-only">(current)</span>{% endif %}</a>
+                </li>
+                <li class="nav-item{{ request|nav_item_active:'cartoes' }}">
+                    <a class="nav-link" href="{% url 'cartoes:listar' %}">Cartoes{% if request|span_sr_only:'cartoes' %}
+                        <span class="sr-only">(current)</span>{% endif %}</a>
+                </li>
+                <li class="nav-item{{ request|nav_item_active:'lancamentos' }}">
+                    <a class="nav-link" href="{% url 'lancamentos:listar' %}">lancamentos{% if request|span_sr_only:'lancamentos' %} <span class="sr-only">(current)</span>{% endif %}</a>
                 </li>
                 <li class="nav-item{{ request|nav_item_active:'registration,autenticacao' }}">
                     <a class="nav-link" href="{% url 'autenticacao:logout_confirmar' %}">

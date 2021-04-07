@@ -19,6 +19,14 @@ class Carteira(BaseModel):
     def __str__(self):
         return f"{self.nome}"
 
+    @property
+    def tem_cartoes(self):
+        return self.portas.filter(tipo=Porta.CARTAO).exists()
+
+    @property
+    def tem_contas(self):
+        return self.portas.filter(tipo=Porta.CONTA).exists()
+
 
 class Porta(models.Model):
 
@@ -33,13 +41,13 @@ class Porta(models.Model):
     tipo = models.CharField(max_length=20, choices=TIPOS_ESCOLHAS)
 
     carteira = models.ForeignKey(
-        Carteira, on_delete=models.CASCADE, related_name="porta"
+        Carteira, on_delete=models.CASCADE, related_name="portas"
     )
 
     @property
     def e_cartao(self) -> bool:
-        return bool(self.cartao)
+        return self.cartao.exists()
 
     @property
     def e_conta(self) -> bool:
-        return bool(self.conta)
+        return self.conta.exists()

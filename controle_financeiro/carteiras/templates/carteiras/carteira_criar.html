@@ -22,7 +22,7 @@
     {{ form|crispy }}
     <input class="btn btn-primary" role="button" type="submit" value="Gravar">
     <div style="float: right;">
-        <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:listar' %}">Cancelar</a>
+        <button class="btn btn-outline-primary" role="button" onclick="window.history.back();">Voltar</button>
     </div>
 </form>
 {% endblock %}

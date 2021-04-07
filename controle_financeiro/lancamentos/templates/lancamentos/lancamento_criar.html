@@ -18,11 +18,11 @@
     {% endfor %}
 </ol>
 {% endif %}
-<form method="post">{% csrf_token %}
+<form method="post" action="{% url 'gerenciamento_carteiras_cartoes_lancamentos:criar' carteira_slug cartao_slug %}">{% csrf_token %}
     {{ form|crispy }}
     <input class="btn btn-primary" role="button" type="submit" value="Gravar">
     <div style="float: right;">
-        <a class="btn btn-outline-primary" role="button" href="{% url 'lancamentos:listar' %}">Cancelar</a>
+        <button class="btn btn-outline-primary" role="button" onclick="window.history.back();">Voltar</button>
     </div>
 </form>
 {% endblock %}

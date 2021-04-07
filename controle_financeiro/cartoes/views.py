@@ -1,5 +1,8 @@
+from typing import Any, Dict
+
 from base.views import LoginRequiredBase
-from carteiras.models import Carteira
+from carteiras.models import Carteira, Porta
+from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.defaultfilters import slugify
@@ -13,97 +16,104 @@ from .models import Cartao
 
 class CartaoLista(LoginRequiredBase, ListView):
     model = Cartao
-    template_name = 'cartoes/cartao_lista.html'
-    fields = ['titulo', 'carteira']
-    context_object_name = 'cartoes'
+    template_name = "cartoes/cartao_lista.html"
+    fields = ["titulo", "carteira"]
+    context_object_name = "cartoes"
     paginate_by = 20
 
-    def get_queryset(self):
-        return Cartao.objects.select_related('carteira').filter(
-            criador=self.request.user
+    def get_queryset(self, *args, **kwargs) -> QuerySet:
+        return Cartao.objects.select_related("porta", "porta__carteira").filter(
+            porta__carteira__slug=self.kwargs.get("carteira_slug")
         )
+
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context.update(self.kwargs)
+        return context
 
 
 class CartaoDetalhe(LoginRequiredBase, DetailView):
     model = Cartao
-    template_name = 'cartoes/cartao_detalhe.html'
-    context_object_name = 'cartao'
+    template_name = "cartoes/cartao_detalhe.html"
+    context_object_name = "cartao"
 
-    def get_queryset(self):
-        return Cartao.objects.select_related('carteira', 'carteira__tipo').filter(
-            criador=self.request.user
-        )
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context.update(self.kwargs)
+        return context
 
 
 class CartaoCriar(LoginRequiredBase, CreateView):
     model = Cartao
     form_class = CartaoForm
-    template_name = 'cartoes/cartao_criar.html'
-    context_object_name = 'cartao'
+    template_name = "cartoes/cartao_criar.html"
+    context_object_name = "cartao"
 
-    def get_queryset(self):
-        return Cartao.objects.select_related('carteira').filter(
-            criador=self.request.user
-        )
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context.update(self.kwargs)
+        return context
 
-    def post(self, request: HttpRequest) -> HttpResponse:
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        carteira_slug = kwargs.get("carteira_slug")
         form = CartaoForm(request.POST)
         if form.is_valid():
-            cartao = form.save(commit=False)
-            cartao.slug = slugify(cartao.titulo)
-            titulo_ = f'Cartão: {cartao.titulo}'
-            slug_ = slugify(titulo_)
-            carteira = Carteira(
-                titulo=titulo_, slug=slug_
+            porta = Porta.objects.create(
+                tipo=Porta.CARTAO, carteira=Carteira.objects.get(slug=carteira_slug)
             )
-            carteira.criador = request.user
-            carteira.save()
-            cartao.carteira = carteira
-            cartao.criador = request.user
+            cartao = form.save(commit=False)
+            cartao.slug = slugify(cartao.nome)
+            cartao.porta = porta
             cartao.save()
-            return redirect('cartoes:listar')
+            return redirect(
+                "gerenciamento_carteiras_cartoes:listar",
+                carteira_slug=carteira_slug,
+            )
         else:
-            return render(request, self.template_name, {'form': form})
+            return render(request, self.template_name, {"form": form})
 
 
 class CartaoAtualizar(LoginRequiredBase, UpdateView):
     model = Cartao
     form_class = CartaoForm
-    template_name = 'cartoes/cartao_atualizar.html'
-    context_object_name = 'cartao'
+    template_name = "cartoes/cartao_atualizar.html"
+    context_object_name = "cartao"
 
-    def get_queryset(self):
-        return Cartao.objects.select_related('carteira').filter(
-            criador=self.request.user
-        )
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context.update(self.kwargs)
+        return context
 
-    def post(self, request: HttpRequest, pk: int) -> HttpResponse:
-        instance = get_object_or_404(Cartao, pk=pk)
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        instance = get_object_or_404(Cartao, slug=kwargs.get("slug"))
         form = CartaoForm(request.POST, instance=instance)
         if form.is_valid():
             cartao = form.save(commit=False)
-            cartao.slug = slugify(cartao.titulo)
-            carteira = cartao.carteira
-            titulo_ = f'Cartão: {cartao.titulo}'
-            slug_ = slugify(titulo_)
-            carteira.titulo = titulo_
-            carteira.slug = slug_
-            carteira.save()
-            cartao.carteira = carteira
+            cartao.slug = slugify(cartao.nome)
             cartao.save()
-            return redirect('cartoes:listar')
+            return redirect(
+                "gerenciamento_carteiras_cartoes:listar",
+                carteira_slug=request.kwargs.get("carteira_slug"),
+            )
         else:
-            return render(request, self.template_name, {'form': form})
+            return render(request, self.template_name, {"form": form})
 
 
 class CartaoExcluir(LoginRequiredBase, DeleteView):
     model = Cartao
     form_class = CartaoForm
-    template_name = 'cartoes/cartao_excluir.html'
-    context_object_name = 'cartao'
-    success_url = reverse_lazy('cartoes:listar')
+    template_name = "cartoes/cartao_excluir.html"
+    context_object_name = "cartao"
 
-    def get_queryset(self):
-        return Cartao.objects.select_related('carteira').filter(
-            criador=self.request.user
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        context = super().get_context_data(**kwargs)
+        context.update(self.kwargs)
+        return context
+
+    def get_success_url(self):
+        params = {}
+        params["carteira_slug"] = self.kwargs.get("carteira_slug")
+        return reverse_lazy(
+            "gerenciamento_carteiras_cartoes:listar",
+            kwargs=params,
         )
