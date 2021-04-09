@@ -92,6 +92,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "controle_financeiro.wsgi.application"
+ASGI_APPLICATION = "controle_financeiro.asgi.application"
 
 
 # Password validation
@@ -203,3 +204,8 @@ LOGOUT_REDIRECT_URL = "/"
 # EMAIL
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+# PRIMARY KEY
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

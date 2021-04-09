@@ -33,9 +33,6 @@ class CarteiraCriar(LoginRequiredBase, CreateView):
     template_name = 'carteiras/carteira_criar.html'
     context_object_name = 'carteira'
 
-    # def get_queryset(self):
-    #     return Carteira.objects.filter(pessoa_id=self.request.user.pessoa.pk)
-
     def post(self, request: HttpRequest) -> HttpResponse:
         form = CarteiraForm(request.POST)
         if form.is_valid():
@@ -53,9 +50,6 @@ class CarteiraAtualizar(LoginRequiredBase, UpdateView):
     form_class = CarteiraForm
     template_name = 'carteiras/carteira_atualizar.html'
     context_object_name = 'carteira'
-
-    # def get_queryset(self):
-    #     return Carteira.objects.filter(pessoa_id=self.request.user.pessoa.pk)
 
     def post(self, request: HttpRequest, slug: str) -> HttpResponse:
         instance = get_object_or_404(Carteira, slug=slug)
@@ -75,8 +69,3 @@ class CarteiraExcluir(LoginRequiredBase, DeleteView):
     template_name = 'carteiras/carteira_excluir.html'
     success_url = reverse_lazy('gerenciamento_carteiras:listar')
     context_object_name = 'carteira'
-
-    def get_queryset(self):
-        return (
-            Carteira.objects.filter(pessoa_id=self.request.user.pessoa.pk)
-        )
