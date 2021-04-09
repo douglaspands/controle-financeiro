@@ -7,7 +7,10 @@ from .models import Lancamento
 class LancamentoForm(ModelForm):
     class Meta:
         model = Lancamento
-        fields = ["tipo"]
+        fields = ["tipo", "categorias"]
+        widgets = {
+            "categorias": forms.CheckboxSelectMultiple
+        }
         # labels = {
         #     'descricao': 'Descrição',
         #     'valor': 'Valor Total da Compra',
