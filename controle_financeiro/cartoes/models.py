@@ -18,7 +18,7 @@ class Cartao(BaseModel):
     ]
 
     nome = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100)
     limite = models.DecimalField(max_digits=11, decimal_places=2)
     dia_fechamento = models.IntegerField(
         default=1, validators=[MaxValueValidator(25), MinValueValidator(1)]
@@ -29,8 +29,9 @@ class Cartao(BaseModel):
 
     class Meta:
         ordering = ["nome"]
+        unique_together = (("porta_id", "slug"),)
         indexes = [
-            models.Index(fields=["slug"]),
+            models.Index(fields=["porta_id", "slug"]),
         ]
 
     def __str__(self):

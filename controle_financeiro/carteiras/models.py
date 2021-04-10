@@ -6,14 +6,15 @@ from django.db import models
 class Carteira(BaseModel):
 
     nome = models.CharField(max_length=100)
-    slug = models.SlugField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100)
 
     pessoa = models.ForeignKey(Pessoa, on_delete=models.CASCADE, related_name="pessoa")
 
     class Meta:
         ordering = ["nome"]
+        unique_together = (("pessoa_id", "slug"),)
         indexes = [
-            models.Index(fields=["slug"]),
+            models.Index(fields=["pessoa_id", "slug"]),
         ]
 
     def __str__(self):

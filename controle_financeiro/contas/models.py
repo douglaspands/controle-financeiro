@@ -13,8 +13,9 @@ class Conta(BaseModel):
 
     class Meta:
         ordering = ['nome']
+        unique_together = (("porta_id", "slug"),)
         indexes = [
-            models.Index(fields=["slug"]),
+            models.Index(fields=["porta_id", "slug"]),
         ]
 
     def __str__(self):
