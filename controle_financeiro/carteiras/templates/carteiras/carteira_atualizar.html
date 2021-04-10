@@ -11,18 +11,18 @@
 {% endblock %}
 
 {% block conteudo %}
-    {% if form.subject.errors %}
-    <ol>
+{% if form.subject.errors %}
+<ol>
     {% for error in form.subject.errors %}
-        <li><strong>{{ error|escape }}</strong></li>
+    <li><strong>{{ error|escape }}</strong></li>
     {% endfor %}
-    </ol>
-    {% endif %}
-    <form method="post">{% csrf_token %}
-        {{ form|crispy }}
-        <input class="btn btn-primary" role="button" type="submit" value="Atualizar">
-        <div style="float: right;">
-            <button class="btn btn-outline-primary" role="button" onclick="window.history.back();">Voltar</button>
-        </div>
-    </form>
+</ol>
+{% endif %}
+<form method="post">{% csrf_token %}
+    {{ form|crispy }}
+    <input class="btn btn-primary" role="button" type="submit" value="Atualizar">
+    <div style="float: right; margin-left: 3px;">
+        <a class="btn btn-outline-primary" role="button" href="{{ href_voltar }}">Voltar</a>
+    </div>
+</form>
 {% endblock %}

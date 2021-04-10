@@ -27,7 +27,7 @@ class CartaoLista(LoginRequiredBase, ListView):
         )
 
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
+        context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         return context
 
@@ -38,7 +38,7 @@ class CartaoDetalhe(LoginRequiredBase, DetailView):
     context_object_name = "cartao"
 
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
+        context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         return context
 
@@ -50,7 +50,7 @@ class CartaoCriar(LoginRequiredBase, CreateView):
     context_object_name = "cartao"
 
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
+        context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         return context
 
@@ -80,7 +80,7 @@ class CartaoAtualizar(LoginRequiredBase, UpdateView):
     context_object_name = "cartao"
 
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
+        context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         return context
 
@@ -106,14 +106,21 @@ class CartaoExcluir(LoginRequiredBase, DeleteView):
     context_object_name = "cartao"
 
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
-        context = super().get_context_data(**kwargs)
+        context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
+        context["href_voltar"] = (
+            reverse_lazy("gerenciamento_carteiras_cartoes:listar")
+            if Cartao.objects.exclude(slug=self.kwargs.get("slug")).filter(carteira__slug=self.kwargs.get("carteira_slug")).exists()
+            else reverse_lazy("gerenciamento_carteiras:detalhar", kwargs={"slug": self.kwargs.get("carteira_slug")})
+        )
         return context
 
     def get_success_url(self):
-        params = {}
-        params["carteira_slug"] = self.kwargs.get("carteira_slug")
-        return reverse_lazy(
-            "gerenciamento_carteiras_cartoes:listar",
-            kwargs=params,
-        )
+        if (
+            Cartao.objects.exclude(slug=self.kwargs.get("slug"))
+            .filter(carteira__slug=self.kwargs.get("carteira_slug"))
+            .exists()
+        ):
+            return reverse_lazy("gerenciamento_carteiras_cartoes:listar")
+        else:
+            return reverse_lazy("gerenciamento_carteiras:detalhar", kwargs={"slug": self.kwargs.get("carteira_slug")})

@@ -13,7 +13,11 @@
 <div>
     {% if request.user.is_authenticated %}
     <p>
-        <a href="{% url 'gerenciamento_carteiras:listar' %}">Carteiras</a>
+        {% if tem_carteira %}
+        <a href="{% url 'gerenciamento_carteiras:listar' %}">Listar carteiras</a>
+        {% else %}
+        <a href="{% url 'gerenciamento_carteiras:criar' %}">Criar carteira</a>
+        {% endif %}
     </p>
     {% endif %}
 </div>
