@@ -1,13 +1,12 @@
 {% extends "base/base.html" %}
 {% load crispy_forms_tags %}
-{% load static %}
 
 {% block titulo %}Cartões{% endblock %}
 
 {% block cabecalho %}
 <div class="container">
-    <h1>Cartão</h1>
-    <p>Cadastre seu cartão.</p>
+    <h1>Conta</h1>
+    <p>Atualizar conta registrada.</p>
 </div>
 {% endblock %}
 
@@ -19,15 +18,11 @@
     {% endfor %}
 </ol>
 {% endif %}
-<form method="post" action="{% url 'gerenciamento_carteiras_cartoes:criar' carteira_slug %}">{% csrf_token %}
+<form method="post">{% csrf_token %}
     {{ form|crispy }}
-    <input class="btn btn-primary" role="button" type="submit" value="Gravar">
+    <input class="btn btn-primary" role="button" type="submit" value="Atualizar">
     <div style="float: right; margin-left: 3px;">
         <a class="btn btn-outline-primary" role="button" href="{{ href_voltar }}">Voltar</a>
-    </div>
+    </div>    
 </form>
-{% endblock %}
-
-{% block script %}
-<script src="{% static 'js/utils/formatar_moeda.js' %}"></script>
 {% endblock %}

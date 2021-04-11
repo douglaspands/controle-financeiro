@@ -33,8 +33,8 @@ urlpatterns = [
         include("cartoes.urls", namespace="gerenciamento_carteiras_cartoes"),
     ),
     path(
-        "gerenciamento/carteiras/<slug:carteira_slug>/cartoes/<slug:cartao_slug>/lancamentos/",
-        include("lancamentos.urls", namespace="gerenciamento_carteiras_cartoes_lancamentos"),
+        "gerenciamento/carteiras/<slug:carteira_slug>/contas/",
+        include("contas.urls", namespace="gerenciamento_carteiras_contas"),
     ),
 ]
 

@@ -18,7 +18,7 @@ from .models import Cartao
 class CartaoLista(LoginRequiredBase, ListView):
     model = Cartao
     template_name = "cartoes/cartao_lista.html"
-    fields = ["titulo", "carteira"]
+    fields = ["nome"]
     context_object_name = "cartoes"
     paginate_by = settings.REGISTROS_POR_PAGINA
 
@@ -94,7 +94,7 @@ class CartaoCriar(LoginRequiredBase, CreateView):
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         carteira_slug = kwargs.get("carteira_slug")
-        form = CartaoForm(request.POST)
+        form = self.form_class(request.POST)
         if form.is_valid():
             centro_custo = CentroCusto.objects.create(
                 tipo=CentroCusto.CARTAO,
@@ -111,7 +111,7 @@ class CartaoCriar(LoginRequiredBase, CreateView):
                 carteira_slug=carteira_slug,
             )
         else:
-            return render(request, self.template_name, {"form": form})
+            return render(request, self.template_name, {"form": form, **kwargs})
 
 
 class CartaoAtualizar(LoginRequiredBase, UpdateView):
@@ -140,7 +140,9 @@ class CartaoAtualizar(LoginRequiredBase, UpdateView):
         return context
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
-        instance = get_object_or_404(Cartao, slug=kwargs.get("slug"))
+        instance = get_object_or_404(
+            self.get_queryset(*args, **kwargs), slug=kwargs.get("slug")
+        )
         form = self.form_class(request.POST, instance=instance)
         if form.is_valid():
             cartao = form.save(commit=False)
@@ -148,7 +150,7 @@ class CartaoAtualizar(LoginRequiredBase, UpdateView):
             cartao.save()
             return redirect(
                 "gerenciamento_carteiras_cartoes:listar",
-                carteira_slug=request.kwargs.get("carteira_slug"),
+                carteira_slug=kwargs.get("carteira_slug"),
             )
         else:
             return render(request, self.template_name, {"form": form})
