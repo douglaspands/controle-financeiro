@@ -18,6 +18,14 @@
       <label for="inputTitulo" class="form-label">Nome</label>
       <input type="text" id="inputTitulo" class="form-control" value="{{ cartao.nome }}">
     </div>
+    <div class="mb-3">
+      <label for="inputLimite" class="form-label">Limite</label>
+      <input type="text" id="inputLimite" class="form-control" value="{{ cartao.limite|intcomma }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputDiaFechamento" class="form-label">Dia do Fechamento</label>
+      <input type="text" id="inputDiaFechamento" class="form-control" value="{{ cartao.dia_fechamento }}">
+    </div>    
   </fieldset>
 </form>
 {% if cartao.tem_lancamentos %}
@@ -30,7 +38,6 @@
 </div>
 {% endif %}
 <div style="float: right; margin-left: 3px;">
-  <button class="btn btn-outline-primary" role="button" onclick="window.history.back();">Voltar</button>
+  <a class="btn btn-outline-primary" role="button" href="{{ href_voltar }}">Voltar</a>
 </div>
-
 {% endblock %}

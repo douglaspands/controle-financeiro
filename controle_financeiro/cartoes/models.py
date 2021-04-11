@@ -1,7 +1,7 @@
 from datetime import date, datetime
 
 from base.models import BaseModel
-from carteiras.models import Porta
+from carteiras.models import CentroCusto
 from dateutil.relativedelta import relativedelta
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
@@ -25,13 +25,13 @@ class Cartao(BaseModel):
     )
     pode_parcelar = models.BooleanField(choices=ESCOLHAS_PERMISSAO_PARCELAMENTO)
 
-    porta = models.OneToOneField(Porta, on_delete=models.CASCADE, related_name="cartao")
+    centro_custo = models.OneToOneField(CentroCusto, on_delete=models.CASCADE, related_name="cartao")
 
     class Meta:
         ordering = ["nome"]
-        unique_together = (("porta_id", "slug"),)
+        unique_together = (("centro_custo_id", "slug"),)
         indexes = [
-            models.Index(fields=["porta_id", "slug"]),
+            models.Index(fields=["centro_custo_id", "slug"]),
         ]
 
     def __str__(self):
@@ -54,4 +54,4 @@ class Cartao(BaseModel):
 
     @property
     def tem_lancamentos(self) -> bool:
-        return self.porta.lancamentos.exists()
+        return self.centro_custo.lancamentos.exists()

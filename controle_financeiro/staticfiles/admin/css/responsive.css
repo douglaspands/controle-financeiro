@@ -913,9 +913,9 @@ input[type="submit"], button {
     /* Calendar and clock */
 
     .calendarbox, .clockbox {
-        position: fixed !important;
-        top: 50% !important;
-        left: 50% !important;
+        position: fixed !imcentro_custont;
+        top: 50% !imcentro_custont;
+        left: 50% !imcentro_custont;
         transform: translate(-50%, -50%);
         margin: 0;
         border: none;

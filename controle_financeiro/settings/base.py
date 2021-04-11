@@ -209,3 +209,8 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # PRIMARY KEY
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# DEFAULT PAGINATE BY
+
+REGISTROS_POR_PAGINA = config("REGISTROS_POR_PAGINA", default=25, cast=int)

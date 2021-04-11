@@ -10,6 +10,11 @@
     {% endblock %}
 </head>
 <body>
+    {% if redirecionar %}
+    <script>
+        window.location.href = "{{ redirecionar }}";
+    </script>
+    {% else %}
     {% include 'base/barra_navegacao.html' %}
     <br>
     {% block cabecalho %}
@@ -24,5 +29,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
     {% block script %}
     {% endblock %}
+    {% endif %}
 </body>
 </html>

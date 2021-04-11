@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from .models import Carteira, Porta
+from .models import Carteira, CentroCusto
 
 
 admin.site.register(Carteira)
-admin.site.register(Porta)
+admin.site.register(CentroCusto)

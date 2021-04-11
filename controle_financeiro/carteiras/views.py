@@ -1,6 +1,7 @@
 from typing import Any, Dict
 
 from base.views import LoginRequiredBase
+from django.conf import settings
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -18,15 +19,17 @@ class CarteiraLista(LoginRequiredBase, ListView):
     template_name = "carteiras/carteira_lista.html"
     fields = ["nome"]
     context_object_name = "carteiras"
-    paginate_by = 20
+    paginate_by = settings.REGISTROS_POR_PAGINA
 
     def get_queryset(self) -> QuerySet:
-        return Carteira.objects.filter(pessoa_id=self.request.user.pessoa.pk)
+        return Carteira.objects.filter(usuario_id=self.request.user.pk)
 
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         context["href_voltar"] = reverse_lazy("gerenciamento:index")
+        if not context.get("carteiras").exists():
+            context["redirecionar"] = context["href_voltar"]
         return context
 
 
@@ -34,6 +37,9 @@ class CarteiraDetalhe(LoginRequiredBase, DetailView):
     model = Carteira
     template_name = "carteiras/carteira_detalhe.html"
     context_object_name = "carteira"
+
+    def get_queryset(self) -> QuerySet:
+        return Carteira.objects.filter(usuario_id=self.request.user.pk)
 
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(*args, **kwargs)
@@ -48,14 +54,13 @@ class CarteiraCriar(LoginRequiredBase, CreateView):
     template_name = "carteiras/carteira_criar.html"
     context_object_name = "carteira"
 
+    def get_queryset(self) -> QuerySet:
+        return Carteira.objects.filter(usuario_id=self.request.user.pk)
+
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
-        context["href_voltar"] = (
-            reverse_lazy("gerenciamento_carteiras:listar")
-            if Carteira.objects.filter(pessoa_id=self.request.user.pessoa.pk).exists()
-            else reverse_lazy("gerenciamento:index")
-        )
+        context["href_voltar"] = reverse_lazy("gerenciamento_carteiras:listar")
         return context
 
     def post(self, request: HttpRequest) -> HttpResponse:
@@ -63,7 +68,7 @@ class CarteiraCriar(LoginRequiredBase, CreateView):
         if form.is_valid():
             carteira = form.save(commit=False)
             carteira.slug = slugify(carteira.nome)
-            carteira.pessoa = request.user.pessoa
+            carteira.usuario_id = request.user.pk
             form.save()
             return redirect("gerenciamento_carteiras:listar")
         else:
@@ -75,6 +80,9 @@ class CarteiraAtualizar(LoginRequiredBase, UpdateView):
     form_class = CarteiraForm
     template_name = "carteiras/carteira_atualizar.html"
     context_object_name = "carteira"
+
+    def get_queryset(self) -> QuerySet:
+        return Carteira.objects.filter(usuario_id=self.request.user.pk)
 
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(*args, **kwargs)
@@ -99,23 +107,13 @@ class CarteiraExcluir(LoginRequiredBase, DeleteView):
     form_class = CarteiraForm
     template_name = "carteiras/carteira_excluir.html"
     context_object_name = "carteira"
+    success_url = reverse_lazy("gerenciamento_carteiras:listar")
+
+    def get_queryset(self) -> QuerySet:
+        return Carteira.objects.filter(usuario_id=self.request.user.pk)
 
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
-        context["href_voltar"] = (
-            reverse_lazy("gerenciamento_carteiras:listar")
-            if Carteira.objects.filter(pessoa_id=self.request.user.pessoa.pk).exists()
-            else reverse_lazy("gerenciamento:index")
-        )
+        context["href_voltar"] = reverse_lazy("gerenciamento_carteiras:listar")
         return context
-
-    def get_success_url(self):
-        if (
-            Carteira.objects.exclude(slug=self.kwargs.get("slug"))
-            .filter(pessoa_id=self.request.user.pessoa.pk)
-            .exists()
-        ):
-            return reverse_lazy("gerenciamento_carteiras:listar")
-        else:
-            return reverse_lazy("gerenciamento:index")

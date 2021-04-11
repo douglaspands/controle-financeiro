@@ -13,7 +13,7 @@ class IndexView(LoginRequiredBase, TemplateView):
         context.update(self.kwargs)
         context["tem_carteira"] = (
             True
-            if Carteira.objects.filter(pessoa_id=self.request.user.pessoa.pk).exists()
+            if Carteira.objects.filter(usuario_id=self.request.user.pk).exists()
             else False
         )
         return context

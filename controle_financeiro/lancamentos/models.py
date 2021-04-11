@@ -1,5 +1,5 @@
 from base.models import BaseModel
-from carteiras.models import Porta
+from carteiras.models import CentroCusto
 from django.core.validators import MinValueValidator
 from django.db import models
 
@@ -33,8 +33,8 @@ class Lancamento(BaseModel):
     tipo = models.CharField(max_length=10, choices=TIPOS_ESCOLHAS)
     categorias = models.ManyToManyField(Categoria, blank=True)
 
-    porta = models.ForeignKey(
-        Porta, on_delete=models.CASCADE, related_name="lancamentos"
+    centro_custo = models.ForeignKey(
+        CentroCusto, on_delete=models.CASCADE, related_name="lancamentos"
     )
 
     def __str__(self):

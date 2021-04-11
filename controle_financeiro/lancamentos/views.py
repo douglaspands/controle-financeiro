@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from base.views import LoginRequiredBase
+from django.conf import settings
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
@@ -16,15 +17,15 @@ class LancamentoLista(LoginRequiredBase, ListView):
     template_name = 'lancamentos/lancamento_lista.html'
     context_object_name = 'lancamentos'
     fields = ['categorias', 'descricao', 'valor', 'datahora', 'carteira']
-    paginate_by = 20
+    paginate_by = settings.REGISTROS_POR_PAGINA
 
     def get_queryset(self, *args, **kwargs):
         params = {}
         if self.kwargs.get("cartao_slug"):
-            params["porta__cartao__slug"] = self.kwargs.get("cartao_slug")
+            params["centro_custo__cartao__slug"] = self.kwargs.get("cartao_slug")
 
         return (
-            Lancamento.objects.select_related("porta", "porta__carteira")
+            Lancamento.objects.select_related("centro_custo", "centro_custo__carteira")
             .prefetch_related("cartegorias")
             .filter(**params)
         )
