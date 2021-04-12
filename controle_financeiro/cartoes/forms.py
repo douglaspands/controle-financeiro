@@ -1,12 +1,12 @@
 from django import forms
 
 from .models import Cartao
-from base.forms.monetary_input import MonetaryInput
+from base.forms.monetary import MonetaryField
 
 
 class CartaoForm(forms.ModelForm):
 
-    limite = MonetaryInput()
+    limite = MonetaryField()
 
     class Meta:
         model = Cartao
