@@ -1,6 +1,5 @@
 {% extends "base/base.html" %}
 {% load crispy_forms_tags %}
-{% load static %}
 
 {% block titulo %}Cartões{% endblock %}
 
@@ -26,8 +25,4 @@
         <a class="btn btn-outline-primary" role="button" href="{{ href_voltar }}">Voltar</a>
     </div>
 </form>
-{% endblock %}
-
-{% block script %}
-<script src="{% static 'js/utils/formatar_moeda.js' %}"></script>
 {% endblock %}

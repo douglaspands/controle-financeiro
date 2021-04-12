@@ -1,12 +1,12 @@
 from django import forms
 
 from .models import Cartao
-from base.forms import MonetaryInput
+from base.forms.monetary_input import MonetaryInput
 
 
 class CartaoForm(forms.ModelForm):
 
-    limite = MonetaryInput(widget=forms.TextInput(attrs={"onkeyup": "formatarMoeda(this)"}))
+    limite = MonetaryInput()
 
     class Meta:
         model = Cartao

@@ -214,3 +214,8 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # DEFAULT PAGINATE BY
 
 REGISTROS_POR_PAGINA = config("REGISTROS_POR_PAGINA", default=25, cast=int)
+
+
+# DEFAULT LOCALE
+
+DEFAULT_LOCALE = "pt_BR.UTF-8"
