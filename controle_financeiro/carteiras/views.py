@@ -5,7 +5,6 @@ from django.conf import settings
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.template.defaultfilters import slugify
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
@@ -63,11 +62,10 @@ class CarteiraCriar(LoginRequiredBase, CreateView):
         context["href_voltar"] = reverse_lazy("gerenciamento_carteiras:listar")
         return context
 
-    def post(self, request: HttpRequest) -> HttpResponse:
-        form = CarteiraForm(request.POST)
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        form = CarteiraForm(request.POST, queryset=self.get_queryset(*args, **kwargs))
         if form.is_valid():
             carteira = form.save(commit=False)
-            carteira.slug = slugify(carteira.nome)
             carteira.usuario_id = request.user.pk
             form.save()
             return redirect("gerenciamento_carteiras:listar")
@@ -90,13 +88,13 @@ class CarteiraAtualizar(LoginRequiredBase, UpdateView):
         context["href_voltar"] = reverse_lazy("gerenciamento_carteiras:listar")
         return context
 
-    def post(self, request: HttpRequest, slug: str) -> HttpResponse:
-        instance = get_object_or_404(Carteira, slug=slug)
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        instance = get_object_or_404(
+            self.get_queryset(*args, **kwargs), slug=kwargs.get("slug")
+        )
         form = CarteiraForm(request.POST, instance=instance)
         if form.is_valid():
-            carteira = form.save(commit=False)
-            carteira.slug = slugify(carteira.nome)
-            carteira.save()
+            form.save()
             return redirect("gerenciamento_carteiras:listar")
         else:
             return render(request, self.template_name, {"form": form})

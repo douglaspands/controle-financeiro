@@ -49,5 +49,5 @@ class MonetaryField(forms.Field):
 
     def validate(self, value: Optional[Decimal]):
         super().validate(value)
-        if not isinstance(value, Decimal):
-            raise ValidationError(_("Invalid value"), code="invalid")
+        if not isinstance(value, Decimal) and self.required is True:
+            raise ValidationError(_("This field is required."), code="required")
