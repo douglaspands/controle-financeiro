@@ -116,16 +116,16 @@
   filter: alpha(opacity=0); }
 
 .select2-hidden-accessible {
-  border: 0 !important;
-  clip: rect(0 0 0 0) !important;
-  -webkit-clip-path: inset(50%) !important;
-  clip-path: inset(50%) !important;
-  height: 1px !important;
-  overflow: hidden !important;
-  padding: 0 !important;
-  position: absolute !important;
-  width: 1px !important;
-  white-space: nowrap !important; }
+  border: 0 !imcentro_custont;
+  clip: rect(0 0 0 0) !imcentro_custont;
+  -webkit-clip-path: inset(50%) !imcentro_custont;
+  clip-path: inset(50%) !imcentro_custont;
+  height: 1px !imcentro_custont;
+  overflow: hidden !imcentro_custont;
+  padding: 0 !imcentro_custont;
+  position: absolute !imcentro_custont;
+  width: 1px !imcentro_custont;
+  white-space: nowrap !imcentro_custont; }
 
 .select2-container--default .select2-selection--single {
   background-color: #fff;

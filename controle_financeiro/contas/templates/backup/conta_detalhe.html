@@ -1,0 +1,39 @@
+{% extends "base/base.html" %}
+{% load transformar_em_texto %}
+{% load humanize %}
+
+{% block titulo %}Cartões{% endblock %}
+
+{% block cabecalho %}
+<div class="container">
+  <h1>Conta</h1>
+  <p>Detalhamento da conta registrada.</p>
+</div>
+{% endblock %}
+
+{% block conteudo %}
+<form>
+  <fieldset disabled>
+    <div class="mb-3">
+      <label for="inputTitulo" class="form-label">Nome</label>
+      <input type="text" id="inputTitulo" class="form-control" value="{{ conta.nome }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputSaldo" class="form-label">Saldo</label>
+      <input type="text" id="inputSaldo" class="form-control" value="{{ conta.saldo|intcomma }}">
+    </div>
+  </fieldset>
+</form>
+{% if conta.tem_lancamentos %}
+<div style="float: left; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button" href="{% url 'gerenciamento_carteiras_contas_lancamentos:listar' carteira_slug conta.slug %}">Listar Lançamentos</a>
+</div>
+{% else %}
+<div style="float: left; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button" href="{% url 'gerenciamento_carteiras_contas_lancamentos:criar' carteira_slug conta.slug %}">Criar Primeiro Lançamento</a>
+</div>
+{% endif %}
+<div style="float: right; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button" href="{{ href_voltar }}">Voltar</a>
+</div>
+{% endblock %}

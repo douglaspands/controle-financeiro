@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container">
-        <a class="navbar-brand" href="{% url 'home:index' %}">ControleFinanceiro</a>
+        <a class="navbar-brand" href="{% url 'publico:index' %}">ControleFinanceiro</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
             aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -11,25 +11,17 @@
             <ul class="navbar-nav">
                 {% if request.user.is_authenticated %}
                 <li class="nav-item{{ request|nav_item_active:'carteiras' }}">
-                    <a class="nav-link" href="{% url 'carteiras:listar' %}">Carteiras{% if request|span_sr_only:'carteiras' %} <span class="sr-only">(current)</span>{% endif %}</a>
+                    <a class="nav-link" href="{% url 'gerenciamento:index' %}">Gerenciamento</a>
                 </li>
-                <li class="nav-item{{ request|nav_item_active:'cartoes' }}">
-                    <a class="nav-link" href="{% url 'cartoes:listar' %}">Cartoes{% if request|span_sr_only:'cartoes' %}
-                        <span class="sr-only">(current)</span>{% endif %}</a>
-                </li>
-                <li class="nav-item{{ request|nav_item_active:'despesas' }}">
-                    <a class="nav-link" href="{% url 'despesas:listar' %}">Despesas{% if request|span_sr_only:'despesas' %} <span class="sr-only">(current)</span>{% endif %}</a>
-                </li>
-                <li class="nav-item{{ request|nav_item_active:'registration,autenticacoes' }}">
-                    <a class="nav-link" href="{% url 'autenticacoes:logout_confirmar' %}">
-                        {% if request.user.first_name %}{{ request.user.first_name }}{% else %}{{
-                        request.user.username }}{% endif %}{% if request|span_sr_only:'registration,autenticacoes' %} <span class="sr-only">(current)</span>{% endif %}
+                <li class="nav-item{{ request|nav_item_active:'registration,autenticacao' }}">
+                    <a class="nav-link" href="{% url 'autenticacao:logout_confirmar' %}">
+                        {{ request.user.nome_apresentacao }}{% if request|span_sr_only:'registration,autenticacao' %} <span class="sr-only">(current)</span>{% endif %}
                         > Logout
                     </a>
                 </li>
                 {% else %}
-                <li class="nav-item{{ request|nav_item_active:'registration,autenticacoes' }}">
-                    <a class="nav-link" href="{% url 'autenticacoes:login' %}">Login/Registrar{% if request|span_sr_only:'registration,autenticacoes' %} <span class="sr-only">(current)</span>{% endif %}</a>
+                <li class="nav-item{{ request|nav_item_active:'registration,autenticacao' }}">
+                    <a class="nav-link" href="{% url 'autenticacao:login' %}">Login/Registrar{% if request|span_sr_only:'registration,autenticacao' %} <span class="sr-only">(current)</span>{% endif %}</a>
                 </li>
                 {% endif %}
             </ul>

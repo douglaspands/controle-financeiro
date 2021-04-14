@@ -1,0 +1,43 @@
+{% extends "base/base.html" %}
+{% load transformar_em_texto %}
+{% load humanize %}
+
+{% block titulo %}Cartões{% endblock %}
+
+{% block cabecalho %}
+<div class="container">
+  <h1>Cartão</h1>
+  <p>Detalhamento do cartão registrado.</p>
+</div>
+{% endblock %}
+
+{% block conteudo %}
+<form>
+  <fieldset disabled>
+    <div class="mb-3">
+      <label for="inputTitulo" class="form-label">Nome</label>
+      <input type="text" id="inputTitulo" class="form-control" value="{{ cartao.nome }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputLimite" class="form-label">Limite</label>
+      <input type="text" id="inputLimite" class="form-control" value="{{ cartao.limite|intcomma }}">
+    </div>
+    <div class="mb-3">
+      <label for="inputDiaFechamento" class="form-label">Dia do Fechamento</label>
+      <input type="text" id="inputDiaFechamento" class="form-control" value="{{ cartao.dia_fechamento }}">
+    </div>    
+  </fieldset>
+</form>
+{% if cartao.tem_lancamentos %}
+<div style="float: left; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button" href="{% url 'gerenciamento_carteiras_cartoes_lancamentos:listar' carteira_slug cartao.slug %}">Listar Lançamentos</a>
+</div>
+{% else %}
+<div style="float: left; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button" href="{% url 'gerenciamento_carteiras_cartoes_lancamentos:criar' carteira_slug cartao.slug %}">Criar Primeiro Lançamento</a>
+</div>
+{% endif %}
+<div style="float: right; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button" href="{{ href_voltar }}">Voltar</a>
+</div>
+{% endblock %}

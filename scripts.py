@@ -90,3 +90,8 @@ def command():
     if len(sys.argv) > 1:
         cmd = cmd + ' ' + ' '.join(sys.argv[1:])
     shell_run(cmd)
+
+
+def migrate_remove():
+    shell_run('find . -path "*/migrations/*.py" -not -name "__init__.py" -not -path "./.venv/*" -delete')
+    shell_run('rm -f ./db.sqlite3')

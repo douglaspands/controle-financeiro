@@ -1,0 +1,24 @@
+{% extends "base/base.html" %}
+
+{% block titulo %}PublicoPage{% endblock %}
+
+{% block cabecalho %}
+<div class="container">
+    <h1>Gerenciamento</h1>
+    <p>Comece a controlar suas finanças por aqui.</p>
+</div>
+{% endblock %}
+
+{% block conteudo %}
+<div>
+    {% if request.user.is_authenticated %}
+    <p>
+        {% if tem_carteira %}
+        <a href="{% url 'gerenciamento_carteiras:listar' %}">Listar carteiras</a>
+        {% else %}
+        <a href="{% url 'gerenciamento_carteiras:criar' %}">Criar carteira</a>
+        {% endif %}
+    </p>
+    {% endif %}
+</div>
+{% endblock %}

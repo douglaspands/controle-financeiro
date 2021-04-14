@@ -21,38 +21,41 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY', cast=str)
+SECRET_KEY = config("SECRET_KEY", cast=str)
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ["*"]
 
 # Application definition
 
 MY_APPS = [
-    'autenticacoes',
-    'base',
-    'carteiras',
-    'cartoes',
-    'despesas',
-    'home',
-    'usuarios',
+    "autenticacao",
+    "base",
+    "carteiras",
+    "cartoes",
+    "contas",
+    "gerenciamento",
+    "lancamentos",
+    "pessoas",
+    "publico",
+    "usuarios",
 ]
 
 THIRD_PARTY_APPS = [
-    'crispy_forms',
+    "crispy_forms",
 ]
 
 DJANGO_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.sites',
-    'django.contrib.humanize',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.sites",
+    "django.contrib.humanize",
 ]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + MY_APPS
@@ -61,34 +64,35 @@ SITE_ID = 1
 
 
 MIDDLEWARE = [
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'controle_financeiro.urls'
+ROOT_URLCONF = "controle_financeiro.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'controle_financeiro.wsgi.application'
+WSGI_APPLICATION = "controle_financeiro.wsgi.application"
+ASGI_APPLICATION = "controle_financeiro.asgi.application"
 
 
 # Password validation
@@ -96,16 +100,16 @@ WSGI_APPLICATION = 'controle_financeiro.wsgi.application'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -113,10 +117,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'pt-br'
+LANGUAGE_CODE = "pt-br"
 
 # TIME_ZONE = 'UTC'
-TIME_ZONE = 'America/Sao_Paulo'
+TIME_ZONE = "America/Sao_Paulo"
 
 USE_I18N = True
 
@@ -128,69 +132,62 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
 
 # Logging
 
-LOG_LEVEL = config('DJANGO_LOG_LEVEL', default='INFO', cast=str)
+LOG_LEVEL = config("DJANGO_LOG_LEVEL", default="INFO", cast=str)
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'formatters': {
-        'standard': {
-            'format': '[%(asctime)s][%(levelname)s] %(name)s '
-            '%(filename)s:%(funcName)s:%(lineno)d | %(message)s',
-            'datefmt': '%Y-%m-%d %H:%M:%S'
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "standard": {
+            "format": "[%(asctime)s][%(levelname)s] %(name)s "
+            "%(filename)s:%(funcName)s:%(lineno)d | %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
         },
     },
-    'handlers': {
-        'default': {
-            'level': LOG_LEVEL,
-            'formatter': 'standard',
-            'class': 'logging.StreamHandler',
-            'stream': 'ext://sys.stderr'
+    "handlers": {
+        "default": {
+            "level": LOG_LEVEL,
+            "formatter": "standard",
+            "class": "logging.StreamHandler",
+            "stream": "ext://sys.stderr",
         },
-        'console': {
-            'formatter': 'standard',
-            'class': 'logging.StreamHandler',
+        "console": {
+            "formatter": "standard",
+            "class": "logging.StreamHandler",
         },
-        'null': {
-            'formatter': 'standard',
-            'level': LOG_LEVEL,
-            'class': 'logging.NullHandler'
-        }
+        "null": {
+            "formatter": "standard",
+            "level": LOG_LEVEL,
+            "class": "logging.NullHandler",
+        },
     },
-    'loggers': {
-        '': {
-            'handlers': ['default'],
-            'level': LOG_LEVEL,
-            'propagate': True
+    "loggers": {
+        "": {"handlers": ["default"], "level": LOG_LEVEL, "propagate": True},
+        "django": {
+            "handlers": ["default"],
+            "level": LOG_LEVEL,
         },
-        'django': {
-            'handlers': ['default'],
-            'level': LOG_LEVEL,
+        "django.requests": {
+            "handlers": ["default"],
+            "level": LOG_LEVEL,
         },
-        'django.requests': {
-            'handlers': ['default'],
-            'level': LOG_LEVEL,
+        "django.db.backends": {
+            "handlers": ["default"],
+            "propagate": False,
+            "level": LOG_LEVEL,
         },
-        'django.db.backends': {
-            'handlers': ['default'],
-            'propagate': False,
-            'level': LOG_LEVEL,
-        },
-        'django.template': {
-            'handlers': ['default'],
-            'level': LOG_LEVEL
-        }
+        "django.template": {"handlers": ["default"], "level": LOG_LEVEL},
     },
 }
 
 # CRISPY
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
 # NEW USER MODEL
@@ -200,10 +197,25 @@ AUTH_USER_MODEL = "usuarios.Usuario"
 
 # AUTH
 
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = "/gerenciamento/"
+LOGOUT_REDIRECT_URL = "/"
 
 
 # EMAIL
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
+
+# PRIMARY KEY
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+# DEFAULT PAGINATE BY
+
+REGISTROS_POR_PAGINA = config("REGISTROS_POR_PAGINA", default=25, cast=int)
+
+
+# DEFAULT LOCALE
+
+DEFAULT_LOCALE = "pt_BR.UTF-8"

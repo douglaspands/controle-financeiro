@@ -15,12 +15,8 @@
 <form>
   <fieldset disabled>
     <div class="mb-3">
-      <label for="inputTitulo" class="form-label">Titulo</label>
-      <input type="text" id="inputTitulo" class="form-control" value="{{ cartao.titulo }}">
-    </div>
-    <div class="mb-3">
-      <label for="inputSlug" class="form-label">Slug</label>
-      <input type="text" id="inputSlug" class="form-control" value="{{ cartao.slug }}">
+      <label for="inputTitulo" class="form-label">Nome</label>
+      <input type="text" id="inputTitulo" class="form-control" value="{{ cartao.nome }}">
     </div>
     <div class="mb-3">
       <label for="inputLimite" class="form-label">Limite</label>
@@ -31,24 +27,12 @@
       <input type="text" id="inputDiaFechamento" class="form-control" value="{{ cartao.dia_fechamento }}">
     </div>
     <div class="mb-3">
-      <label for="inputCriadoEm" class="form-label">Criado em</label>
-      <input type="datetime-local" id="inputCriadoEm" class="form-control"
-        value="{{ cartao.criado_em|datetime_para_texto }}">
-    </div>
-    <div class="mb-3">
-      <label for="inputAtualizadoEm" class="form-label">Atualizado em</label>
-      <input type="datetime-local" id="inputAtualizadoEm" class="form-control"
-        value="{{ cartao.atualizado_em|datetime_para_texto }}">
+      <label for="inputPodeParcelar" class="form-label">Pode Parcelar?</label>
+      <input type="text" id="inputPodeParcelar" class="form-control" value="{% if cartao.pode_parcelar %}Sim{% else %}Não{% endif %}">
     </div>
   </fieldset>
 </form>
-<div style="float: left; margin-left: 3px;">
-  <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:editar' cartao.id %}">Editar</a>
-</div>
-<div style="float: left; margin-left: 3px;">
-  <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:excluir' cartao.id %}">Excluir</a>
-</div>
 <div style="float: right; margin-left: 3px;">
-  <a class="btn btn-outline-primary" role="button" href="{% url 'cartoes:listar' %}">Voltar</a>
+  <a class="btn btn-outline-primary" role="button" href="{{ href_voltar }}">Voltar</a>
 </div>
 {% endblock %}

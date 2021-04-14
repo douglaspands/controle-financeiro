@@ -1,27 +1,44 @@
+from typing import Any, Dict
+
 from base.views import LoginRequiredBase
-from carteiras.models import Carteira, Tipo
+from django.conf import settings
+from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
-from django.template.defaultfilters import slugify
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from .forms import CartaoForm
 from .models import Cartao
+from .usecases import criar_novo_cartao
 
 
 class CartaoLista(LoginRequiredBase, ListView):
     model = Cartao
     template_name = "cartoes/cartao_lista.html"
-    fields = ["titulo", "carteira"]
+    fields = ["nome"]
     context_object_name = "cartoes"
-    paginate_by = 20
+    paginate_by = settings.REGISTROS_POR_PAGINA
 
-    def get_queryset(self):
-        return Cartao.objects.select_related("carteira").filter(
-            criador=self.request.user
+    def get_queryset(self, *args, **kwargs) -> QuerySet:
+        return Cartao.objects.select_related(
+            "centro_custo", "centro_custo__carteira"
+        ).filter(
+            centro_custo__carteira__slug=self.kwargs.get("carteira_slug"),
+            centro_custo__carteira__usuario_id=self.request.user.pk,
         )
+
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        context = super().get_context_data(*args, **kwargs)
+        context.update(self.kwargs)
+        context["href_voltar"] = reverse_lazy(
+            "gerenciamento_carteiras:detalhar",
+            kwargs={"slug": self.kwargs.get("carteira_slug")},
+        )
+        if not context.get("cartoes").exists():
+            context["redirecionar"] = context["href_voltar"]
+        return context
 
 
 class CartaoDetalhe(LoginRequiredBase, DetailView):
@@ -29,10 +46,24 @@ class CartaoDetalhe(LoginRequiredBase, DetailView):
     template_name = "cartoes/cartao_detalhe.html"
     context_object_name = "cartao"
 
-    def get_queryset(self):
-        return Cartao.objects.select_related("carteira").filter(
-            criador=self.request.user
+    def get_queryset(self, *args, **kwargs) -> QuerySet:
+        return Cartao.objects.select_related(
+            "centro_custo", "centro_custo__carteira"
+        ).filter(
+            centro_custo__carteira__slug=self.kwargs.get("carteira_slug"),
+            centro_custo__carteira__usuario_id=self.request.user.pk,
         )
+
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        context = super().get_context_data(*args, **kwargs)
+        context.update(self.kwargs)
+        context["href_voltar"] = reverse_lazy(
+            "gerenciamento_carteiras_cartoes:listar",
+            kwargs={
+                "carteira_slug": self.kwargs.get("carteira_slug"),
+            },
+        )
+        return context
 
 
 class CartaoCriar(LoginRequiredBase, CreateView):
@@ -41,29 +72,40 @@ class CartaoCriar(LoginRequiredBase, CreateView):
     template_name = "cartoes/cartao_criar.html"
     context_object_name = "cartao"
 
-    def get_queryset(self):
-        return Cartao.objects.select_related("carteira").filter(
-            criador=self.request.user
+    def get_queryset(self, *args, **kwargs) -> QuerySet:
+        return Cartao.objects.select_related(
+            "centro_custo", "centro_custo__carteira"
+        ).filter(
+            centro_custo__carteira__slug=self.kwargs.get("carteira_slug"),
+            centro_custo__carteira__usuario_id=self.request.user.pk,
         )
 
-    def post(self, request: HttpRequest) -> HttpResponse:
-        form = CartaoForm(request.POST)
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        context = super().get_context_data(*args, **kwargs)
+        context.update(self.kwargs)
+        context["href_voltar"] = reverse_lazy(
+            "gerenciamento_carteiras_cartoes:listar",
+            kwargs={
+                "carteira_slug": self.kwargs.get("carteira_slug"),
+            },
+        )
+        return context
+
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        carteira_slug = kwargs.get("carteira_slug")
+        form = self.form_class(
+            request.POST, queryset=self.get_queryset(*args, **kwargs)
+        )
         if form.is_valid():
-            cartao = form.save(commit=False)
-            cartao.slug = slugify(cartao.titulo)
-            titulo_ = f"Cartão: {cartao.titulo}"
-            slug_ = slugify(titulo_)
-            carteira = Carteira(
-                titulo=titulo_, slug=slug_, tipo=Tipo.objects.get(slug="cartao-credito")
+            criar_novo_cartao(
+                form=form, carteira_slug=carteira_slug, usuario_pk=request.user.id
             )
-            carteira.criador = request.user
-            carteira.save()
-            cartao.carteira = carteira
-            cartao.criador = request.user
-            cartao.save()
-            return redirect("cartoes:listar")
+            return redirect(
+                "gerenciamento_carteiras_cartoes:listar",
+                carteira_slug=carteira_slug,
+            )
         else:
-            return render(request, self.template_name, {"form": form})
+            return render(request, self.template_name, {"form": form, **kwargs})
 
 
 class CartaoAtualizar(LoginRequiredBase, UpdateView):
@@ -72,26 +114,38 @@ class CartaoAtualizar(LoginRequiredBase, UpdateView):
     template_name = "cartoes/cartao_atualizar.html"
     context_object_name = "cartao"
 
-    def get_queryset(self):
-        return Cartao.objects.select_related("carteira").filter(
-            criador=self.request.user
+    def get_queryset(self, *args, **kwargs) -> QuerySet:
+        return Cartao.objects.select_related(
+            "centro_custo", "centro_custo__carteira"
+        ).filter(
+            centro_custo__carteira__slug=self.kwargs.get("carteira_slug"),
+            centro_custo__carteira__usuario_id=self.request.user.pk,
         )
 
-    def post(self, request: HttpRequest, pk: int) -> HttpResponse:
-        instance = get_object_or_404(Cartao, pk=pk)
-        form = CartaoForm(request.POST, instance=instance)
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        context = super().get_context_data(*args, **kwargs)
+        context.update(self.kwargs)
+        context["href_voltar"] = reverse_lazy(
+            "gerenciamento_carteiras_cartoes:listar",
+            kwargs={
+                "carteira_slug": self.kwargs.get("carteira_slug"),
+            },
+        )
+        return context
+
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        instance = get_object_or_404(
+            self.get_queryset(*args, **kwargs), slug=kwargs.get("slug")
+        )
+        form = self.form_class(
+            request.POST, instance=instance, queryset=self.get_queryset(*args, **kwargs)
+        )
         if form.is_valid():
-            cartao = form.save(commit=False)
-            cartao.slug = slugify(cartao.titulo)
-            carteira = cartao.carteira
-            titulo_ = f"Cartão: {cartao.titulo}"
-            slug_ = slugify(titulo_)
-            carteira.titulo = titulo_
-            carteira.slug = slug_
-            carteira.save()
-            cartao.carteira = carteira
-            cartao.save()
-            return redirect("cartoes:listar")
+            form.save()
+            return redirect(
+                "gerenciamento_carteiras_cartoes:listar",
+                carteira_slug=kwargs.get("carteira_slug"),
+            )
         else:
             return render(request, self.template_name, {"form": form})
 
@@ -101,9 +155,35 @@ class CartaoExcluir(LoginRequiredBase, DeleteView):
     form_class = CartaoForm
     template_name = "cartoes/cartao_excluir.html"
     context_object_name = "cartao"
-    success_url = reverse_lazy("cartoes:listar")
 
-    def get_queryset(self):
-        return Cartao.objects.select_related("carteira").filter(
-            criador=self.request.user
+    def get_queryset(self, *args, **kwargs) -> QuerySet:
+        return Cartao.objects.select_related(
+            "centro_custo", "centro_custo__carteira"
+        ).filter(
+            centro_custo__carteira__slug=self.kwargs.get("carteira_slug"),
+            centro_custo__carteira__usuario_id=self.request.user.pk,
         )
+
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        context = super().get_context_data(*args, **kwargs)
+        context.update(self.kwargs)
+        context["href_voltar"] = reverse_lazy(
+            "gerenciamento_carteiras_cartoes:listar",
+            kwargs={
+                "carteira_slug": self.kwargs.get("carteira_slug"),
+            },
+        )
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "gerenciamento_carteiras_cartoes:listar",
+            kwargs={
+                "carteira_slug": self.kwargs.get("carteira_slug"),
+            },
+        )
+
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        cartao = self.get_queryset(*args, **kwargs).get(slug=kwargs.get("slug"))
+        cartao.centro_custo.delete()
+        return redirect(self.get_success_url())

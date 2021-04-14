@@ -4,27 +4,27 @@ from django.views.generic.edit import CreateView, DeleteView, UpdateView
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpRequest, HttpResponse
 
-from .forms import DespesaForm
-from .models import Despesa, Categoria
+from .forms import LancamentoForm
+from .models import Lancamento, Categoria
 
 
-class DespesaLista(ListView):
-    model = Despesa
-    template_name = 'despesas/despesa_lista.html'
+class LancamentoLista(ListView):
+    model = Lancamento
+    template_name = 'lancamentos/Lancamento_lista.html'
     fields = ['categorias', 'descricao', 'valor', 'datahora']
 
 
-class DespesaDetalhe(View):
+class LancamentoDetalhe(View):
 
-    template_name = 'despesas/despesa_detalhe.html'
+    template_name = 'lancamentos/Lancamento_detalhe.html'
 
-    def get(self, request: HttpRequest, pk: int = None, form: DespesaForm = None) -> HttpResponse:
+    def get(self, request: HttpRequest, pk: int = None, form: LancamentoForm = None) -> HttpResponse:
         if not form:
             form_args = {}
             if pk:
-                form_args['despesa'] = get_object_or_404(
-                    Despesa.objects.prefetch_related('Categoria'), pk=pk)
-            form = DespesaForm(**form_args)
+                form_args['Lancamento'] = get_object_or_404(
+                    Lancamento.objects.prefetch_related('Categoria'), pk=pk)
+            form = LancamentoForm(**form_args)
         context = {
             'form': form,
             'categorias': Categoria.objects.all()
@@ -32,41 +32,41 @@ class DespesaDetalhe(View):
         return render(request, self.template_name, context)
 
 
-class DespesaCriar(DespesaDetalhe):
+class LancamentoCriar(LancamentoDetalhe):
 
-    template_name = 'despesas/despesa_criar.html'
+    template_name = 'lancamentos/Lancamento_criar.html'
 
     def post(self, request: HttpRequest) -> HttpResponse:
-        form = DespesaForm(request.POST)
+        form = LancamentoForm(request.POST)
         if form.is_valid():
             form.save()
-            return reverse_lazy('despesas:listar')
+            return reverse_lazy('lancamentos:listar')
         else:
             return self.get(request, form=form)
 
-# class DespesaDetalhe(DetailView):
-#     model = Despesa
-#     template_name = 'despesas/despesa_detalhe.html'
+# class LancamentoDetalhe(DetailView):
+#     model = Lancamento
+#     template_name = 'lancamentos/Lancamento_detalhe.html'
 #     fields = ['categorias', 'descricao', 'valor', 'datahora']
 
 
-# class DespesaCriar(CreateView):
-#     model = Despesa
-#     template_name = 'despesas/despesa_criar.html'
+# class LancamentoCriar(CreateView):
+#     model = Lancamento
+#     template_name = 'lancamentos/Lancamento_criar.html'
 #     # fields = ['categorias', 'descricao', 'valor', 'datahora']
-#     success_url = reverse_lazy('despesas:listar')
-#     form_class = DespesaForm
+#     success_url = reverse_lazy('lancamentos:listar')
+#     form_class = LancamentoForm
 
 
-class DespesaAtualizar(UpdateView):
-    model = Despesa
-    template_name = 'despesas/despesa_atualizar.html'
+class LancamentoAtualizar(UpdateView):
+    model = Lancamento
+    template_name = 'lancamentos/Lancamento_atualizar.html'
     fields = ['categorias', 'descricao', 'valor', 'datahora']
-    success_url = reverse_lazy('despesas:listar')
+    success_url = reverse_lazy('lancamentos:listar')
 
 
-class DespesaExcluir(DeleteView):
-    model = Despesa
-    template_name = 'despesas/despesa_excluir.html'
+class LancamentoExcluir(DeleteView):
+    model = Lancamento
+    template_name = 'lancamentos/Lancamento_excluir.html'
     fields = ['categorias', 'descricao', 'valor', 'datahora']
-    success_url = reverse_lazy('despesas:listar')
+    success_url = reverse_lazy('lancamentos:listar')
