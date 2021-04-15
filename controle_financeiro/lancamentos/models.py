@@ -86,7 +86,6 @@ class Despesa(BaseModel):
     valor_total = models.DecimalField(max_digits=11, decimal_places=2)
     datahora = models.DateTimeField()
     quantidade_parcelas = models.IntegerField(default=1)
-    encerrado = models.BooleanField(default=False)
     situacao = models.CharField(
         max_length=20, choices=SITUACOES_ESCOLHAS, default=SITUACAO_ABERTO
     )

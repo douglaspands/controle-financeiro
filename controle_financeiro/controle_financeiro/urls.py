@@ -36,6 +36,10 @@ urlpatterns = [
         "gerenciamento/carteiras/<slug:carteira_slug>/contas/",
         include("contas.urls", namespace="gerenciamento_carteiras_contas"),
     ),
+    path(
+        "gerenciamento/carteiras/<slug:carteira_slug>/lancamentos/",
+        include("lancamentos.urls", namespace="gerenciamento_carteiras_lancamentos"),
+    ),
 ]
 
 if settings.SETTING_NAME in ["local", "test"]:

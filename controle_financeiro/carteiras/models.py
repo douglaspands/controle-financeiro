@@ -24,6 +24,10 @@ class Carteira(BaseModel):
         return f"{self.nome}"
 
     @property
+    def tem_centro_custos(self) -> bool:
+        return self.centro_custos.exists()
+
+    @property
     def tem_cartoes(self) -> bool:
         return self.centro_custos.filter(tipo=CentroCusto.CARTAO).exists()
 

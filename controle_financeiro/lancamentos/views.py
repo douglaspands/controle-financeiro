@@ -5,18 +5,18 @@ from django.conf import settings
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, View
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
-from .forms import LancamentoForm
+from .forms import DespesaForm, LancamentoForm, ReceitaForm
 from .models import Lancamento
 
 
 class LancamentoLista(LoginRequiredBase, ListView):
     model = Lancamento
-    template_name = 'lancamentos/lancamento_lista.html'
-    context_object_name = 'lancamentos'
-    fields = ['categorias', 'descricao', 'valor', 'datahora', 'carteira']
+    template_name = "lancamentos/lancamento_lista.html"
+    context_object_name = "lancamentos"
+    fields = ["categorias", "descricao", "valor", "datahora", "carteira"]
     paginate_by = settings.REGISTROS_POR_PAGINA
 
     def get_queryset(self, *args, **kwargs):
@@ -38,11 +38,11 @@ class LancamentoLista(LoginRequiredBase, ListView):
 
 class LancamentoDetalhe(LoginRequiredBase, DetailView):
     model = Lancamento
-    template_name = 'lancamentos/lancamento_detalhe.html'
-    context_object_name = 'lancamento'
+    template_name = "lancamentos/lancamento_detalhe.html"
+    context_object_name = "lancamento"
 
     def get_queryset(self):
-        return Lancamento.objects.prefetch_related('categorias').filter(
+        return Lancamento.objects.prefetch_related("categorias").filter(
             criador=self.request.user
         )
 
@@ -52,48 +52,48 @@ class LancamentoDetalhe(LoginRequiredBase, DetailView):
         return context
 
 
-class LancamentoCriar(LoginRequiredBase, CreateView):
-    model = Lancamento
-    form_class = LancamentoForm
-    template_name = 'lancamentos/lancamento_criar.html'
-    success_url = reverse_lazy('lancamentos:listar')
-    context_object_name = 'lancamento'
+class LancamentoCriar(LoginRequiredBase, View):
+    template_name = "lancamentos/lancamento_criar.html"
 
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update(self.kwargs)
-        return context
+    def get_success_url(self):
+        return reverse_lazy(
+            "gerenciamento_carteiras_lancamentos:listar",
+            kwargs={"carteira_slug": self.kwargs.get("carteira_slug")},
+        )
 
-    # def get_queryset(self):
-    #     return Lancamento.objects.prefetch_related('categorias').filter(
-    #         criador=self.request.user
-    #     )
+    def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        context = {
+            "lancamento_form": LancamentoForm(prefix="lancamento"),
+            "receita_form": ReceitaForm(prefix="receita"),
+            "despesa_form": DespesaForm(prefix="despesa"),
+            "tipos_lancamento": ",".join(
+                [tipo[1] for tipo in Lancamento.TIPOS_ESCOLHAS]
+            ),
+        }
+        context["href_voltar"] = reverse_lazy(
+            "gerenciamento_carteiras:detalhar",
+            kwargs={"slug": kwargs.get("carteira_slug")},
+        )
+        return render(request, self.template_name, {**context, **kwargs})
 
-    # def get_initial(self):
-    #     initial = super(LancamentoCriar, self).get_initial()
-    #     initial.update({'parcelado': 1, 'datahora': datetime.now()})
-    #     return initial
-
-    # def post(self, request: HttpRequest) -> HttpResponse:
-    #     form = LancamentoForm(request.POST)
-    #     if form.is_valid():
-    #         Lancamento = form.save(commit=False)
-    #         Lancamento.criador = request.user
-    #         Lancamento.save()
-    #         return redirect('lancamentos:listar')
-    #     else:
-    #         return render(request, self.template_name, {'form': form})
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        lancamento_form = LancamentoForm(request.POST)
+        if lancamento_form.is_valid():
+            print(lancamento_form.cleaned_data["tipo"])
+        else:
+            print(lancamento_form.errors)
+        return redirect(self.get_success_url())
 
 
 class LancamentoAtualizar(LoginRequiredBase, UpdateView):
     model = Lancamento
     form_class = LancamentoForm
-    template_name = 'lancamentos/lancamento_atualizar.html'
-    success_url = reverse_lazy('lancamentos:listar')
-    context_object_name = 'lancamento'
+    template_name = "lancamentos/lancamento_atualizar.html"
+    success_url = reverse_lazy("lancamentos:listar")
+    context_object_name = "lancamento"
 
     def get_queryset(self):
-        return Lancamento.objects.prefetch_related('categorias').filter(
+        return Lancamento.objects.prefetch_related("categorias").filter(
             criador=self.request.user
         )
 
@@ -106,8 +106,8 @@ class LancamentoAtualizar(LoginRequiredBase, UpdateView):
 class LancamentoExcluir(LoginRequiredBase, DeleteView):
     model = Lancamento
     form_class = LancamentoForm
-    template_name = 'lancamentos/lancamento_excluir.html'
-    context_object_name = 'lancamento'
+    template_name = "lancamentos/lancamento_excluir.html"
+    context_object_name = "lancamento"
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
