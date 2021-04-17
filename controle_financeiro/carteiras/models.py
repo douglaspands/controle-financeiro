@@ -1,6 +1,6 @@
 from base.models import BaseModel
-from usuarios.models import Usuario
 from django.db import models
+from usuarios.models import Usuario
 
 
 class Carteira(BaseModel):
@@ -14,7 +14,10 @@ class Carteira(BaseModel):
 
     class Meta:
         ordering = ["nome"]
-        unique_together = (("usuario_id", "id"), ("usuario_id", "slug"),)
+        unique_together = (
+            ("usuario_id", "id"),
+            ("usuario_id", "slug"),
+        )
         indexes = [
             models.Index(fields=["usuario_id", "id"]),
             models.Index(fields=["usuario_id", "slug"]),
@@ -34,6 +37,10 @@ class Carteira(BaseModel):
     @property
     def tem_contas(self) -> bool:
         return self.centro_custos.filter(tipo=CentroCusto.CONTA).exists()
+
+    @property
+    def tem_lancamentos(self) -> bool:
+        return self.centro_custos.exclude(lancamentos__isnull=True).exists()
 
 
 class CentroCusto(BaseModel):
@@ -58,6 +65,9 @@ class CentroCusto(BaseModel):
             models.Index(fields=["carteira_id", "id"]),
         ]
 
+    def __str__(self) -> str:
+        return self.descricao
+
     @property
     def e_cartao(self) -> bool:
         return hasattr(self, "cartao")
@@ -74,4 +84,8 @@ class CentroCusto(BaseModel):
             descricao = f"Conta {str(self.conta)}"
         else:
             descricao = "N/A"
-        return descricao[:20]
+        return descricao
+
+    @property
+    def tem_lancamentos(self) -> bool:
+        return self.lancamentos.exists()

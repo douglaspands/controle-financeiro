@@ -1,6 +1,5 @@
 {% extends "base/base.html" %}
 {% load transformar_em_texto %}
-{% load Lancamento_calculos %}
 {% load humanize %}
 
 {% block titulo %}lancamentos{% endblock %}
@@ -15,7 +14,7 @@
 {% block conteudo %}
 <div style="float: right;">
     <p>
-        <a class="btn btn-primary" role="button" href="{% url 'lancamentos:criar' %}">Criar</a>
+        <a class="btn btn-primary" role="button" href="{% url 'gerenciamento_carteiras_lancamentos:criar' carteira_slug %}">Criar</a>
     </p>
 </div>
 <table class="table">
@@ -29,19 +28,20 @@
     </thead>
     <tbody>
         {% for lancamento in lancamentos %}
-        <tr onclick="window.location='{% url 'lancamentos:detalhar' lancamento.id %}'">
+        <tr onclick="window.location='{% url 'gerenciamento_carteiras_lancamentos:detalhar' carteira_slug lancamento.id %}'">
             <td>{{ lancamento.datahora|date:'d/m/Y H:i' }}</td>
-            <td>{{ lancamento.descricao|truncatechars:14 }}</td>
-            <td>{{ lancamento|calcular_parcela|intcomma }}</td>
+            <td>{{ lancamento.descricao }}</td>
+            <td>R$ {{ lancamento.valor|intcomma }}</td>
             <td>
-                <a href="{% url 'lancamentos:editar' lancamento.id %}">editar</a>
-                <a href="{% url 'lancamentos:excluir' Lancamento.id %}">excluir</a>
+                <a href="{% url 'gerenciamento_carteiras_lancamentos:editar' carteira_slug lancamento.id %}">editar</a>
+                <a href="{% url 'gerenciamento_carteiras_lancamentos:excluir' carteira_slug lancamento.id %}">excluir</a>
             </td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
-
 {% include 'base/paginacao.html' %}
-
+<div style="float: right; margin-left: 3px;">
+    <a class="btn btn-outline-primary" role="button" href="{{ href_voltar }}">Voltar</a>
+</div>
 {% endblock %}

@@ -31,9 +31,12 @@
 
 {% block script %}
 <script>
-    const listaTipos = "{{ tipos_lancamento }}".toLowerCase().split(",");
+    const listaTipos = "{{ tipos_lancamento }}".split(",");
     const pesquisaCampoFormulario = "form input, form label, form select";
+    const centroCusto = document.getElementById("div_id_centro_custo");
     const visibilidadeFormulario = (tipoEscolhido=null) => {
+        if (tipoEscolhido) centroCusto.hidden = false;
+        else centroCusto.hidden = true;
         for (const elem of document.querySelectorAll(pesquisaCampoFormulario)){
             for(const tipo of listaTipos){
                 for (const attrName of ["name", "for"]){
@@ -52,10 +55,11 @@
             }        
         }
     };
-    visibilidadeFormulario();
-    const cateiraTipo = document.getElementById("id_lancamento-tipo");
+    const cateiraTipo = document.getElementById("id_tipo");
+    const primeiroValor = cateiraTipo.options[cateiraTipo.selectedIndex].value;
+    visibilidadeFormulario(primeiroValor);
     cateiraTipo.addEventListener("change", (event) => {
-        const tipoEscolhido = (event.target.value || "").toLowerCase();
+        const tipoEscolhido = (event.target.value || "");
         visibilidadeFormulario(tipoEscolhido);
     });
 </script>

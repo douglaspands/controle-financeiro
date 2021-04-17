@@ -9,27 +9,53 @@ from carteiras.models import CentroCusto
 class LancamentoForm(forms.ModelForm):
 
     id = forms.IntegerField(required=False, widget=forms.HiddenInput())
+    centro_custo_id = forms.ChoiceField(
+        widget=forms.Select, required=True, initial=None, label="Fonte"
+    )
 
     class Meta:
         model = Lancamento
-        fields = ["id", "tipo", "categorias", "centro_custo"]
+        fields = ["id", "tipo", "categorias", "centro_custo_id"]
         labels = {
             "tipo": "Tipo",
             "categorias": "Categorias",
-            "centro_custo": "Centro de Custo"
         }
 
     def __init__(self, *args, **kwargs):
 
         carteira_slug = kwargs.pop("carteira_slug", None)
         usuario_pk = kwargs.pop("usuario_pk", None)
+        centro_custo_pk = kwargs.pop("centro_custo_pk", None)
 
         super().__init__(*args, **kwargs)
 
-        self.fields["centro_custo"].queryset = CentroCusto.objects.filter(
-            carteira__slug=carteira_slug,
-            carteira__usuario_id=usuario_pk,
-        ).all()
+        choices = [(None, "---------")]
+        for tipo_id, tipo_desc in sorted(CentroCusto.TIPOS_ESCOLHAS):
+            choice = (
+                tipo_desc,
+                [
+                    (cc.pk, cc.descricao)
+                    for cc in CentroCusto.objects.filter(
+                        carteira__slug=carteira_slug,
+                        carteira__usuario_id=usuario_pk,
+                        tipo=tipo_id,
+                    ).all()
+                ],
+            )
+            if len(choice[1]) > 0:
+                choices.append(choice)
+
+        self.fields["centro_custo_id"].initial = centro_custo_pk
+        self.fields["centro_custo_id"].label = "Fonte"
+        self.fields["centro_custo_id"].choices = choices
+
+    # def clean_centro_custo_id(self):
+    #     if not self.cleaned_data["centro_custo_id"] or not self.cleaned_data["centro_custo_id"].isdigit():
+    #         raise ValidationError("Favor selecione uma opção valida!")
+    #     self.cleaned_data["centro_custo_id"] = int(self.cleaned_data["centro_custo_id"])
+
+    def clean(self):
+        self.cleaned_data["centro_custo_id"] = int(self.cleaned_data["centro_custo_id"])
 
 
 class ReceitaForm(forms.ModelForm):

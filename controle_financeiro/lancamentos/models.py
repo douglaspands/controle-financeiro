@@ -1,3 +1,6 @@
+from datetime import datetime
+from decimal import Decimal
+
 from base.models import BaseModel
 from carteiras.models import CentroCusto
 from django.core.validators import MinValueValidator
@@ -38,17 +41,45 @@ class Lancamento(BaseModel):
     )
 
     def __str__(self):
-        return "Lançamento - {}".format(
-            "Receita" if self.tipo == self.RECEITA else "Despesa"
-        )
+        return self.descricao
 
     @property
     def e_despesa(self) -> bool:
-        return bool(self.despesa)
+        return hasattr(self, "despesa")
 
     @property
     def e_receita(self) -> bool:
-        return bool(self.receita)
+        return hasattr(self, "receita")
+
+    @property
+    def descricao(self) -> str:
+        if self.e_despesa:
+            descricao = f"Despesa {str(self.despesa)}"
+        elif self.e_receita:
+            descricao = f"Receita {str(self.receita)}"
+        else:
+            descricao = "N/A"
+        return descricao
+
+    @property
+    def valor(self) -> Decimal:
+        if self.e_despesa:
+            valor = self.despesa.valor_total * -1
+        elif self.e_receita:
+            valor = self.receita.valor_total
+        else:
+            valor = Decimal("0.0")
+        return valor
+
+    @property
+    def datahora(self) -> datetime:
+        if self.e_despesa:
+            datahora = self.despesa.datahora
+        elif self.e_receita:
+            datahora = self.receita.datahora
+        else:
+            datahora = None
+        return datahora
 
 
 class Receita(BaseModel):
