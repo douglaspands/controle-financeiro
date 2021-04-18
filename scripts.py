@@ -20,7 +20,7 @@ def runserver():
 def test(accept_args=True):
     cmd = ("coverage run "
            "--omit=*/venv/*,*/migrations/*,*/tests/*,*/settings/* "
-           "--source='.' manage.py test --settings=settings.test")
+           "--source='.' manage.py test --settings=controle_financeiro.settings.test")
     if accept_args is True:
         if len(sys.argv) > 1:
             cmd = cmd + ' ' + ' '.join(sys.argv[1:])

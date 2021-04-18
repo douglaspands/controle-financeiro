@@ -77,13 +77,13 @@ class LancamentoCriar(LoginRequiredBase, View):
                 ),
             ),
             "receita_form": kwargs.pop(
-                "receita_form", ReceitaForm(prefix=Lancamento.RECEITA)
+                "receita_form", ReceitaForm(prefix=Lancamento.RECEITA.lower())
             ),
             "despesa_form": kwargs.pop(
-                "despesa_form", DespesaForm(prefix=Lancamento.DESPESA)
+                "despesa_form", DespesaForm(prefix=Lancamento.DESPESA.lower())
             ),
             "tipos_lancamento": ",".join(
-                [tipo[0] for tipo in Lancamento.TIPOS_ESCOLHAS]
+                [tipo[0].lower() for tipo in Lancamento.TIPOS_ESCOLHAS]
             ),
             "href_voltar": reverse_lazy(
                 "gerenciamento_carteiras:detalhar",
