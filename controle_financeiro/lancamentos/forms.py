@@ -7,6 +7,7 @@ from carteiras.models import CentroCusto
 
 
 class LancamentoForm(forms.ModelForm):
+    prefix = "lancamento"
 
     id = forms.IntegerField(required=False, widget=forms.HiddenInput())
 
@@ -16,7 +17,7 @@ class LancamentoForm(forms.ModelForm):
         labels = {
             "tipo": "Tipo",
             "categorias": "Categorias",
-            "centro_custo": "Centro de Custo"
+            "centro_custo": "Centro de Custo",
         }
 
     def __init__(self, *args, **kwargs):
@@ -33,6 +34,7 @@ class LancamentoForm(forms.ModelForm):
 
 
 class ReceitaForm(forms.ModelForm):
+    prefix = "receita"
 
     id = forms.IntegerField(required=False, widget=forms.HiddenInput())
     valor_total = MonetaryField(required=True)
@@ -53,6 +55,7 @@ class ReceitaForm(forms.ModelForm):
 
 
 class DespesaForm(forms.ModelForm):
+    prefix = "despesa"
 
     id = forms.IntegerField(required=False, widget=forms.HiddenInput())
     valor_total = MonetaryField(required=True)

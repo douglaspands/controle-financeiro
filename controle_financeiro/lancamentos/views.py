@@ -77,13 +77,13 @@ class LancamentoCriar(LoginRequiredBase, View):
                 ),
             ),
             "receita_form": kwargs.pop(
-                "receita_form", ReceitaForm(prefix=Lancamento.RECEITA.lower())
+                "receita_form", ReceitaForm()
             ),
             "despesa_form": kwargs.pop(
-                "despesa_form", DespesaForm(prefix=Lancamento.DESPESA.lower())
+                "despesa_form", DespesaForm()
             ),
             "tipos_lancamento": ",".join(
-                [tipo[0].lower() for tipo in Lancamento.TIPOS_ESCOLHAS]
+                [tipo.prefix for tipo in (ReceitaForm, DespesaForm)]
             ),
             "href_voltar": reverse_lazy(
                 "gerenciamento_carteiras:detalhar",
@@ -100,7 +100,7 @@ class LancamentoCriar(LoginRequiredBase, View):
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         contexto_erro = {}
-        carteira_slug = kwargs.get("carteira_slug")
+        carteira_slug = kwargs["carteira_slug"]
         usuario_pk = request.user.pk
 
         lancamento_form = LancamentoForm(
@@ -115,7 +115,7 @@ class LancamentoCriar(LoginRequiredBase, View):
             not contexto_erro
             and lancamento_form.cleaned_data["tipo"] == Lancamento.RECEITA
         ):
-            receita_form = ReceitaForm(request.POST, prefix=Lancamento.RECEITA)
+            receita_form = ReceitaForm(request.POST)
             if not receita_form.is_valid():
                 contexto_erro["receita_form"] = receita_form
             else:
@@ -130,7 +130,7 @@ class LancamentoCriar(LoginRequiredBase, View):
             not contexto_erro
             and lancamento_form.cleaned_data["tipo"] == Lancamento.DESPESA
         ):
-            despesa_form = DespesaForm(request.POST, prefix=Lancamento.DESPESA)
+            despesa_form = DespesaForm(request.POST)
             if not despesa_form.is_valid():
                 contexto_erro["despesa_form"] = despesa_form
             else:

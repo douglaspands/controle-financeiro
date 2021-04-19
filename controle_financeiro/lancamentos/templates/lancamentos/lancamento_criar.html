@@ -33,8 +33,9 @@
 <script>
     const listaTipos = "{{ tipos_lancamento }}".split(",");
     const pesquisaCampoFormulario = "form input, form label, form select";
-    const centroCusto = document.getElementById("div_id_centro_custo");
-    const visibilidadeFormulario = (tipoEscolhido=null) => {
+    const centroCusto = document.getElementById("div_id_lancamento-centro_custo");
+    const visibilidadeFormulario = (tipoEscolhido="") => {
+        tipoEscolhido = tipoEscolhido.toLowerCase();
         if (tipoEscolhido) centroCusto.hidden = false;
         else centroCusto.hidden = true;
         for (const elem of document.querySelectorAll(pesquisaCampoFormulario)){
@@ -55,7 +56,7 @@
             }        
         }
     };
-    const cateiraTipo = document.getElementById("id_tipo");
+    const cateiraTipo = document.getElementById("id_lancamento-tipo");
     const primeiroValor = cateiraTipo.options[cateiraTipo.selectedIndex].value;
     visibilidadeFormulario(primeiroValor);
     cateiraTipo.addEventListener("change", (event) => {
