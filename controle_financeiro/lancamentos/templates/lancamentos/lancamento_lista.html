@@ -33,7 +33,6 @@
             <td>{{ lancamento.descricao }}</td>
             <td>R$ {{ lancamento.valor|intcomma }}</td>
             <td>
-                <a href="{% url 'gerenciamento_carteiras_lancamentos:editar' carteira_slug lancamento.id %}">editar</a>
                 <a href="{% url 'gerenciamento_carteiras_lancamentos:excluir' carteira_slug lancamento.id %}">excluir</a>
             </td>
         </tr>

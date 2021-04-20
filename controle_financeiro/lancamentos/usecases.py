@@ -47,9 +47,9 @@ def criar_nova_despesa(
         lancamento = lancamento_form.save(commit=False)
         lancamento.carteira = Carteira.objects.get(slug=carteira_slug, usuario_id=usuario_pk)
         lancamento.save()
-        receita = despesa_form.save(commit=False)
-        receita.lancamento = lancamento
-        receita.save()
+        despesa = despesa_form.save(commit=False)
+        despesa.lancamento = lancamento
+        despesa.save()
     except Exception as error:
         lancamento.delete()
         raise error
