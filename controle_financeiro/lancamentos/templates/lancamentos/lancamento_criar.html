@@ -36,14 +36,15 @@
     const centroCustoGrupo = document.getElementById("div_id_lancamento-centro_custo");
     const centroCusto = document.getElementById("id_lancamento-centro_custo");
     const cateiraTipo = document.getElementById("id_lancamento-tipo");
-    const visibilidadeParcela = (tipo="") => {
-        const e_cartao = tipo.indexOf("Cartão") !== -1;
-        const e_despesa =  cateiraTipo.options[cateiraTipo.selectedIndex].innerText === "Despesa";
+    const visibilidadeParcela = () => {
+        const tipo = centroCusto.options[centroCusto.selectedIndex];
+        const aceitaParcelado = tipo.hasAttribute("pode-parcelar");
+        const e_despesa =  (cateiraTipo.options[cateiraTipo.selectedIndex].innerText).toUpperCase() === "DESPESA";
         if (e_despesa) {
             const idParcela = "id_despesa-quantidade_parcelas";
             const parcelaLabel = document.querySelector(`label[for="${idParcela}"]`);
             const parcelaInput = document.getElementById(idParcela);
-            if (e_cartao){
+            if (aceitaParcelado){
                 parcelaLabel.hidden = false;
                 parcelaInput.hidden = false;
             } else {
@@ -53,10 +54,10 @@
             }
         }
     }
-    const visibilidadeFormulario = (tipoEscolhido = "") => {
-        tipoEscolhido = tipoEscolhido.toLowerCase();
-        if (tipoEscolhido) centroCustoGrupo.hidden = false;
-        else centroCustoGrupo.hidden = true;
+    const visibilidadeFormulario = () => {
+        const tipoSelecionado = cateiraTipo.options[cateiraTipo.selectedIndex];
+        centroCustoGrupo.hidden = tipoSelecionado.value? false: true;
+        const tipoEscolhido = (tipoSelecionado.text || "").toLowerCase();
         for (const elem of document.querySelectorAll(pesquisaCampoFormulario)) {
             for (const tipo of listaTipos) {
                 for (const attrName of ["name", "for"]) {
@@ -74,16 +75,14 @@
                 }
             }
         }
-        visibilidadeParcela()
+        visibilidadeParcela();
     };
-    visibilidadeFormulario(cateiraTipo.options[cateiraTipo.selectedIndex].value);
+    visibilidadeFormulario();
     cateiraTipo.addEventListener("change", (event) => {
-        const tipoEscolhido = (event.target.value || "");
-        visibilidadeFormulario(tipoEscolhido);
+        visibilidadeFormulario();
     });
     centroCusto.addEventListener("change", (event) => {
-        const tipo = centroCusto.options[centroCusto.selectedIndex].text;
-        visibilidadeParcela(tipo);
+        visibilidadeParcela();
     });
 </script>
 {% endblock %}

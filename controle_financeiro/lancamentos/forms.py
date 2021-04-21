@@ -1,9 +1,27 @@
 from base.forms.monetary import MonetaryField
+from carteiras.models import CentroCusto
 from django import forms
-from django.core.exceptions import ValidationError
 
 from .models import Despesa, Lancamento, Receita
-from carteiras.models import CentroCusto
+
+
+class CentroCustoAttrs(forms.Select):
+    def create_option(
+        self, name, value, label, selected, index, subindex=None, attrs=None
+    ):
+        option = super().create_option(
+            name, value, label, selected, index, subindex, attrs
+        )
+        if value:
+            centro_custo = value.instance
+            option["attrs"].update(
+                {
+                    "pode-parcelar": centro_custo.pode_parcelar,
+                    "e-cartao": centro_custo.e_cartao,
+                    "e-conta": centro_custo.e_conta,
+                }
+            )
+        return option
 
 
 class LancamentoForm(forms.ModelForm):
@@ -19,6 +37,7 @@ class LancamentoForm(forms.ModelForm):
             "categorias": "Categorias",
             "centro_custo": "Centro de Custo",
         }
+        widgets = {"centro_custo": CentroCustoAttrs}
 
     def __init__(self, *args, **kwargs):
 
@@ -68,14 +87,12 @@ class DespesaForm(forms.ModelForm):
             "valor_total",
             "datahora",
             "quantidade_parcelas",
-            "situacao",
         ]
         labels = {
             "tipo": "Nome",
             "valor_total": "Valor Total",
             "datahora": "Data e Hora",
             "quantidade_parcelas": "Qtde. Parcelas",
-            "situacao": "Situação",
         }
         widgets = {
             "datahora": forms.DateTimeInput(

@@ -45,15 +45,15 @@ class Carteira(BaseModel):
 
 class CentroCusto(BaseModel):
 
-    CONTA = "CONTA"
-    CARTAO = "CARTAO"
+    CONTA = 1
+    CARTAO = 2
 
     TIPOS_ESCOLHAS = [
         (CONTA, "Conta"),
         (CARTAO, "Cartão"),
     ]
 
-    tipo = models.CharField(max_length=20, choices=TIPOS_ESCOLHAS)
+    tipo = models.IntegerField(choices=TIPOS_ESCOLHAS)
 
     carteira = models.ForeignKey(
         Carteira, on_delete=models.CASCADE, related_name="centro_custos"
@@ -89,3 +89,11 @@ class CentroCusto(BaseModel):
     @property
     def tem_lancamentos(self) -> bool:
         return self.lancamentos.exists()
+
+    @property
+    def pode_parcelar(self) -> bool:
+        if self.e_cartao:
+            pode_parcelar = self.cartao.pode_parcelar
+        else:
+            pode_parcelar = False
+        return pode_parcelar

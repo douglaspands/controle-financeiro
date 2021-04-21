@@ -25,15 +25,15 @@ class Categoria(BaseModel):
 
 class Lancamento(BaseModel):
 
-    RECEITA = "RECEITA"
-    DESPESA = "DESPESA"
+    RECEITA = 1
+    DESPESA = 2
 
     TIPOS_ESCOLHAS = [
         (RECEITA, "Receita"),
         (DESPESA, "Despesa"),
     ]
 
-    tipo = models.CharField(max_length=10, choices=TIPOS_ESCOLHAS)
+    tipo = models.IntegerField(choices=TIPOS_ESCOLHAS)
     categorias = models.ManyToManyField(Categoria, blank=True)
 
     centro_custo = models.ForeignKey(
@@ -101,10 +101,10 @@ class Receita(BaseModel):
 
 class Despesa(BaseModel):
 
-    SITUACAO_ABERTO = "ABERTO"
-    SITUACAO_PAGO = "PAGO"
-    SITUACAO_CANCELADO = "CANCELADO"
-    SITUACAO_ESTORNADO = "ESTORNADO"
+    SITUACAO_ABERTO = 1
+    SITUACAO_PAGO = 2
+    SITUACAO_CANCELADO = 3
+    SITUACAO_ESTORNADO = 4
 
     SITUACOES_ESCOLHAS = [
         (SITUACAO_ABERTO, "Em Aberto"),
@@ -117,8 +117,8 @@ class Despesa(BaseModel):
     valor_total = models.DecimalField(max_digits=11, decimal_places=2)
     datahora = models.DateTimeField()
     quantidade_parcelas = models.IntegerField(default=1)
-    situacao = models.CharField(
-        max_length=20, choices=SITUACOES_ESCOLHAS, default=SITUACAO_ABERTO
+    situacao = models.IntegerField(
+        choices=SITUACOES_ESCOLHAS, default=SITUACAO_ABERTO
     )
 
     lancamento = models.OneToOneField(
@@ -134,10 +134,10 @@ class Despesa(BaseModel):
 
 class Parcela(BaseModel):
 
-    SITUACAO_ABERTO = "ABERTO"
-    SITUACAO_PAGO = "PAGO"
-    SITUACAO_CANCELADO = "CANCELADO"
-    SITUACAO_ESTORNADO = "ESTORNADO"
+    SITUACAO_ABERTO = 1
+    SITUACAO_PAGO = 2
+    SITUACAO_CANCELADO = 3
+    SITUACAO_ESTORNADO = 4
 
     SITUACOES_ESCOLHAS = [
         (SITUACAO_ABERTO, "Em Aberto"),
@@ -149,9 +149,7 @@ class Parcela(BaseModel):
     ordem = models.IntegerField(validators=[MinValueValidator(1)])
     data = models.DateField()
     valor = models.DecimalField(max_digits=11, decimal_places=2)
-    situacao = models.CharField(
-        max_length=20, choices=SITUACOES_ESCOLHAS, default=SITUACAO_ABERTO
-    )
+    situacao = models.IntegerField(choices=SITUACOES_ESCOLHAS, default=SITUACAO_ABERTO)
 
     despesa = models.OneToOneField(
         Despesa, on_delete=models.CASCADE, related_name="parcelas"
