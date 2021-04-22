@@ -1,6 +1,7 @@
 from base.forms.monetary import MonetaryField
 from carteiras.models import CentroCusto
 from django import forms
+from django.core.exceptions import ValidationError
 
 from .models import Despesa, Lancamento, Receita
 
@@ -99,3 +100,17 @@ class DespesaForm(forms.ModelForm):
                 format="%Y-%m-%dT%H:%M:%S", attrs={"type": "datetime-local"}
             ),
         }
+
+    def __init__(self, *args, **kwargs):
+        centro_custo = kwargs.pop("centro_custo", None)
+        super().__init__(*args, **kwargs)
+        self.cartao = centro_custo.cartao if hasattr(centro_custo, "cartao") else None
+
+    def clean(self):
+        if (
+            self.cartao
+            and ((self.cartao.valor_total * -1) + self.cleaned_data["valor_total"])
+            > self.cartao.valor_limite
+        ):
+            raise ValidationError("Valor total ultrapassa limite do cartão!")
+        print("")

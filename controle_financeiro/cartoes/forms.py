@@ -9,14 +9,14 @@ from .models import Cartao
 class CartaoForm(forms.ModelForm):
 
     slug = forms.CharField(widget=forms.HiddenInput, max_length=100, required=False)
-    limite = MonetaryField()
+    valor_limite = MonetaryField()
 
     class Meta:
         model = Cartao
-        fields = ["nome", "slug", "limite", "dia_fechamento", "pode_parcelar"]
+        fields = ["nome", "slug", "valor_limite", "dia_fechamento", "pode_parcelar"]
         label = {
             "nome": "Nome",
-            "limite": "Valor Limite",
+            "valor_limite": "Valor Limite",
             "dia_fechamento": "Dia do Fechamento",
             "pode_parcelar": "Pode Parcelar?",
         }

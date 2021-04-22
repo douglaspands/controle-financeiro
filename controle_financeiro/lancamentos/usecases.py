@@ -24,6 +24,14 @@ def criar_nova_receita(
         receita = receita_form.save(commit=False)
         receita.lancamento = lancamento
         receita.save()
+        if lancamento.centro_custo.e_cartao:
+            cartao = lancamento.centro_custo.cartao
+            cartao.adicionar_receita(receita.valor_total)
+            cartao.save()
+        elif lancamento.centro_custo.e_conta:
+            conta = lancamento.centro_custo.conta
+            conta.adicionar_receita(receita.valor_total)
+            conta.save()              
     except Exception as error:
         lancamento.delete()
         raise error
@@ -50,6 +58,14 @@ def criar_nova_despesa(
         despesa = despesa_form.save(commit=False)
         despesa.lancamento = lancamento
         despesa.save()
+        if lancamento.centro_custo.e_cartao:
+            cartao = lancamento.centro_custo.cartao
+            cartao.adicionar_despesa(despesa.valor_total)
+            cartao.save()
+        elif lancamento.centro_custo.e_conta:
+            conta = lancamento.centro_custo.conta
+            conta.adicionar_despesa(despesa.valor_total)
+            conta.save()            
     except Exception as error:
         lancamento.delete()
         raise error

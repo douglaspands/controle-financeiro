@@ -9,7 +9,6 @@ def carga_categorias(apps, schema_editor):
     Categoria.objects.get_or_create(titulo="Mercado", slug="mercado", descricao="Gastos com mercado.")
     Categoria.objects.get_or_create(titulo="Presente", slug="presente", descricao="Gastos com presente.")
     Categoria.objects.get_or_create(titulo="Serviços", slug="servicos", descricao="Gastos com serviços.")
-    Categoria.objects.get_or_create(titulo="Salario", slug="salario", descricao="Salario recebido.")
 
 
 class Migration(migrations.Migration):

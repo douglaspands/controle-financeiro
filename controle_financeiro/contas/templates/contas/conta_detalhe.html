@@ -2,7 +2,7 @@
 {% load transformar_em_texto %}
 {% load humanize %}
 
-{% block titulo %}Cartões{% endblock %}
+{% block titulo %}Contas{% endblock %}
 
 {% block cabecalho %}
 <div class="container">
@@ -20,7 +20,7 @@
     </div>
     <div class="mb-3">
       <label for="inputSaldo" class="form-label">Saldo</label>
-      <input type="text" id="inputSaldo" class="form-control" value="{{ conta.saldo|intcomma }}">
+      <input type="text" id="inputSaldo" class="form-control" value="R$ {{ conta.saldo|intcomma }}">
     </div>
   </fieldset>
 </form>

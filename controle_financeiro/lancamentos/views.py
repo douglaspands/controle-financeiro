@@ -149,7 +149,7 @@ class LancamentoCriar(LoginRequiredBase, View):
             not contexto_erro
             and lancamento_form.cleaned_data["tipo"] == Lancamento.DESPESA
         ):
-            despesa_form = DespesaForm(request.POST)
+            despesa_form = DespesaForm(request.POST, centro_custo=lancamento_form.cleaned_data["centro_custo"])
             if not despesa_form.is_valid():
                 contexto_erro["despesa_form"] = despesa_form
             else:

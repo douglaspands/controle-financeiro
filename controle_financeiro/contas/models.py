@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from base.models import BaseModel
 from carteiras.models import CentroCusto
 from django.db import models
@@ -9,14 +11,22 @@ class Conta(BaseModel):
     slug = models.SlugField(max_length=100)
     saldo = models.DecimalField(max_digits=11, decimal_places=2, default=0)
 
-    centro_custo = models.OneToOneField(CentroCusto, on_delete=models.CASCADE, related_name="conta")
+    centro_custo = models.OneToOneField(
+        CentroCusto, on_delete=models.CASCADE, related_name="conta"
+    )
 
     class Meta:
-        ordering = ['nome']
+        ordering = ["nome"]
         unique_together = (("centro_custo_id", "slug"),)
         indexes = [
             models.Index(fields=["centro_custo_id", "slug"]),
         ]
 
     def __str__(self):
-        return f'{self.nome}'
+        return f"{self.nome}"
+
+    def adicionar_despesa(self, valor: Decimal):
+        self.saldo = self.saldo - valor
+
+    def adicionar_receita(self, valor: Decimal):
+        self.saldo = self.saldo + valor
