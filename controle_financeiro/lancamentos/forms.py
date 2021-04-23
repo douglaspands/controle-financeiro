@@ -107,10 +107,5 @@ class DespesaForm(forms.ModelForm):
         self.cartao = centro_custo.cartao if hasattr(centro_custo, "cartao") else None
 
     def clean(self):
-        if (
-            self.cartao
-            and ((self.cartao.valor_total * -1) + self.cleaned_data["valor_total"])
-            > self.cartao.valor_limite
-        ):
+        if self.cartao and not self.cartao.tem_limite(self.cleaned_data["valor_total"]):
             raise ValidationError("Valor total ultrapassa limite do cartão!")
-        print("")

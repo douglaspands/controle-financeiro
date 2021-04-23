@@ -35,10 +35,14 @@ class Lancamento(BaseModel):
 
     tipo = models.IntegerField(choices=TIPOS_ESCOLHAS)
     categorias = models.ManyToManyField(Categoria, blank=True)
+    datahora = models.DateTimeField()
 
     centro_custo = models.ForeignKey(
         CentroCusto, on_delete=models.CASCADE, related_name="lancamentos"
     )
+
+    class Meta:
+        ordering = ["-datahora"]
 
     def __str__(self):
         return self.descricao
@@ -70,16 +74,6 @@ class Lancamento(BaseModel):
         else:
             valor = Decimal("0.0")
         return valor
-
-    @property
-    def datahora(self) -> datetime:
-        if self.e_despesa:
-            datahora = self.despesa.datahora
-        elif self.e_receita:
-            datahora = self.receita.datahora
-        else:
-            datahora = None
-        return datahora
 
 
 class Receita(BaseModel):

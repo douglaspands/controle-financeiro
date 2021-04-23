@@ -1,6 +1,11 @@
-from carteiras.models import Carteira
+from decimal import Decimal
+
+from carteiras.models import Carteira, CentroCusto
+from carteiras.usecases import (adicionar_despesa_no_centro_custo,
+                                adicionar_receita_no_centro_custo)
 
 from .forms import DespesaForm, LancamentoForm, ReceitaForm
+from .models import Lancamento
 
 
 def criar_nova_receita(
@@ -19,19 +24,15 @@ def criar_nova_receita(
     """
     try:
         lancamento = lancamento_form.save(commit=False)
-        lancamento.carteira = Carteira.objects.get(slug=carteira_slug, usuario_id=usuario_pk)
-        lancamento.save()
         receita = receita_form.save(commit=False)
+        lancamento.carteira = Carteira.objects.get(
+            slug=carteira_slug, usuario_id=usuario_pk
+        )
+        lancamento.datahora = receita.datahora
+        lancamento.save()
         receita.lancamento = lancamento
+        adicionar_receita_no_centro_custo(lancamento.centro_custo, receita.valor_total)
         receita.save()
-        if lancamento.centro_custo.e_cartao:
-            cartao = lancamento.centro_custo.cartao
-            cartao.adicionar_receita(receita.valor_total)
-            cartao.save()
-        elif lancamento.centro_custo.e_conta:
-            conta = lancamento.centro_custo.conta
-            conta.adicionar_receita(receita.valor_total)
-            conta.save()              
     except Exception as error:
         lancamento.delete()
         raise error
@@ -53,19 +54,21 @@ def criar_nova_despesa(
     """
     try:
         lancamento = lancamento_form.save(commit=False)
-        lancamento.carteira = Carteira.objects.get(slug=carteira_slug, usuario_id=usuario_pk)
-        lancamento.save()
         despesa = despesa_form.save(commit=False)
+        lancamento.carteira = Carteira.objects.get(
+            slug=carteira_slug, usuario_id=usuario_pk
+        )
+        lancamento.datahora = despesa.datahora        
+        lancamento.save()
         despesa.lancamento = lancamento
+        adicionar_despesa_no_centro_custo(lancamento.centro_custo, despesa.valor_total)
         despesa.save()
-        if lancamento.centro_custo.e_cartao:
-            cartao = lancamento.centro_custo.cartao
-            cartao.adicionar_despesa(despesa.valor_total)
-            cartao.save()
-        elif lancamento.centro_custo.e_conta:
-            conta = lancamento.centro_custo.conta
-            conta.adicionar_despesa(despesa.valor_total)
-            conta.save()            
     except Exception as error:
         lancamento.delete()
         raise error
+
+
+__all__ = (
+    "criar_nova_receita",
+    "criar_nova_despesa",
+)

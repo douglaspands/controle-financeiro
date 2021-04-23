@@ -60,8 +60,16 @@ class Cartao(BaseModel):
     def tem_lancamentos(self) -> bool:
         return self.centro_custo.lancamentos.exists()
 
-    def adicionar_despesa(self, valor: Decimal):
-        self.valor_total = self.valor_total - valor
+    def tem_limite(self, valor: Decimal) -> bool:
+        return not (self.valor_total + valor) > self.valor_limite
 
-    def adicionar_receita(self, valor: Decimal):
-        self.valor_total = self.valor_total + valor
+    def adicionar_despesa(self, valor: Decimal) -> "Cartao":
+        if self.tem_limite(valor):
+            self.valor_total = self.valor_total + valor
+        else:
+            raise Exception("Cartão não tem limite para a despesa!")
+        return self
+
+    def adicionar_receita(self, valor: Decimal) -> "Cartao":
+        self.valor_total = self.valor_total - valor
+        return self
