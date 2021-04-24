@@ -1,24 +1,39 @@
 from carteiras.models import Carteira, CentroCusto
 
-from .forms import ContaForm
+from .models import Conta
 
 
-def criar_nova_conta(form: ContaForm, carteira_slug: str, usuario_pk: int):
+def criar_nova_conta(conta: Conta, carteira: Carteira) -> Conta:
     """Criar nova conta.
 
     Args:
-        form (ContaForm): Formulario da conta.
-        carteira_slug (str): Slug da carteira.
-        usuario_pk (int): ID do usuario.
+        conta (Conta): Conta gerada mas não salva pelo formulario.
+        carteira (Carteira): Carteira onde a conta será atrelado.
+
+    Raises:
+        Exception: - Validação dos parametros de entrada;
+                   - Erro generico ao persistir no banco;
+
+    Returns:
+        Conta: Conta salva no banco.
     """
+    if not (
+        isinstance(conta, Conta)
+        and conta.pk is None
+        and isinstance(carteira, Carteira)
+        and carteira.pk is not None
+    ):
+        raise Exception("Erro nos argumentos para criação da nova conta!")
+
     try:
         centro_custo = CentroCusto.objects.create(
             tipo=CentroCusto.CONTA,
-            carteira=Carteira.objects.get(usuario_id=usuario_pk, slug=carteira_slug),
+            carteira=carteira,
         )
-        conta = form.save(commit=False)
         conta.centro_custo = centro_custo
         conta.save()
+        return conta
+
     except Exception as error:
         centro_custo.delete()
         raise error

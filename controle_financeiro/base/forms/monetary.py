@@ -23,13 +23,15 @@ ECMA_ONKEYUP = r'(e=>{const s=(e.value.match(/[0-9]/g)||[]).join("").padStart(3,
 
 class MonetaryField(forms.Field):
     def __init__(self, *args, **kwargs):
-        kwargs["widget"] = forms.TextInput(
-            attrs={
+        _attrs = kwargs.pop("attrs", {})
+        _attrs.update(
+            {
                 "onkeyup": ECMA_ONKEYUP,
                 "maxlength": 20,
                 "placeholder": f"0{DECIMAL_POINT}00",
             }
         )
+        kwargs["widget"] = forms.TextInput(attrs=_attrs)
         super().__init__(*args, **kwargs)
 
     def prepare_value(self, value: Optional[Decimal]) -> str:

@@ -1,4 +1,5 @@
 from datetime import date, datetime
+from decimal import Decimal
 
 from base.models import BaseModel
 from carteiras.models import CentroCusto
@@ -19,13 +20,16 @@ class Cartao(BaseModel):
 
     nome = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
-    limite = models.DecimalField(max_digits=11, decimal_places=2)
+    valor_limite = models.DecimalField(max_digits=11, decimal_places=2)
+    valor_total = models.DecimalField(max_digits=11, decimal_places=2, default=Decimal("0.0"))
     dia_fechamento = models.IntegerField(
         default=1, validators=[MaxValueValidator(25), MinValueValidator(1)]
     )
     pode_parcelar = models.BooleanField(choices=ESCOLHAS_PERMISSAO_PARCELAMENTO)
 
-    centro_custo = models.OneToOneField(CentroCusto, on_delete=models.CASCADE, related_name="cartao")
+    centro_custo = models.OneToOneField(
+        CentroCusto, on_delete=models.CASCADE, related_name="cartao"
+    )
 
     class Meta:
         ordering = ["nome"]
@@ -55,3 +59,17 @@ class Cartao(BaseModel):
     @property
     def tem_lancamentos(self) -> bool:
         return self.centro_custo.lancamentos.exists()
+
+    def tem_limite(self, valor: Decimal) -> bool:
+        return not (self.valor_total + valor) > self.valor_limite
+
+    def adicionar_despesa(self, valor: Decimal) -> "Cartao":
+        if self.tem_limite(valor):
+            self.valor_total = self.valor_total + valor
+        else:
+            raise Exception("Cartão não tem limite para a despesa!")
+        return self
+
+    def adicionar_receita(self, valor: Decimal) -> "Cartao":
+        self.valor_total = self.valor_total - valor
+        return self

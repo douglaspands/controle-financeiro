@@ -6,7 +6,7 @@
 {% block cabecalho %}
 <div class="container">
     <h1>Lancamento</h1>
-    <p>Cadastre sua Lancamento.</p>
+    <p>Cadastre seu Lançamento.</p>
 </div>
 {% endblock %}
 
@@ -18,11 +18,71 @@
     {% endfor %}
 </ol>
 {% endif %}
-<form method="post" action="{% url 'gerenciamento_carteiras_cartoes_lancamentos:criar' carteira_slug cartao_slug %}">{% csrf_token %}
-    {{ form|crispy }}
+<form method="post" action="{% url 'gerenciamento_carteiras_lancamentos:criar' carteira_slug %}">{% csrf_token %}
+    {{ lancamento_form|crispy }}
+    {{ receita_form|crispy }}
+    {{ despesa_form|crispy }}
     <input class="btn btn-primary" role="button" type="submit" value="Gravar">
-    <div style="float: right;">
-        <button class="btn btn-outline-primary" role="button" onclick="window.history.back();">Voltar</button>
+    <div style="float: right; margin-left: 3px;">
+        <a class="btn btn-outline-primary" role="button" href="{{ href_voltar }}">Voltar</a>
     </div>
 </form>
+{% endblock %}
+
+{% block script %}
+<script>
+    const listaTipos = "{{ tipos_lancamento }}".split(",");
+    const pesquisaCampoFormulario = "form input, form label, form select";
+    const centroCustoGrupo = document.getElementById("div_id_lancamento-centro_custo");
+    const centroCusto = document.getElementById("id_lancamento-centro_custo");
+    const cateiraTipo = document.getElementById("id_lancamento-tipo");
+    const visibilidadeParcela = () => {
+        const tipo = centroCusto.options[centroCusto.selectedIndex];
+        const aceitaParcelado = tipo.hasAttribute("pode-parcelar");
+        const e_despesa =  (cateiraTipo.options[cateiraTipo.selectedIndex].innerText).toUpperCase() === "DESPESA";
+        if (e_despesa) {
+            const idParcela = "id_despesa-quantidade_parcelas";
+            const parcelaLabel = document.querySelector(`label[for="${idParcela}"]`);
+            const parcelaInput = document.getElementById(idParcela);
+            if (aceitaParcelado){
+                parcelaLabel.hidden = false;
+                parcelaInput.hidden = false;
+            } else {
+                parcelaLabel.hidden = true;
+                parcelaInput.hidden = true;
+                parcelaInput.value = "1";
+            }
+        }
+    }
+    const visibilidadeFormulario = () => {
+        const tipoSelecionado = cateiraTipo.options[cateiraTipo.selectedIndex];
+        centroCustoGrupo.hidden = tipoSelecionado.value? false: true;
+        const tipoEscolhido = (tipoSelecionado.text || "").toLowerCase();
+        for (const elem of document.querySelectorAll(pesquisaCampoFormulario)) {
+            for (const tipo of listaTipos) {
+                for (const attrName of ["name", "for"]) {
+                    if (elem.getAttribute(attrName) && elem.getAttribute(attrName).indexOf(tipo) !== -1) {
+                        if (tipoEscolhido && tipoEscolhido === tipo) {
+                            elem.hidden = false;
+                            elem.disable = false;
+                            elem.required = true;
+                        } else {
+                            elem.hidden = true;
+                            elem.disable = true;
+                            elem.required = false;
+                        }
+                    }
+                }
+            }
+        }
+        visibilidadeParcela();
+    };
+    visibilidadeFormulario();
+    cateiraTipo.addEventListener("change", (event) => {
+        visibilidadeFormulario();
+    });
+    centroCusto.addEventListener("change", (event) => {
+        visibilidadeParcela();
+    });
+</script>
 {% endblock %}

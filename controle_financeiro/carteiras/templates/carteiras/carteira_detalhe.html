@@ -41,6 +41,19 @@
     href="{% url 'gerenciamento_carteiras_contas:criar' carteira.slug %}">Criar Primeira Conta</a>
 </div>
 {% endif %}
+{% if carteira.tem_centro_custos %}
+{% if carteira.tem_lancamentos %}
+<div style="float: left; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button"
+    href="{% url 'gerenciamento_carteiras_lancamentos:listar' carteira.slug %}">Listar Lançamento</a>
+</div>
+{% else %}
+<div style="float: left; margin-left: 3px;">
+  <a class="btn btn-outline-primary" role="button"
+    href="{% url 'gerenciamento_carteiras_lancamentos:criar' carteira.slug %}">Criar Lançamento</a>
+</div>
+{% endif %}
+{% endif %}
 <div style="float: right; margin-left: 3px;">
   <a class="btn btn-outline-primary" role="button" href="{{ href_voltar }}">Voltar</a>
 </div>

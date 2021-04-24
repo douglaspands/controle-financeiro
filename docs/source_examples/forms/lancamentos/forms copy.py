@@ -1,55 +1,64 @@
 from base.forms.monetary import MonetaryField
-from carteiras.models import CentroCusto
 from django import forms
 from django.core.exceptions import ValidationError
 
 from .models import Despesa, Lancamento, Receita
-
-
-class CentroCustoAttrs(forms.Select):
-    def create_option(
-        self, name, value, label, selected, index, subindex=None, attrs=None
-    ):
-        option = super().create_option(
-            name, value, label, selected, index, subindex, attrs
-        )
-        if value:
-            centro_custo = value.instance
-            option["attrs"].update(
-                {
-                    "pode-parcelar": centro_custo.pode_parcelar,
-                    "e-cartao": centro_custo.e_cartao,
-                    "e-conta": centro_custo.e_conta,
-                }
-            )
-        return option
+from carteiras.models import CentroCusto
 
 
 class LancamentoForm(forms.ModelForm):
-    prefix = "lancamento"
 
     id = forms.IntegerField(required=False, widget=forms.HiddenInput())
+    centro_custo_id = forms.ChoiceField(
+        widget=forms.Select, required=True, initial=None, label="Fonte"
+    )
 
     class Meta:
         model = Lancamento
-        fields = ["id", "tipo", "categorias", "centro_custo"]
+        fields = ["id", "tipo", "categorias", "centro_custo_id"]
         labels = {
             "tipo": "Tipo",
             "categorias": "Categorias",
-            "centro_custo": "Centro de Custo",
         }
-        widgets = {"centro_custo": CentroCustoAttrs}
 
     def __init__(self, *args, **kwargs):
-        carteira = kwargs.pop("carteira", None)
+
+        carteira_slug = kwargs.pop("carteira_slug", None)
+        usuario_pk = kwargs.pop("usuario_pk", None)
+        centro_custo_pk = kwargs.pop("centro_custo_pk", None)
+
         super().__init__(*args, **kwargs)
-        self.fields["centro_custo"].queryset = CentroCusto.objects.filter(
-            carteira=carteira
-        ).all()
+
+        choices = [(None, "---------")]
+        for tipo_id, tipo_desc in sorted(CentroCusto.TIPOS_ESCOLHAS):
+            choice = (
+                tipo_desc,
+                [
+                    (cc.pk, cc.descricao)
+                    for cc in CentroCusto.objects.filter(
+                        carteira__slug=carteira_slug,
+                        carteira__usuario_id=usuario_pk,
+                        tipo=tipo_id,
+                    ).all()
+                ],
+            )
+            if len(choice[1]) > 0:
+                choices.append(choice)
+
+        self.fields["centro_custo_id"].initial = centro_custo_pk
+        self.fields["centro_custo_id"].label = "Fonte"
+        self.fields["centro_custo_id"].choices = choices
+
+    # def clean_centro_custo_id(self):
+    #     if not self.cleaned_data["centro_custo_id"] or not self.cleaned_data["centro_custo_id"].isdigit():
+    #         raise ValidationError("Favor selecione uma opção valida!")
+    #     self.cleaned_data["centro_custo_id"] = int(self.cleaned_data["centro_custo_id"])
+
+    def clean(self):
+        self.cleaned_data["centro_custo_id"] = int(self.cleaned_data["centro_custo_id"])
 
 
 class ReceitaForm(forms.ModelForm):
-    prefix = "receita"
 
     id = forms.IntegerField(required=False, widget=forms.HiddenInput())
     valor_total = MonetaryField(required=True)
@@ -70,7 +79,6 @@ class ReceitaForm(forms.ModelForm):
 
 
 class DespesaForm(forms.ModelForm):
-    prefix = "despesa"
 
     id = forms.IntegerField(required=False, widget=forms.HiddenInput())
     valor_total = MonetaryField(required=True)
@@ -83,24 +91,17 @@ class DespesaForm(forms.ModelForm):
             "valor_total",
             "datahora",
             "quantidade_parcelas",
+            "situacao",
         ]
         labels = {
             "tipo": "Nome",
             "valor_total": "Valor Total",
             "datahora": "Data e Hora",
             "quantidade_parcelas": "Qtde. Parcelas",
+            "situacao": "Situação",
         }
         widgets = {
             "datahora": forms.DateTimeInput(
                 format="%Y-%m-%dT%H:%M:%S", attrs={"type": "datetime-local"}
             ),
         }
-
-    def __init__(self, *args, **kwargs):
-        centro_custo = kwargs.pop("centro_custo", None)
-        super().__init__(*args, **kwargs)
-        self.cartao = centro_custo.cartao if hasattr(centro_custo, "cartao") else None
-
-    def clean(self):
-        if self.cartao and not self.cartao.tem_limite(self.cleaned_data["valor_total"]):
-            raise ValidationError("Valor total ultrapassa limite do cartão!")

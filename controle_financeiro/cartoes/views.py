@@ -1,6 +1,7 @@
 from typing import Any, Dict
 
 from base.views import LoginRequiredBase
+from carteiras.models import Carteira
 from django.conf import settings
 from django.db.models import QuerySet
 from django.http import HttpRequest, HttpResponse
@@ -97,9 +98,12 @@ class CartaoCriar(LoginRequiredBase, CreateView):
             request.POST, queryset=self.get_queryset(*args, **kwargs)
         )
         if form.is_valid():
-            criar_novo_cartao(
-                form=form, carteira_slug=carteira_slug, usuario_pk=request.user.id
+            cartao = form.save(commit=False)
+            carteira_slug = kwargs.get("carteira_slug")
+            carteira = get_object_or_404(
+                Carteira, slug=carteira_slug, usuario_id=request.user.pk
             )
+            criar_novo_cartao(cartao=cartao, carteira=carteira)
             return redirect(
                 "gerenciamento_carteiras_cartoes:listar",
                 carteira_slug=carteira_slug,

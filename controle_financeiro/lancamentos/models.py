@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from base.models import BaseModel
 from carteiras.models import CentroCusto
 from django.core.validators import MinValueValidator
@@ -22,33 +24,55 @@ class Categoria(BaseModel):
 
 class Lancamento(BaseModel):
 
-    RECEITA = "RECEITA"
-    DESPESA = "DESPESA"
+    RECEITA = 1
+    DESPESA = 2
 
     TIPOS_ESCOLHAS = [
         (RECEITA, "Receita"),
         (DESPESA, "Despesa"),
     ]
 
-    tipo = models.CharField(max_length=10, choices=TIPOS_ESCOLHAS)
+    tipo = models.IntegerField(choices=TIPOS_ESCOLHAS)
     categorias = models.ManyToManyField(Categoria, blank=True)
+    datahora = models.DateTimeField()
 
     centro_custo = models.ForeignKey(
         CentroCusto, on_delete=models.CASCADE, related_name="lancamentos"
     )
 
+    class Meta:
+        ordering = ["-datahora"]
+
     def __str__(self):
-        return "Lançamento - {}".format(
-            "Receita" if self.tipo == self.RECEITA else "Despesa"
-        )
+        return self.descricao
 
     @property
     def e_despesa(self) -> bool:
-        return bool(self.despesa)
+        return hasattr(self, "despesa")
 
     @property
     def e_receita(self) -> bool:
-        return bool(self.receita)
+        return hasattr(self, "receita")
+
+    @property
+    def descricao(self) -> str:
+        if self.e_despesa:
+            descricao = f"Despesa {str(self.despesa)}"
+        elif self.e_receita:
+            descricao = f"Receita {str(self.receita)}"
+        else:
+            descricao = "N/A"
+        return descricao
+
+    @property
+    def valor(self) -> Decimal:
+        if self.e_despesa:
+            valor = self.despesa.valor_total * -1
+        elif self.e_receita:
+            valor = self.receita.valor_total
+        else:
+            valor = Decimal("0.0")
+        return valor
 
 
 class Receita(BaseModel):
@@ -70,10 +94,10 @@ class Receita(BaseModel):
 
 class Despesa(BaseModel):
 
-    SITUACAO_ABERTO = "ABERTO"
-    SITUACAO_PAGO = "PAGO"
-    SITUACAO_CANCELADO = "CANCELADO"
-    SITUACAO_ESTORNADO = "ESTORNADO"
+    SITUACAO_ABERTO = 1
+    SITUACAO_PAGO = 2
+    SITUACAO_CANCELADO = 3
+    SITUACAO_ESTORNADO = 4
 
     SITUACOES_ESCOLHAS = [
         (SITUACAO_ABERTO, "Em Aberto"),
@@ -86,9 +110,8 @@ class Despesa(BaseModel):
     valor_total = models.DecimalField(max_digits=11, decimal_places=2)
     datahora = models.DateTimeField()
     quantidade_parcelas = models.IntegerField(default=1)
-    encerrado = models.BooleanField(default=False)
-    situacao = models.CharField(
-        max_length=20, choices=SITUACOES_ESCOLHAS, default=SITUACAO_ABERTO
+    situacao = models.IntegerField(
+        choices=SITUACOES_ESCOLHAS, default=SITUACAO_ABERTO
     )
 
     lancamento = models.OneToOneField(
@@ -104,10 +127,10 @@ class Despesa(BaseModel):
 
 class Parcela(BaseModel):
 
-    SITUACAO_ABERTO = "ABERTO"
-    SITUACAO_PAGO = "PAGO"
-    SITUACAO_CANCELADO = "CANCELADO"
-    SITUACAO_ESTORNADO = "ESTORNADO"
+    SITUACAO_ABERTO = 1
+    SITUACAO_PAGO = 2
+    SITUACAO_CANCELADO = 3
+    SITUACAO_ESTORNADO = 4
 
     SITUACOES_ESCOLHAS = [
         (SITUACAO_ABERTO, "Em Aberto"),
@@ -119,9 +142,7 @@ class Parcela(BaseModel):
     ordem = models.IntegerField(validators=[MinValueValidator(1)])
     data = models.DateField()
     valor = models.DecimalField(max_digits=11, decimal_places=2)
-    situacao = models.CharField(
-        max_length=20, choices=SITUACOES_ESCOLHAS, default=SITUACAO_ABERTO
-    )
+    situacao = models.IntegerField(choices=SITUACOES_ESCOLHAS, default=SITUACAO_ABERTO)
 
     despesa = models.OneToOneField(
         Despesa, on_delete=models.CASCADE, related_name="parcelas"

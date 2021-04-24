@@ -1,6 +1,6 @@
 from base.models import BaseModel
-from usuarios.models import Usuario
 from django.db import models
+from usuarios.models import Usuario
 
 
 class Carteira(BaseModel):
@@ -14,7 +14,10 @@ class Carteira(BaseModel):
 
     class Meta:
         ordering = ["nome"]
-        unique_together = (("usuario_id", "id"), ("usuario_id", "slug"),)
+        unique_together = (
+            ("usuario_id", "id"),
+            ("usuario_id", "slug"),
+        )
         indexes = [
             models.Index(fields=["usuario_id", "id"]),
             models.Index(fields=["usuario_id", "slug"]),
@@ -24,6 +27,10 @@ class Carteira(BaseModel):
         return f"{self.nome}"
 
     @property
+    def tem_centro_custos(self) -> bool:
+        return self.centro_custos.exists()
+
+    @property
     def tem_cartoes(self) -> bool:
         return self.centro_custos.filter(tipo=CentroCusto.CARTAO).exists()
 
@@ -31,18 +38,22 @@ class Carteira(BaseModel):
     def tem_contas(self) -> bool:
         return self.centro_custos.filter(tipo=CentroCusto.CONTA).exists()
 
+    @property
+    def tem_lancamentos(self) -> bool:
+        return self.centro_custos.exclude(lancamentos__isnull=True).exists()
+
 
 class CentroCusto(BaseModel):
 
-    CONTA = "CONTA"
-    CARTAO = "CARTAO"
+    CONTA = 1
+    CARTAO = 2
 
     TIPOS_ESCOLHAS = [
         (CONTA, "Conta"),
         (CARTAO, "Cartão"),
     ]
 
-    tipo = models.CharField(max_length=20, choices=TIPOS_ESCOLHAS)
+    tipo = models.IntegerField(choices=TIPOS_ESCOLHAS)
 
     carteira = models.ForeignKey(
         Carteira, on_delete=models.CASCADE, related_name="centro_custos"
@@ -53,6 +64,9 @@ class CentroCusto(BaseModel):
         indexes = [
             models.Index(fields=["carteira_id", "id"]),
         ]
+
+    def __str__(self) -> str:
+        return self.descricao
 
     @property
     def e_cartao(self) -> bool:
@@ -70,4 +84,16 @@ class CentroCusto(BaseModel):
             descricao = f"Conta {str(self.conta)}"
         else:
             descricao = "N/A"
-        return descricao[:20]
+        return descricao
+
+    @property
+    def tem_lancamentos(self) -> bool:
+        return self.lancamentos.exists()
+
+    @property
+    def pode_parcelar(self) -> bool:
+        if self.e_cartao:
+            pode_parcelar = self.cartao.pode_parcelar
+        else:
+            pode_parcelar = False
+        return pode_parcelar
