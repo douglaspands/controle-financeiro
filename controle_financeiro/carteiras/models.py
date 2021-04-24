@@ -1,7 +1,6 @@
 from base.models import BaseModel
 from django.db import models
 from usuarios.models import Usuario
-from decimal import Decimal
 
 
 class Carteira(BaseModel):

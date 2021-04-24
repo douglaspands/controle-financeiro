@@ -2,6 +2,8 @@ from typing import Any, Dict
 
 from base.views import LoginRequiredBase
 from carteiras.models import Carteira
+from carteiras.usecases import (adicionar_despesa_no_centro_custo,
+                                adicionar_receita_no_centro_custo)
 from django.conf import settings
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
@@ -145,7 +147,9 @@ class LancamentoCriar(LoginRequiredBase, View):
             not contexto_erro
             and lancamento_form.cleaned_data["tipo"] == Lancamento.DESPESA
         ):
-            despesa_form = DespesaForm(request.POST, centro_custo=lancamento.centro_custo)
+            despesa_form = DespesaForm(
+                request.POST, centro_custo=lancamento.centro_custo
+            )
             if despesa_form.is_valid():
                 despesa = despesa_form.save(commit=False)
                 criar_nova_despesa(
@@ -182,5 +186,14 @@ class LancamentoExcluir(LoginRequiredBase, DeleteView):
     def get_success_url(self) -> str:
         return reverse_lazy(
             "gerenciamento_carteiras_lancamentos:listar",
-            kwargs={"slug": self.kwargs.get("carteira_slug")},
+            kwargs={"carteira_slug": self.kwargs.get("carteira_slug")},
         )
+
+    def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
+        lancamento = get_object_or_404(Lancamento, pk=kwargs.get("pk"))
+        if lancamento.tipo == Lancamento.RECEITA:
+            adicionar_despesa_no_centro_custo(lancamento.centro_custo, lancamento.receita.valor_total)
+        else:
+            adicionar_receita_no_centro_custo(lancamento.centro_custo, lancamento.despesa.valor_total)
+        lancamento.delete()
+        return redirect(self.get_success_url())
