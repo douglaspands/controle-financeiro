@@ -1,14 +1,14 @@
-from datetime import datetime
 from typing import Any, Dict
 
 from base.views import LoginRequiredBase
+from carteiras.models import Carteira
 from django.conf import settings
 from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, ListView, View
-from django.views.generic.edit import CreateView, DeleteView, UpdateView
+from django.views.generic import ListView, View
+from django.views.generic.edit import DeleteView
 
 from .forms import DespesaForm, LancamentoForm, ReceitaForm
 from .models import Lancamento
@@ -62,7 +62,7 @@ class LancamentoDetalhe(LoginRequiredBase, View):
                 "gerenciamento_carteiras_lancamentos:listar",
                 kwargs={"carteira_slug": kwargs.get("carteira_slug")},
             ),
-            **kwargs
+            **kwargs,
         }
         context["lancamento"] = self.get_queryset(*args, **kwargs).get(
             pk=kwargs.get("pk")
@@ -90,26 +90,24 @@ class LancamentoCriar(LoginRequiredBase, View):
 
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
         carteira_slug = kwargs.get("carteira_slug")
-        usuario_pk = self.request.user.pk
+        carteira = get_object_or_404(
+            Carteira, slug=carteira_slug, usuario_id=self.request.user.pk
+        )
         context = {
             "lancamento_form": kwargs.pop(
-                "lancamento_form",
-                LancamentoForm(
-                    carteira_slug=carteira_slug,
-                    usuario_pk=usuario_pk,
-                ),
+                "lancamento_form", LancamentoForm(carteira=carteira)
             ),
             "receita_form": kwargs.pop("receita_form", ReceitaForm()),
             "despesa_form": kwargs.pop("despesa_form", DespesaForm()),
             "tipos_lancamento": ",".join(
-                [tipo.prefix for tipo in (ReceitaForm, DespesaForm)]
+                [form.prefix for form in (ReceitaForm, DespesaForm)]
             ),
             "href_voltar": reverse_lazy(
                 "gerenciamento_carteiras:detalhar",
                 kwargs={"slug": carteira_slug},
             ),
-            **kwargs,
         }
+        context.update(kwargs)
         return context
 
     def get(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
@@ -118,16 +116,16 @@ class LancamentoCriar(LoginRequiredBase, View):
         )
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
-        contexto_erro = {}
-        carteira_slug = kwargs["carteira_slug"]
-        usuario_pk = request.user.pk
 
-        lancamento_form = LancamentoForm(
-            request.POST,
-            carteira_slug=carteira_slug,
-            usuario_pk=usuario_pk,
+        contexto_erro = {}
+        carteira = get_object_or_404(
+            Carteira, slug=kwargs.get("carteira_slug"), usuario_id=request.user.pk
         )
-        if not lancamento_form.is_valid():
+
+        lancamento_form = LancamentoForm(request.POST, carteira=carteira)
+        if lancamento_form.is_valid():
+            lancamento = lancamento_form.save(commit=False)
+        else:
             contexto_erro["lancamento_form"] = lancamento_form
 
         if (
@@ -135,30 +133,26 @@ class LancamentoCriar(LoginRequiredBase, View):
             and lancamento_form.cleaned_data["tipo"] == Lancamento.RECEITA
         ):
             receita_form = ReceitaForm(request.POST)
-            if not receita_form.is_valid():
-                contexto_erro["receita_form"] = receita_form
-            else:
+            if receita_form.is_valid():
+                receita = receita_form.save(commit=False)
                 criar_nova_receita(
-                    lancamento_form=lancamento_form,
-                    receita_form=receita_form,
-                    carteira_slug=carteira_slug,
-                    usuario_pk=usuario_pk,
+                    lancamento=lancamento, receita=receita, carteira=carteira
                 )
+            else:
+                contexto_erro["receita_form"] = receita_form
 
         if (
             not contexto_erro
             and lancamento_form.cleaned_data["tipo"] == Lancamento.DESPESA
         ):
-            despesa_form = DespesaForm(request.POST, centro_custo=lancamento_form.cleaned_data["centro_custo"])
-            if not despesa_form.is_valid():
-                contexto_erro["despesa_form"] = despesa_form
-            else:
+            despesa_form = DespesaForm(request.POST, centro_custo=lancamento.centro_custo)
+            if despesa_form.is_valid():
+                despesa = despesa_form.save(commit=False)
                 criar_nova_despesa(
-                    lancamento_form=lancamento_form,
-                    despesa_form=despesa_form,
-                    carteira_slug=carteira_slug,
-                    usuario_pk=usuario_pk,
+                    lancamento=lancamento, despesa=despesa, carteira=carteira
                 )
+            else:
+                contexto_erro["despesa_form"] = despesa_form
 
         if contexto_erro:
             return render(
@@ -176,7 +170,7 @@ class LancamentoExcluir(LoginRequiredBase, DeleteView):
     template_name = "lancamentos/lancamento_excluir.html"
     context_object_name = "lancamento"
 
-    def get_context_data(self, *args, **kwargs):
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         context["href_voltar"] = reverse_lazy(
@@ -185,7 +179,7 @@ class LancamentoExcluir(LoginRequiredBase, DeleteView):
         )
         return context
 
-    def get_success_url(self):
+    def get_success_url(self) -> str:
         return reverse_lazy(
             "gerenciamento_carteiras_lancamentos:listar",
             kwargs={"slug": self.kwargs.get("carteira_slug")},

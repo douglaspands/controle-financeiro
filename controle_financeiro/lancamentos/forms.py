@@ -41,15 +41,10 @@ class LancamentoForm(forms.ModelForm):
         widgets = {"centro_custo": CentroCustoAttrs}
 
     def __init__(self, *args, **kwargs):
-
-        carteira_slug = kwargs.pop("carteira_slug", None)
-        usuario_pk = kwargs.pop("usuario_pk", None)
-
+        carteira = kwargs.pop("carteira", None)
         super().__init__(*args, **kwargs)
-
         self.fields["centro_custo"].queryset = CentroCusto.objects.filter(
-            carteira__slug=carteira_slug,
-            carteira__usuario_id=usuario_pk,
+            carteira=carteira
         ).all()
 
 

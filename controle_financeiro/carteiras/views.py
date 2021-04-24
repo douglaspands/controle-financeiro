@@ -90,7 +90,7 @@ class CarteiraAtualizar(LoginRequiredBase, UpdateView):
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         instance = get_object_or_404(
-            self.get_queryset(*args, **kwargs), slug=kwargs.get("slug")
+            self.get_queryset(), slug=kwargs.get("slug")
         )
         form = CarteiraForm(request.POST, instance=instance)
         if form.is_valid():
