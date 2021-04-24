@@ -9,6 +9,13 @@ Aplicação para controle financeiro construido em Python 3.8 e Django 3.1.
 ## Comandos disponiveis
 
 ### Iniciar aplicação
+
+Recomendado:
+```bash
+poetry run start
+```
+
+De forma manual:
 ```bash
 python manage.py runserver
 ```
