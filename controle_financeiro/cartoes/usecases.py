@@ -27,7 +27,7 @@ def criar_novo_cartao(cartao: Cartao, carteira: Carteira) -> Cartao:
 
     try:
         centro_custo = CentroCusto.objects.create(
-            tipo=CentroCusto.CARTAO,
+            tipo=CentroCusto.TIPO_CARTAO,
             carteira=carteira,
         )
         cartao.centro_custo = centro_custo
