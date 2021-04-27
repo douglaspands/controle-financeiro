@@ -1,8 +1,9 @@
 import os
 import platform
 import re
+import shutil
 import sys
-from typing import List, Union
+from typing import List, Tuple, Union
 
 
 def get_app_basename() -> str:
@@ -13,6 +14,15 @@ def get_app_basename() -> str:
 def get_app_path() -> str:
     app_path = os.path.join(os.getcwd(), get_app_basename())
     return app_path
+
+
+def list_all_dirs_files() -> Tuple[List[str], List[str]]:
+    listdirs = []
+    listfiles = []
+    for root, subdirs, files in os.walk(get_app_path()):
+        listfiles += [os.path.join(root, f) for f in files]
+        listdirs += [os.path.join(root, s) for s in subdirs]
+    return listdirs, listfiles
 
 
 def shell_run(command: Union[str, List[str]]):
@@ -110,8 +120,25 @@ def start():
     runserver()
 
 
-def migrate_remove():
-    shell_run(
-        'find . -path "*/migrations/*.py" -not -name "__init__.py" -not -path "./.venv/*" -delete'
-    )
-    shell_run("rm -f ./db.sqlite3")
+def pycacheremove():
+    REGEX_DIR = re.compile(r"^.+[\/]__pycache__$")
+    dirs, files = list_all_dirs_files()
+    count = 0
+    for d in dirs:
+        if REGEX_DIR.search(d):
+            shutil.rmtree(d)
+            count += 1
+    print(f"{count} folders have been removed")
+
+
+def migrateremove():
+    REGEX_DB = re.compile(r"^.+db\.sqlite3$")
+    REGEX_FILE = re.compile(r"^.*[\/]migrations[\/].*$")
+    REGEX_INITIAL = re.compile(r"^.*[\/]migrations[\/]__init__\.py$")
+    dirs, files = list_all_dirs_files()
+    count = 0
+    for f in files:
+        if (REGEX_FILE.search(f) and not REGEX_INITIAL.search(f)) or REGEX_DB.search(f):
+            os.remove(f)
+            count += 1
+    print(f"{count} files have been removed")
