@@ -120,13 +120,6 @@ def start():
     runserver()
 
 
-def migrate_remove():
-    shell_run(
-        'find . -path "*/migrations/*.py" -not -name "__init__.py" -not -path "./.venv/*" -delete'
-    )
-    shell_run("rm -f ./db.sqlite3")
-
-
 def pycacheremove():
     REGEX_DIR = re.compile(r"^.+[\/]__pycache__$")
     dirs, files = list_all_dirs_files()
@@ -149,4 +142,3 @@ def migrateremove():
             os.remove(f)
             count += 1
     print(f"{count} files have been removed")
-
