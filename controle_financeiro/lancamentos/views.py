@@ -53,6 +53,8 @@ class LancamentoDetalhe(LoginRequiredBase, View):
         return Lancamento.objects.select_related(
             "centro_custo",
             "centro_custo__carteira",
+        ).prefetch_related(
+            "despesa__parcelas"
         ).filter(
             centro_custo__carteira__slug=carteira_slug,
             centro_custo__carteira__usuario_id=usuario_pk,
@@ -69,8 +71,9 @@ class LancamentoDetalhe(LoginRequiredBase, View):
         context["lancamento"] = self.get_queryset(*args, **kwargs).get(
             pk=kwargs.get("pk")
         )
-        if context["lancamento"].tipo == Lancamento.DESPESA:
+        if context["lancamento"].tipo == Lancamento.TIPO_DESPESA:
             context["despesa"] = context["lancamento"].despesa
+            context["parcelas"] = context["lancamento"].despesa.parcelas.all()
         else:
             context["receita"] = context["lancamento"].receita
         return context
@@ -132,7 +135,7 @@ class LancamentoCriar(LoginRequiredBase, View):
 
         if (
             not contexto_erro
-            and lancamento_form.cleaned_data["tipo"] == Lancamento.RECEITA
+            and lancamento_form.cleaned_data["tipo"] == Lancamento.TIPO_RECEITA
         ):
             receita_form = ReceitaForm(request.POST)
             if receita_form.is_valid():
@@ -145,7 +148,7 @@ class LancamentoCriar(LoginRequiredBase, View):
 
         if (
             not contexto_erro
-            and lancamento_form.cleaned_data["tipo"] == Lancamento.DESPESA
+            and lancamento_form.cleaned_data["tipo"] == Lancamento.TIPO_DESPESA
         ):
             despesa_form = DespesaForm(
                 request.POST, centro_custo=lancamento.centro_custo
@@ -191,7 +194,7 @@ class LancamentoExcluir(LoginRequiredBase, DeleteView):
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
         lancamento = get_object_or_404(Lancamento, pk=kwargs.get("pk"))
-        if lancamento.tipo == Lancamento.RECEITA:
+        if lancamento.tipo == Lancamento.TIPO_RECEITA:
             adicionar_despesa_no_centro_custo(lancamento.centro_custo, lancamento.receita.valor_total)
         else:
             adicionar_receita_no_centro_custo(lancamento.centro_custo, lancamento.despesa.valor_total)

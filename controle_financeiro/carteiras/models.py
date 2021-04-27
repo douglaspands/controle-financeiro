@@ -32,11 +32,11 @@ class Carteira(BaseModel):
 
     @property
     def tem_cartoes(self) -> bool:
-        return self.centro_custos.filter(tipo=CentroCusto.CARTAO).exists()
+        return self.centro_custos.filter(tipo=CentroCusto.TIPO_CARTAO).exists()
 
     @property
     def tem_contas(self) -> bool:
-        return self.centro_custos.filter(tipo=CentroCusto.CONTA).exists()
+        return self.centro_custos.filter(tipo=CentroCusto.TIPO_CONTA).exists()
 
     @property
     def tem_lancamentos(self) -> bool:
@@ -45,12 +45,12 @@ class Carteira(BaseModel):
 
 class CentroCusto(BaseModel):
 
-    CONTA = 1
-    CARTAO = 2
+    TIPO_CONTA = 1
+    TIPO_CARTAO = 2
 
     TIPOS_ESCOLHAS = [
-        (CONTA, "Conta"),
-        (CARTAO, "Cartão"),
+        (TIPO_CONTA, "Conta"),
+        (TIPO_CARTAO, "Cartão"),
     ]
 
     tipo = models.IntegerField(choices=TIPOS_ESCOLHAS)

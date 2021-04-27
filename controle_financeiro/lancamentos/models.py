@@ -24,12 +24,12 @@ class Categoria(BaseModel):
 
 class Lancamento(BaseModel):
 
-    RECEITA = 1
-    DESPESA = 2
+    TIPO_RECEITA = 1
+    TIPO_DESPESA = 2
 
     TIPOS_ESCOLHAS = [
-        (RECEITA, "Receita"),
-        (DESPESA, "Despesa"),
+        (TIPO_RECEITA, "Receita"),
+        (TIPO_DESPESA, "Despesa"),
     ]
 
     tipo = models.IntegerField(choices=TIPOS_ESCOLHAS)
@@ -44,7 +44,8 @@ class Lancamento(BaseModel):
         ordering = ["-datahora"]
 
     def __str__(self):
-        return self.descricao
+        tipo_desc = "Receita" if self.tipo == Lancamento.TIPO_RECEITA else "Despesa"
+        return f"{self.pk} - {tipo_desc} (Centro de custo {self.centro_custo.pk})"
 
     @property
     def e_despesa(self) -> bool:
@@ -57,9 +58,9 @@ class Lancamento(BaseModel):
     @property
     def descricao(self) -> str:
         if self.e_despesa:
-            descricao = f"Despesa {str(self.despesa)}"
+            descricao = f"Despesa {self.despesa.nome}"
         elif self.e_receita:
-            descricao = f"Receita {str(self.receita)}"
+            descricao = f"Receita {self.receita.nome}"
         else:
             descricao = "N/A"
         return descricao
@@ -89,7 +90,7 @@ class Receita(BaseModel):
         ordering = ["-datahora"]
 
     def __str__(self):
-        return f"{self.nome}"
+        return f"{self.pk} - {self.nome} (Lancamento {self.lancamento.pk})"
 
 
 class Despesa(BaseModel):
@@ -122,7 +123,7 @@ class Despesa(BaseModel):
         ordering = ["-datahora"]
 
     def __str__(self):
-        return f"{self.nome}"
+        return f"{self.pk} - {self.nome} (Lancamento {self.lancamento.pk})"
 
 
 class Parcela(BaseModel):
@@ -144,7 +145,7 @@ class Parcela(BaseModel):
     valor = models.DecimalField(max_digits=11, decimal_places=2)
     situacao = models.IntegerField(choices=SITUACOES_ESCOLHAS, default=SITUACAO_ABERTO)
 
-    despesa = models.OneToOneField(
+    despesa = models.ForeignKey(
         Despesa, on_delete=models.CASCADE, related_name="parcelas"
     )
 
@@ -152,4 +153,4 @@ class Parcela(BaseModel):
         ordering = ["data"]
 
     def __str__(self):
-        return f"{self.ordem}ª parcela"
+        return f"{self.pk} - {self.ordem}ª parcela (Despesa: {self.despesa.pk})"
