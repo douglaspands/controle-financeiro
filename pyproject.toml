@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "controle-financeiro"
-version = "0.6.0"
+version = "0.7.0"
 description = "Controle financeiro pessoal"
 authors = ["Douglas Panhota <douglaspands@gmail.com>"]
 license = "MIT"

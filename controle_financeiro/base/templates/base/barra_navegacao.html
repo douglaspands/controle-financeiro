@@ -1,30 +1,45 @@
 {% load dom_efeitos %}
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
-        <a class="navbar-brand" href="{% url 'publico:index' %}">ControleFinanceiro</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                {% if request.user.is_authenticated %}
-                <li class="nav-item{{ request|nav_item_active:'carteiras' }}">
-                    <a class="nav-link" href="{% url 'gerenciamento:index' %}">Gerenciamento</a>
-                </li>
-                <li class="nav-item{{ request|nav_item_active:'registration,autenticacao' }}">
-                    <a class="nav-link" href="{% url 'autenticacao:logout_confirmar' %}">
-                        {{ request.user.nome_apresentacao }}{% if request|span_sr_only:'registration,autenticacao' %} <span class="sr-only">(current)</span>{% endif %}
-                        > Logout
-                    </a>
-                </li>
-                {% else %}
-                <li class="nav-item{{ request|nav_item_active:'registration,autenticacao' }}">
-                    <a class="nav-link" href="{% url 'autenticacao:login' %}">Login/Registrar{% if request|span_sr_only:'registration,autenticacao' %} <span class="sr-only">(current)</span>{% endif %}</a>
-                </li>
-                {% endif %}
-            </ul>
+<nav class="barra-superior">
+    <div onclick="window.location.href='{% if request.user.is_authenticated %}{% url 'gerenciamento:index' %}{% else %}{% url 'publico:index' %}{% endif %}'">
+        <div class="barra-superior-logo">
+            CONFIN
+        </div>
+    </div>
+    <div class="barra-superior-menu">
+        <div class="botao-menu-lateral" onclick="menuLateralAbrir(true)">
+            {% if request.user.is_authenticated %}
+            <div class="usuario-nome">João Souza</div>
+            <div class="usuario-foto"></div>
+            {% else %}
+            <div class="botao-menu"><div>
+                <div class="hamburguer-linha"></div>
+                <div class="hamburguer-linha"></div>
+                <div class="hamburguer-linha"></div>
+            </div></div>
+            {% endif %}
         </div>
     </div>
 </nav>
+<aside>
+    <div class="menu-lateral-2-plano menu-lateral-2-plano-fechado" onclick="menuLateralAbrir(false)"></div>
+    <div class="menu-lateral menu-lateral-fechado">
+        <ul class="navbar-nav">
+            {% if request.user.is_authenticated %}
+            <li class="nav-item{{ request|nav_item_active:'carteiras' }}">
+                <a class="nav-link" href="{% url 'gerenciamento:index' %}">Gerenciamento</a>
+            </li>
+            <li class="nav-item{{ request|nav_item_active:'registration,autenticacao' }}">
+                <a class="nav-link" href="{% url 'autenticacao:logout_confirmar' %}">
+                    {{ request.user.nome_apresentacao }}{% if request|span_sr_only:'registration,autenticacao' %} <span class="sr-only">(current)</span>{% endif %}
+                    > Logout
+                </a>
+            </li>
+            {% else %}
+            <li class="nav-item{{ request|nav_item_active:'registration,autenticacao' }}">
+                <a class="nav-link" href="{% url 'autenticacao:login' %}">Login/Registrar{% if request|span_sr_only:'registration,autenticacao' %} <span class="sr-only">(current)</span>{% endif %}</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</aside>

@@ -1,0 +1,136 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+/* Para mobile: */
+[class*="col-"] {
+    width: 100%;
+}
+  
+@media only screen and (min-width: 768px) {
+    /* Para desktop: */
+    .col-1 {width: 8.33%;}
+    .col-2 {width: 16.66%;}
+    .col-3 {width: 25%;}
+    .col-4 {width: 33.33%;}
+    .col-5 {width: 41.66%;}
+    .col-6 {width: 50%;}
+    .col-7 {width: 58.33%;}
+    .col-8 {width: 66.66%;}
+    .col-9 {width: 75%;}
+    .col-10 {width: 83.33%;}
+    .col-11 {width: 91.66%;}
+    .col-12 {width: 100%;}
+}
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Old versions of Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
+
+body {
+    background-color: #EEF2F6;
+}
+
+.barra-superior {
+    padding: 0 0 4.3rem 0;
+}
+
+.barra-superior .barra-superior-logo {
+    float: left;
+    margin: 1.5rem 1rem 1rem 1rem;
+}
+
+.barra-superior .barra-superior-menu {
+    float: right;
+    margin: 1.5rem 1rem 1rem 1rem;
+}
+
+.barra-superior-menu .botao-menu-lateral {
+    border: none;
+    display: inline-flex;
+}
+
+.usuario-nome {
+    margin-right: 10px;
+}
+
+.botao-menu {
+    margin-right: 3px;
+    margin-top: -7px;
+}
+
+.hamburguer-linha {
+    width: 25px;
+    height: 3px;
+    margin: 5px 0;
+    background-color: #212529;
+}
+
+.usuario-foto {
+    width: 2rem;
+    height: 2rem;
+    background-color: white;
+    border-radius: 10px;
+    margin-top: -5px;
+}
+
+.menu-lateral {
+    position: fixed;
+    top: 0;
+    width: 80vw;
+    height: 100vh;
+    transition: 0.5s;
+    z-index: 21;
+    background-color: white;
+    box-shadow: 0 0px 20px 0 #888;
+}
+
+.menu-lateral-aberto {
+    transform: translateX(20vw);
+}
+
+.menu-lateral-fechado {
+    transform: translateX(120vw);
+}
+
+.menu-lateral-2-plano {
+    position: fixed;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 20;
+}
+
+.menu-lateral-2-plano-aberto {
+    transform: translateX(0vw);
+}
+
+.menu-lateral-2-plano-fechado {
+    transform: translateX(100vw);
+}
+
+@media only screen and (min-width: 768px) {
+    /* Para desktop: */
+    .menu-lateral {
+        width: 21rem;
+    }
+    .menu-lateral-aberto {
+        transform: translateX(82vw);
+    }
+    .menu-lateral-fechado {
+        transform: translateX(120vw);
+    }
+}
