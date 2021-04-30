@@ -2,12 +2,23 @@
     box-sizing: border-box;
 }
 
-/* html, body {
-    height: 100%;
+body {
+    background-color: #EEF2F6;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    text-align: left;
+}
+
+.container {
     width: 100%;
-    margin: 0;
-    overflow: hidden;
-} */
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
 
 /* Para mobile: */
 [class*="col-"] {
@@ -40,18 +51,6 @@
                                     supported by Chrome, Edge, Opera and Firefox */
 }
 
-body {
-    background-color: #EEF2F6;
-}
-
-.container {
-    width: 100%;
-    padding-right: 15px;
-    padding-left: 15px;
-    margin-right: auto;
-    margin-left: auto;
-}
-
 a.nostyle:link {
     text-decoration: inherit;
     color: inherit;
@@ -65,17 +64,15 @@ a.nostyle:visited {
 }
 
 .barra-superior {
-    padding: 0 0 4.3rem 0;
+    padding: 1.3rem 0 3.3rem 0;
 }
 
 .barra-superior .barra-superior-logo {
     float: left;
-    margin: 1.5rem 1rem 1rem 1rem;
 }
 
 .barra-superior .barra-superior-menu {
     float: right;
-    margin: 1.5rem 1rem 1rem 1rem;
 }
 
 .barra-superior-menu .botao-menu-lateral {
@@ -85,6 +82,14 @@ a.nostyle:visited {
 
 .usuario-nome {
     margin-right: 10px;
+}
+
+.usuario-foto {
+    width: 2rem;
+    height: 2rem;
+    background-color: white;
+    border-radius: 10px;
+    margin-top: -6px;
 }
 
 .botao-menu {
@@ -97,14 +102,6 @@ a.nostyle:visited {
     height: 3px;
     margin: 5px 0;
     background-color: #212529;
-}
-
-.usuario-foto {
-    width: 2rem;
-    height: 2rem;
-    background-color: white;
-    border-radius: 10px;
-    margin-top: -5px;
 }
 
 .menu-lateral {
@@ -159,9 +156,9 @@ a.nostyle:visited {
     float: left;
     background-color: #FDFCFC;
     width: 100%;
-    border-radius: 10px;
-    padding: 1.2rem;
     margin-bottom: 15px;
+    border-radius: 10px;
+    padding: 1rem;
     display: grid;
     grid-template-areas: 
         'cartaoCabecalho'
@@ -241,23 +238,31 @@ a.nostyle:visited {
     grid-template-areas:
         'blocoAncora'
         'blocoCabecalho'
-        'blocoCorpo';
+        'blocoCorpo'
+        'blocoRodape';
 }
 
 .bloco-ancora {
     grid-area: blocoAncora;
-    height: 5px;
+    height: 3px;
     width: 10%;
     background: #EEF2F6;
     margin: auto;
     border-radius: 20px;
 }
 
-.bloco-superior {
+.bloco-cabecalho {
     grid-area: blocoCabecalho;
     margin-bottom: 10px;
     display: grid;
     grid-template-areas: 'blocoCabecTitulo blocoCabecTitulo blocoCabecTitulo blocoCabecMenu';
+}
+
+.bloco-rodape {
+    grid-area: blocoRodape;
+    text-align: center;
+    color: #B5B3C0;
+    font-size: 1.1rem;
 }
 
 .bloco-titulo {

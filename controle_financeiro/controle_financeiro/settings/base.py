@@ -38,8 +38,8 @@ MY_APPS = [
     "contas",
     "gerenciamento",
     "lancamentos",
+    "paginas",
     "pessoas",
-    "publico",
     "usuarios",
 ]
 
