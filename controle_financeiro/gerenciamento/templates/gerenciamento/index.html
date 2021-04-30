@@ -1,4 +1,4 @@
-{% extends "base/base.html" %}
+{% extends "base/base_new.html" %}
 
 {% block titulo %}Gerenciamento{% endblock %}
 
@@ -10,15 +10,91 @@
 {% endblock %}
 
 {% block conteudo %}
-<div>
-    {% if request.user.is_authenticated %}
-    <p>
-        {% if tem_carteira %}
-        <a href="{% url 'gerenciamento_carteiras:listar' %}">Listar carteiras</a>
-        {% else %}
-        <a href="{% url 'gerenciamento_carteiras:criar' %}">Criar carteira</a>
-        {% endif %}
-    </p>
-    {% endif %}
+<div class="container">
+    <div class="cartao">
+        <div class="cartao-superior">
+            <div class="cartao-titulo">Carteiras</div>
+        </div>
+        <div class="cartao-conteudo">
+            <p>
+                {% if tem_carteira %}
+                <a class="nostyle" href="{% url 'gerenciamento_carteiras:listar' %}">Listar carteiras</a>
+                {% else %}
+                <a class="nostyle" href="{% url 'gerenciamento_carteiras:criar' %}">Criar carteira</a>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+    <div class="cartao">
+        <div class="cartao-superior">
+            <div class="cartao-titulo">Lançamentos</div>
+            <div class="cartao-menu">...</div>
+        </div>
+        <div class="cartao-conteudo">
+            <div class="lancamento-linha">
+                <div class="lancamento-logo">?</div>
+                <div class="lancamento-titulo">Compra</div>
+                <div class="lancamento-data">11/02/2021</div>
+                <div class="lancamento-valor">R$ 1.000,00</div>
+            </div>
+            <div class="lancamento-linha">
+                <div class="lancamento-logo">?</div>
+                <div class="lancamento-titulo">Compra</div>
+                <div class="lancamento-data">11/02/2021</div>
+                <div class="lancamento-valor">R$ 1.000,00</div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="bloco">
+    <div class="bloco-ancora"></div>
+    <div class="bloco-superior">
+        <div class="bloco-titulo">Lançamentos</div>
+        <div class="bloco-menu">...</div>
+    </div>
+    <div class="bloco-conteudo">
+        <div class="lancamento-linha">
+            <div class="lancamento-logo">?</div>
+            <div class="lancamento-titulo">Compra</div>
+            <div class="lancamento-data">11/02/2021</div>
+            <div class="lancamento-valor">R$ 1.000,00</div>
+        </div>
+        <div class="lancamento-linha">
+            <div class="lancamento-logo">?</div>
+            <div class="lancamento-titulo">Compra</div>
+            <div class="lancamento-data">11/02/2021</div>
+            <div class="lancamento-valor">R$ 1.000,00</div>
+        </div>
+        <div class="lancamento-linha">
+            <div class="lancamento-logo">?</div>
+            <div class="lancamento-titulo">Compra</div>
+            <div class="lancamento-data">11/02/2021</div>
+            <div class="lancamento-valor">R$ 1.000,00</div>
+        </div>
+        <div class="lancamento-linha">
+            <div class="lancamento-logo">?</div>
+            <div class="lancamento-titulo">Compra</div>
+            <div class="lancamento-data">11/02/2021</div>
+            <div class="lancamento-valor">R$ 1.000,00</div>
+        </div>
+        <div class="lancamento-linha">
+            <div class="lancamento-logo">?</div>
+            <div class="lancamento-titulo">Compra</div>
+            <div class="lancamento-data">11/02/2021</div>
+            <div class="lancamento-valor">R$ 1.000,00</div>
+        </div>
+        <div class="lancamento-linha">
+            <div class="lancamento-logo">?</div>
+            <div class="lancamento-titulo">Compra</div>
+            <div class="lancamento-data">11/02/2021</div>
+            <div class="lancamento-valor">R$ 1.000,00</div>
+        </div>
+        <div class="lancamento-linha">
+            <div class="lancamento-logo">?</div>
+            <div class="lancamento-titulo">Compra</div>
+            <div class="lancamento-data">11/02/2021</div>
+            <div class="lancamento-valor">R$ 1.000,00</div>
+        </div>                
+    </div>
 </div>
 {% endblock %}

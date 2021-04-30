@@ -2,12 +2,12 @@
     box-sizing: border-box;
 }
 
-html, body {
+/* html, body {
     height: 100%;
     width: 100%;
     margin: 0;
     overflow: hidden;
-}
+} */
 
 /* Para mobile: */
 [class*="col-"] {
@@ -42,6 +42,26 @@ html, body {
 
 body {
     background-color: #EEF2F6;
+}
+
+.container {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+a.nostyle:link {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
+}
+
+a.nostyle:visited {
+    text-decoration: inherit;
+    color: inherit;
+    cursor: auto;
 }
 
 .barra-superior {
@@ -133,4 +153,128 @@ body {
     .menu-lateral-fechado {
         transform: translateX(120vw);
     }
+}
+
+.cartao {
+    float: left;
+    background-color: #FDFCFC;
+    width: 100%;
+    border-radius: 10px;
+    padding: 1.2rem;
+    margin-bottom: 15px;
+    display: grid;
+    grid-template-areas: 
+        'cartaoCabecalho'
+        'cartaoCorpo';
+}
+
+.cartao-superior {
+    grid-area: cartaoCabecalho;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-areas: 'cartaoCabecTitulo cartaoCabecTitulo cartaoCabecTitulo cartaoCabecMenu';
+}
+
+.cartao-titulo {
+    grid-area: cartaoCabecTitulo;
+    text-align: left;
+    color: #B5B3C0;
+    font-size: 1.1rem;
+}
+
+.cartao-menu {
+    grid-area: cartaoCabecMenu;
+    text-align: right;
+    color: #B5B3C0;
+    font-size: 1.1rem;
+    line-height: 10px;
+}
+
+.cartao-conteudo {
+    grid-area: cartaoCorpo;
+}
+
+.lancamento-linha {
+    margin-bottom: 5px;
+    display: grid;
+    grid-template-areas: 
+        'lancLogo lancTitulo lancTitulo lancTitulo lancValor'
+        'lancLogo lancData lancData lancData lancValor';
+}
+
+.lancamento-logo { 
+    grid-area: lancLogo;
+    line-height: 45px;
+    color: #B5B3C0;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.lancamento-titulo {
+    grid-area: lancTitulo;
+    color: #212529;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.lancamento-data {
+    grid-area: lancData;
+    color: #B5B3C0;
+    font-size: 0.9rem;
+}
+
+.lancamento-valor {
+    grid-area: lancValor;
+    text-align: right;
+    line-height: 45px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+
+.bloco {
+    float: left;
+    background-color: #FDFCFC;
+    width: 100%;
+    border-radius: 25px 25px 0 0;
+    padding: 1.4rem;
+    display: grid;
+    grid-template-areas:
+        'blocoAncora'
+        'blocoCabecalho'
+        'blocoCorpo';
+}
+
+.bloco-ancora {
+    grid-area: blocoAncora;
+    height: 5px;
+    width: 10%;
+    background: #EEF2F6;
+    margin: auto;
+    border-radius: 20px;
+}
+
+.bloco-superior {
+    grid-area: blocoCabecalho;
+    margin-bottom: 10px;
+    display: grid;
+    grid-template-areas: 'blocoCabecTitulo blocoCabecTitulo blocoCabecTitulo blocoCabecMenu';
+}
+
+.bloco-titulo {
+    grid-area: blocoCabecTitulo;
+    text-align: left;
+    color: #B5B3C0;
+    font-size: 1.1rem;
+}
+
+.bloco-menu {
+    grid-area: blocoCabecMenu;
+    text-align: right;
+    color: #B5B3C0;
+    font-size: 1.1rem;
+    line-height: 10px;
+}
+
+.bloco-conteudo {
+    grid-area: blocoCorpo;
 }
