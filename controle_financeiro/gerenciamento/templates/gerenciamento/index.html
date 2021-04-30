@@ -1,13 +1,18 @@
 {% extends "base/base_new.html" %}
+{% load static %}
 
 {% block titulo %}Gerenciamento{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/gerenciamento/style.css' %}">
+{% endblock %}
 
 {% block cabecalho %}
 {% endblock %}
 
 {% block conteudo %}
 <div class="cartao">
-    <div class="cartao-superior">
+    <div class="cartao-cabecalho">
         <div class="cartao-titulo">Carteiras</div>
     </div>
     <div class="cartao-conteudo">
@@ -19,9 +24,10 @@
             {% endif %}
         </p>
     </div>
+    <div class="cartao-rodape"><a class="nostyle" href="#">Ver mais +</a></div>
 </div>
 <div class="cartao">
-    <div class="cartao-superior">
+    <div class="cartao-cabecalho">
         <div class="cartao-titulo">Lançamentos</div>
         <div class="cartao-menu">...</div>
     </div>
@@ -88,8 +94,8 @@
             <div class="lancamento-titulo">Compra</div>
             <div class="lancamento-data">11/02/2021</div>
             <div class="lancamento-valor">R$ 1.000,00</div>
-        </div>                
+        </div>
     </div>
-    <div class="bloco-rodape">Ver mais +</div>
+    <div class="bloco-rodape"><a class="nostyle" href="#">Ver mais +</a></div>
 </div>
 {% endblock %}

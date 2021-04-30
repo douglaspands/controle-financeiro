@@ -24,9 +24,13 @@ body {
 [class*="col-"] {
     width: 100%;
 }
-  
+
 @media only screen and (min-width: 768px) {
     /* Para desktop: */
+    .container {
+        padding-right: 20%;
+        padding-left: 20%;
+    }
     .col-1 {width: 8.33%;}
     .col-2 {width: 16.66%;}
     .col-3 {width: 25%;}
@@ -112,7 +116,7 @@ a.nostyle:visited {
     transition: 0.5s;
     z-index: 21;
     background-color: white;
-    box-shadow: 0 0px 20px 0 #888;
+    box-shadow: -3px 3px 20px 0 #e4e9ef;
 }
 
 .menu-lateral-aberto {
@@ -145,10 +149,10 @@ a.nostyle:visited {
         width: 21rem;
     }
     .menu-lateral-aberto {
-        transform: translateX(82vw);
+        transform: translateX(62vw);
     }
     .menu-lateral-fechado {
-        transform: translateX(120vw);
+        transform: translateX(80vw);
     }
 }
 
@@ -156,20 +160,38 @@ a.nostyle:visited {
     float: left;
     background-color: #FDFCFC;
     width: 100%;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     border-radius: 10px;
     padding: 1rem;
     display: grid;
     grid-template-areas: 
         'cartaoCabecalho'
-        'cartaoCorpo';
+        'cartaoCorpo'
+        'cartaoRodape';
+    box-shadow: 3px 3px 3px 0px #e4e9ef;
 }
 
-.cartao-superior {
+@media only screen and (min-width: 768px) {
+    /* Para desktop: */
+    .cartao {
+        width: 377px;
+        max-width: 377px;
+        margin-right: 20px;
+    }
+}
+
+.cartao-cabecalho {
     grid-area: cartaoCabecalho;
     margin-bottom: 10px;
     display: grid;
     grid-template-areas: 'cartaoCabecTitulo cartaoCabecTitulo cartaoCabecTitulo cartaoCabecMenu';
+}
+
+.cartao-rodape {
+    grid-area: cartaoRodape;
+    text-align: center;
+    color: #B5B3C0;
+    font-size: 1.1rem;
 }
 
 .cartao-titulo {
@@ -191,48 +213,12 @@ a.nostyle:visited {
     grid-area: cartaoCorpo;
 }
 
-.lancamento-linha {
-    margin-bottom: 5px;
-    display: grid;
-    grid-template-areas: 
-        'lancLogo lancTitulo lancTitulo lancTitulo lancValor'
-        'lancLogo lancData lancData lancData lancValor';
-}
-
-.lancamento-logo { 
-    grid-area: lancLogo;
-    line-height: 45px;
-    color: #B5B3C0;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-.lancamento-titulo {
-    grid-area: lancTitulo;
-    color: #212529;
-    font-size: 1rem;
-    font-weight: bold;
-}
-
-.lancamento-data {
-    grid-area: lancData;
-    color: #B5B3C0;
-    font-size: 0.9rem;
-}
-
-.lancamento-valor {
-    grid-area: lancValor;
-    text-align: right;
-    line-height: 45px;
-    font-size: 1.1rem;
-    font-weight: bold;
-}
-
 .bloco {
     float: left;
     background-color: #FDFCFC;
     width: 100%;
-    border-radius: 25px 25px 0 0;
+    /* border-radius: 25px 25px 0 0; */
+    border-radius: 10px;
     padding: 1.4rem;
     display: grid;
     grid-template-areas:
@@ -240,12 +226,13 @@ a.nostyle:visited {
         'blocoCabecalho'
         'blocoCorpo'
         'blocoRodape';
+    box-shadow: 3px 3px 3px 0px #e4e9ef;
 }
 
 .bloco-ancora {
     grid-area: blocoAncora;
     height: 3px;
-    width: 10%;
+    width: 35px;
     background: #EEF2F6;
     margin: auto;
     border-radius: 20px;

@@ -1,0 +1,36 @@
+.lancamento-linha {
+    margin-bottom: 5px;
+    display: grid;
+    grid-template-areas: 
+        'lancLogo lancTitulo lancTitulo lancTitulo lancValor'
+        'lancLogo lancData lancData lancData lancValor';
+}
+
+.lancamento-logo { 
+    grid-area: lancLogo;
+    line-height: 45px;
+    color: #B5B3C0;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.lancamento-titulo {
+    grid-area: lancTitulo;
+    color: #212529;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.lancamento-data {
+    grid-area: lancData;
+    color: #B5B3C0;
+    font-size: 0.9rem;
+}
+
+.lancamento-valor {
+    grid-area: lancValor;
+    text-align: right;
+    line-height: 45px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}

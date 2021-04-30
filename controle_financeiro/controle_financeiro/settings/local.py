@@ -32,7 +32,12 @@ INTERNAL_IPS = [
 STATIC_URL = "/static/"
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, "static"),
+    ("css", os.path.join(BASE_DIR, "static", "css")),
+    ("font", os.path.join(BASE_DIR, "static", "font")),
+    ("icon", os.path.join(BASE_DIR, "static", "icon")),
+    ("img", os.path.join(BASE_DIR, "static", "img")),
+    ("js", os.path.join(BASE_DIR, "static", "js")),
+    ("vendor", os.path.join(BASE_DIR, "static", "vendor")),
 )
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")

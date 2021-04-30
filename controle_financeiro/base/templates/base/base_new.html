@@ -6,19 +6,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block titulo %}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/tema-v1.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base/tema-v1.css' %}">
     {% block style %}
     {% endblock %}
 </head>
 <body>
-{% include 'base/includes/barra_superior_menu_lateral.html' %}
-{% block cabecalho %}
-{% endblock %}
-<main>
-    {% block conteudo %}
-    {% endblock %}
-</main>
-<script src="{% static 'js/tema-v1.js' %}"></script>
+<div class="container">
+    {% include 'base/includes/barra_superior.html' %}
+    {% include 'base/includes/menu_lateral.html' %}
+    <header>
+        {% block cabecalho %}
+        {% endblock %}
+    </header>
+    <main>
+        {% block conteudo %}
+        {% endblock %}
+    </main>
+    <footer>
+        {% block rodape %}
+        {% endblock %}
+    </footer>
+</div>
+<script src="{% static 'js/base/tema-v1.js' %}"></script>
 {% block script %}
 {% endblock %}
 </body>

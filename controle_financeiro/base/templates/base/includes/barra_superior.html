@@ -1,0 +1,22 @@
+<nav class="barra-superior">
+    <a class="nostyle"
+        href="{% if request.user.is_authenticated %}{% url 'gerenciamento:index' %}{% else %}{% url 'paginas:index' %}{% endif %}">
+        <div class="barra-superior-logo">CONFIN</div>
+    </a>
+    <div class="barra-superior-menu">
+        <div class="botao-menu-lateral" onclick="menuLateralAbrir(true)">
+            {% if request.user.is_authenticated %}
+            <div class="usuario-nome">{{ request.user.nome_apresentacao }}</div>
+            <div class="usuario-foto"></div>
+            {% else %}
+            <div class="botao-menu">
+                <div>
+                    <div class="hamburguer-linha"></div>
+                    <div class="hamburguer-linha"></div>
+                    <div class="hamburguer-linha"></div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>
