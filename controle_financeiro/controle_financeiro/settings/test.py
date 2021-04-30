@@ -24,9 +24,9 @@ INTERNAL_IPS = [
 ]
 
 STATIC_URL = "/static/"
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, "static"),
+)
+
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
-
-MEDIA_URL = config("MEDIA_URL", default="/media/", cast=str)
-MEDIA_ROOT = config("MEDIA_ROOT", default=os.path.join(BASE_DIR, "media"), cast=str)
