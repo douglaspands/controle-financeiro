@@ -1,7 +1,7 @@
 <nav class="barra-superior">
     <a class="nostyle"
         href="{% if request.user.is_authenticated %}{% url 'gerenciamento:index' %}{% else %}{% url 'paginas:index' %}{% endif %}">
-        <div class="barra-superior-logo">CONFIN</div>
+        <div class="barra-superior-logo">C.FINANCEIRO</div>
     </a>
     <div class="barra-superior-menu">
         <div class="botao-menu-lateral" onclick="menuLateralAbrir(true)">
