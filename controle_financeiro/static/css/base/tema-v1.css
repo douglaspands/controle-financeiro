@@ -97,6 +97,13 @@ a.nostyle:visited {
     padding: 1.3rem 0 3.3rem 0;
 }
 
+@media only screen and (min-width: 768px) {
+    /* Para desktop: */
+    .barra-superior {
+        padding: 1.3rem 0.5rem 3.3rem 0.5rem;
+    }
+}
+
 .barra-superior .barra-superior-logo {
     float: left;
     font-family: "Righteous";
@@ -184,21 +191,26 @@ a.nostyle:visited {
         width: 21rem;
     }
     .menu-lateral-aberto {
-        transform: translateX(-20vw);
+        transform: translateX(-23vw);
     }
     .menu-lateral-fechado {
         transform: translateX(103vw);
     }
 }
 
+.feed {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
 .cartao {
-    float: left;
     background-color: #FDFCFC;
     width: 100%;
-    margin-bottom: 20px;
     border-radius: 10px;
     padding: 1rem;
     display: grid;
+    margin-bottom: 15px;
     grid-template-areas: 
         'cartaoCabecalho'
         'cartaoCorpo'
@@ -209,9 +221,8 @@ a.nostyle:visited {
 @media only screen and (min-width: 768px) {
     /* Para desktop: */
     .cartao {
-        width: 377px;
-        max-width: 377px;
-        margin-right: 20px;
+        max-width: 350px;
+        margin: 0 5px 15px 5px;
     }
 }
 
@@ -254,7 +265,6 @@ a.nostyle:visited {
 }
 
 .bloco {
-    float: left;
     background-color: #FDFCFC;
     width: 100%;
     border-radius: 10px;
@@ -266,6 +276,13 @@ a.nostyle:visited {
         'blocoCorpo'
         'blocoRodape';
     box-shadow: 3px 3px 3px 0px #e4e9ef;
+}
+
+@media only screen and (min-width: 768px) {
+    /* Para desktop: */
+    .bloco {
+        margin: 0 5px 15px 5px;
+    }
 }
 
 .bloco-ancora {
