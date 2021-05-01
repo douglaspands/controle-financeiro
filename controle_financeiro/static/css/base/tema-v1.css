@@ -233,6 +233,7 @@ a.nostyle:visited {
     text-align: left;
     color: #B5B3C0;
     font-size: 1.1rem;
+    font-weight: bold;
 }
 
 .cartao-menu {
@@ -243,22 +244,18 @@ a.nostyle:visited {
     line-height: 10px;
 }
 
-.cartao-menu svg {
-    /* color: #B5B3C0; */
-    color: black;
-    width: 70px;
-    height: 70px;
-}
-
 .cartao-conteudo {
     grid-area: cartaoCorpo;
+}
+
+.cartao-menu-icone {
+    width: 26px;
 }
 
 .bloco {
     float: left;
     background-color: #FDFCFC;
     width: 100%;
-    /* border-radius: 25px 25px 0 0; */
     border-radius: 10px;
     padding: 1.4rem;
     display: grid;
@@ -298,6 +295,7 @@ a.nostyle:visited {
     text-align: left;
     color: #B5B3C0;
     font-size: 1.1rem;
+    font-weight: bold;
 }
 
 .bloco-menu {
@@ -308,8 +306,8 @@ a.nostyle:visited {
     line-height: 10px;
 }
 
-.bloco-menu img {
-    color: #B5B3C0;
+.bloco-menu-icone {
+    width: 26px;
 }
 
 .bloco-conteudo {
