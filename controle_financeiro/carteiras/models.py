@@ -7,6 +7,7 @@ class Carteira(BaseModel):
 
     nome = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100)
+    principal = models.BooleanField(default=False)
 
     usuario = models.ForeignKey(
         Usuario, on_delete=models.CASCADE, related_name="usuario"

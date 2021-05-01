@@ -2,11 +2,13 @@ from typing import Any, Dict
 
 from base.views import LoginRequiredBase
 from carteiras.models import Carteira
-from django.views.generic import TemplateView
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import redirect
+from django.views.generic import TemplateView, View
 
 
-class IndexView(LoginRequiredBase, TemplateView):
-    template_name = 'gerenciamento/index.html'
+class TemplateExampleView(LoginRequiredBase, TemplateView):
+    template_name = "gerenciamento/index.html"
 
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(*args, **kwargs)
@@ -17,3 +19,21 @@ class IndexView(LoginRequiredBase, TemplateView):
             else False
         )
         return context
+
+
+class RedirectView(LoginRequiredBase, View):
+    def get(self, request: HttpRequest, **kwargs) -> HttpResponse:
+
+        carteiras = Carteira.objects.filter(usuario=request.user)
+
+        if carteiras.exists():
+            carteira_principal = carteiras.filter(principal=True).first()
+            if not carteira_principal.exists():
+                carteira_principal = carteiras.first()
+                carteira_principal.principal = True
+                carteira_principal.save()
+            return redirect(
+                "gerenciamento_carteiras:detalhar", slug=carteira_principal.slug
+            )
+        else:
+            return redirect("gerenciamento_carteiras:criar")
