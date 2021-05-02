@@ -6,6 +6,7 @@
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/carteiras/style.css' %}">
+<link rel="stylesheet" href="{% static 'vendor/flickity/flickity.min.css' %}" media="screen">
 {% endblock %}
 
 {% block cabecalho %}
@@ -13,6 +14,15 @@
 
 {% block conteudo %}
 <div class="feed">
+    <div class="galeria js-flickity" data-flickity-options='{ "cellAlign": "left", "contain": true, "wrapAround": true }'>
+        <div class="galeria-celula"></div>
+        <div class="galeria-celula"></div>
+        <div class="galeria-celula"></div>
+        <div class="galeria-celula"></div>
+        <div class="galeria-celula"></div>
+        <div class="galeria-celula"></div>
+        <div class="galeria-celula"></div>
+    </div>
     <div class="cartao">
         <div class="cartao-cabecalho">
             <div class="cartao-titulo">Cartões e Contas</div>
@@ -54,4 +64,8 @@
         </div>
 
 </div>
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'vendor/flickity/flickity.pkgd.min.js' %}"></script>
 {% endblock %}

@@ -204,10 +204,6 @@ a.nostyle:visited {
     justify-content: flex-start;
 }
 
-.wrapper {
-    max-width: 100%;
-}
-
 .cartao {
     background-color: #FDFCFC;
     width: 100%;
@@ -364,4 +360,43 @@ a.nostyle:visited {
         width: 25%;
         margin: 6px;
     }
+}
+
+.galeria {
+    background: #EEF2F6;
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+
+@media only screen and (min-width: 768px) {
+    /* Para desktop: */
+    .galeria {
+        max-width: 329px;
+        margin: 6px;
+        margin-bottom: 40px;
+    }
+}
+  
+.galeria-celula {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    margin-right: 10px;
+    background: #ACC2E5;
+    counter-increment: galeria-celula;
+}
+  
+.galeria-celula.is-selected {
+    background: #FE55A3;
+}
+  
+/* cell number */
+.galeria-celula:before {
+    display: block;
+    text-align: center;
+    content: counter(galeria-celula);
+    line-height: 200px;
+    font-size: 80px;
+    color: white;
 }
