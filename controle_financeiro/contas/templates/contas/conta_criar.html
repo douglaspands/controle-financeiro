@@ -18,7 +18,7 @@
     {% endfor %}
 </ol>
 {% endif %}
-<form method="post" action="{% url 'gerenciamento_carteiras_contas:criar' carteira_slug %}">{% csrf_token %}
+<form method="post" action="{% url 'carteiras_contas:criar' carteira_slug %}">{% csrf_token %}
     {{ form|crispy }}
     <input class="btn btn-primary" role="button" type="submit" value="Gravar">
     <div style="float: right; margin-left: 3px;">

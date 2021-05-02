@@ -11,7 +11,7 @@
             <ul class="navbar-nav">
                 {% if request.user.is_authenticated %}
                 <li class="nav-item{{ request|nav_item_active:'carteiras' }}">
-                    <a class="nav-link" href="{% url 'gerenciamento_carteiras:listar' %}">Carteiras{% if request|span_sr_only:'carteiras' %} <span class="sr-only">(current)</span>{% endif %}</a>
+                    <a class="nav-link" href="{% url 'carteiras:listar' %}">Carteiras{% if request|span_sr_only:'carteiras' %} <span class="sr-only">(current)</span>{% endif %}</a>
                 </li>
                 <li class="nav-item{{ request|nav_item_active:'cartoes' }}">
                     <a class="nav-link" href="{% url 'cartoes:listar' %}">Cartoes{% if request|span_sr_only:'cartoes' %}

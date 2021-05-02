@@ -24,22 +24,13 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("autenticacao/", include("autenticacao.urls", namespace="autenticacao")),
     path("gerenciamento/", include("gerenciamento.urls", namespace="gerenciamento")),
-    path(
-        "gerenciamento/carteiras/",
-        include("carteiras.urls", namespace="gerenciamento_carteiras"),
-    ),
-    path(
-        "gerenciamento/carteiras/<slug:carteira_slug>/cartoes/",
-        include("cartoes.urls", namespace="gerenciamento_carteiras_cartoes"),
-    ),
-    path(
-        "gerenciamento/carteiras/<slug:carteira_slug>/contas/",
-        include("contas.urls", namespace="gerenciamento_carteiras_contas"),
-    ),
-    path(
-        "gerenciamento/carteiras/<slug:carteira_slug>/lancamentos/",
-        include("lancamentos.urls", namespace="gerenciamento_carteiras_lancamentos"),
-    ),
+    path("cartoes/", include("cartoes.urls", namespace="cartoes")),
+    path("contas/", include("contas.urls", namespace="contas")),
+    path("lancamentos/", include("lancamentos.urls", namespace="lancamentos")),
+    path("carteiras/", include("carteiras.urls", namespace="carteiras")),
+    path("carteiras/<slug:carteira_slug>/cartoes/", include("cartoes.urls", namespace="carteiras_cartoes")),
+    path("carteiras/<slug:carteira_slug>/contas/", include("contas.urls", namespace="carteiras_contas")),
+    path("carteiras/<slug:carteira_slug>/lancamentos/", include("lancamentos.urls", namespace="carteiras_lancamentos")),
 ]
 
 if settings.DEBUG:

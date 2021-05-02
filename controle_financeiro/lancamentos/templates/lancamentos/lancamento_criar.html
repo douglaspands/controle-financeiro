@@ -18,7 +18,7 @@
     {% endfor %}
 </ol>
 {% endif %}
-<form method="post" action="{% url 'gerenciamento_carteiras_lancamentos:criar' carteira_slug %}">{% csrf_token %}
+<form method="post" action="{% url 'carteiras_lancamentos:criar' carteira_slug %}">{% csrf_token %}
     {{ lancamento_form|crispy }}
     {{ receita_form|crispy }}
     {{ despesa_form|crispy }}

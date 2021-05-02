@@ -13,7 +13,7 @@
 {% block conteudo %}
 <div style="float: right;">
     <p>
-        <a class="btn btn-primary" role="button" href="{% url 'gerenciamento_carteiras_contas:criar' carteira_slug %}">Criar</a>
+        <a class="btn btn-primary" role="button" href="{% url 'carteiras_contas:criar' carteira_slug %}">Criar</a>
     </p>
 </div>
 <table class="table">
@@ -25,11 +25,11 @@
     </thead>
     <tbody>
         {% for conta in contas %}
-        <tr onclick="window.location='{% url 'gerenciamento_carteiras_contas:detalhar' carteira_slug conta.slug %}'">
+        <tr onclick="window.location='{% url 'carteiras_contas:detalhar' carteira_slug conta.slug %}'">
             <td>{{ conta.nome }}</td>
             <td>
-                <a href="{% url 'gerenciamento_carteiras_contas:editar' carteira_slug conta.slug %}">editar</a>
-                <a href="{% url 'gerenciamento_carteiras_contas:excluir' carteira_slug conta.slug %}">excluir</a>
+                <a href="{% url 'carteiras_contas:editar' carteira_slug conta.slug %}">editar</a>
+                <a href="{% url 'carteiras_contas:excluir' carteira_slug conta.slug %}">excluir</a>
             </td>
         </tr>
         {% endfor %}

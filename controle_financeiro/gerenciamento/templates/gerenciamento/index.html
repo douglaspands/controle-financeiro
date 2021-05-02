@@ -22,9 +22,9 @@
         <div class="cartao-conteudo">
             <p>
                 {% if tem_carteira %}
-                <a class="nostyle" href="{% url 'gerenciamento_carteiras:listar' %}">Listar carteiras</a>
+                <a class="nostyle" href="{% url 'carteiras:listar' %}">Listar carteiras</a>
                 {% else %}
-                <a class="nostyle" href="{% url 'gerenciamento_carteiras:criar' %}">Criar carteira</a>
+                <a class="nostyle" href="{% url 'carteiras:criar' %}">Criar carteira</a>
                 {% endif %}
             </p>
         </div>

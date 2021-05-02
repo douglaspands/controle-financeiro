@@ -36,7 +36,7 @@ class LancamentoLista(LoginRequiredBase, ListView):
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         context["href_voltar"] = reverse_lazy(
-            "gerenciamento_carteiras:detalhar",
+            "carteiras:detalhar",
             kwargs={"slug": self.kwargs.get("carteira_slug")},
         )
         if not context.get("lancamentos").exists():
@@ -63,7 +63,7 @@ class LancamentoDetalhe(LoginRequiredBase, View):
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
         context = {
             "href_voltar": reverse_lazy(
-                "gerenciamento_carteiras_lancamentos:listar",
+                "carteiras_lancamentos:listar",
                 kwargs={"carteira_slug": kwargs.get("carteira_slug")},
             ),
             **kwargs,
@@ -89,7 +89,7 @@ class LancamentoCriar(LoginRequiredBase, View):
 
     def get_success_url(self) -> HttpResponse:
         return reverse_lazy(
-            "gerenciamento_carteiras_lancamentos:listar",
+            "carteiras_lancamentos:listar",
             kwargs={"carteira_slug": self.kwargs.get("carteira_slug")},
         )
 
@@ -108,7 +108,7 @@ class LancamentoCriar(LoginRequiredBase, View):
                 [form.prefix for form in (ReceitaForm, DespesaForm)]
             ),
             "href_voltar": reverse_lazy(
-                "gerenciamento_carteiras:detalhar",
+                "carteiras:detalhar",
                 kwargs={"slug": carteira_slug},
             ),
         }
@@ -181,14 +181,14 @@ class LancamentoExcluir(LoginRequiredBase, DeleteView):
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         context["href_voltar"] = reverse_lazy(
-            "gerenciamento_carteiras:detalhar",
+            "carteiras:detalhar",
             kwargs={"slug": self.kwargs.get("carteira_slug")},
         )
         return context
 
     def get_success_url(self) -> str:
         return reverse_lazy(
-            "gerenciamento_carteiras_lancamentos:listar",
+            "carteiras_lancamentos:listar",
             kwargs={"carteira_slug": self.kwargs.get("carteira_slug")},
         )
 

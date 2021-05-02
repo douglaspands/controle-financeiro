@@ -1,4 +1,4 @@
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from base.views import LoginRequiredBase
 from django.conf import settings
@@ -6,11 +6,12 @@ from django.db.models.query import QuerySet
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, View
 from django.views.generic.edit import CreateView, DeleteView, UpdateView
 
 from .forms import CarteiraForm
 from .models import Carteira
+from lancamentos.models import Lancamento
 
 
 class CarteiraLista(LoginRequiredBase, ListView):
@@ -34,7 +35,27 @@ class CarteiraLista(LoginRequiredBase, ListView):
 
 class CarteiraDetalhe(LoginRequiredBase, DetailView):
     model = Carteira
+    context_object_name = "carteira"
     template_name = "carteiras/carteira_detalhe.html"
+
+    QTDE_LANCAMENTOS = 5
+
+    def get_queryset(self) -> QuerySet:
+        return Carteira.objects.prefetch_related("centro_custos").filter(usuario_id=self.request.user.pk)
+
+    def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
+        context = super().get_context_data(*args, **kwargs)
+        context.update(self.kwargs)
+        context["centro_custos"] = context["carteira"].centro_custos.select_related("cartao", "conta").all()
+        queryset = Lancamento.objects.select_related("receita", "despesa", "centro_custo").filter(centro_custo__in=context["centro_custos"])
+        context["lancamentos"] = queryset.order_by("-datahora")[:self.QTDE_LANCAMENTOS]
+        context["lancamentos_continua"] = True if queryset.count() > self.QTDE_LANCAMENTOS else False
+        return context
+
+
+class CarteiraDetalheOld(LoginRequiredBase, DetailView):
+    model = Carteira
+    template_name = "carteiras/carteira_detalhe_old.html"
     context_object_name = "carteira"
 
     def get_queryset(self) -> QuerySet:
@@ -43,7 +64,7 @@ class CarteiraDetalhe(LoginRequiredBase, DetailView):
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
-        context["href_voltar"] = reverse_lazy("gerenciamento_carteiras:listar")
+        context["href_voltar"] = reverse_lazy("carteiras:listar")
         return context
 
 
@@ -59,7 +80,7 @@ class CarteiraCriar(LoginRequiredBase, CreateView):
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
-        context["href_voltar"] = reverse_lazy("gerenciamento_carteiras:listar")
+        context["href_voltar"] = reverse_lazy("carteiras:listar")
         return context
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
@@ -68,7 +89,7 @@ class CarteiraCriar(LoginRequiredBase, CreateView):
             carteira = form.save(commit=False)
             carteira.usuario_id = request.user.pk
             form.save()
-            return redirect("gerenciamento_carteiras:listar")
+            return redirect("carteiras:listar")
         else:
             return render(request, self.template_name, {"form": form})
 
@@ -85,7 +106,7 @@ class CarteiraAtualizar(LoginRequiredBase, UpdateView):
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
-        context["href_voltar"] = reverse_lazy("gerenciamento_carteiras:listar")
+        context["href_voltar"] = reverse_lazy("carteiras:listar")
         return context
 
     def post(self, request: HttpRequest, *args, **kwargs) -> HttpResponse:
@@ -95,7 +116,7 @@ class CarteiraAtualizar(LoginRequiredBase, UpdateView):
         form = CarteiraForm(request.POST, instance=instance)
         if form.is_valid():
             form.save()
-            return redirect("gerenciamento_carteiras:listar")
+            return redirect("carteiras:listar")
         else:
             return render(request, self.template_name, {"form": form})
 
@@ -105,7 +126,7 @@ class CarteiraExcluir(LoginRequiredBase, DeleteView):
     form_class = CarteiraForm
     template_name = "carteiras/carteira_excluir.html"
     context_object_name = "carteira"
-    success_url = reverse_lazy("gerenciamento_carteiras:listar")
+    success_url = reverse_lazy("carteiras:listar")
 
     def get_queryset(self) -> QuerySet:
         return Carteira.objects.filter(usuario_id=self.request.user.pk)
@@ -113,5 +134,5 @@ class CarteiraExcluir(LoginRequiredBase, DeleteView):
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
-        context["href_voltar"] = reverse_lazy("gerenciamento_carteiras:listar")
+        context["href_voltar"] = reverse_lazy("carteiras:listar")
         return context

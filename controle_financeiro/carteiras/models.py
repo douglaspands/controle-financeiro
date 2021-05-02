@@ -77,6 +77,17 @@ class CentroCusto(BaseModel):
     def e_conta(self) -> bool:
         return hasattr(self, "conta")
 
+
+    @property
+    def slug(self) -> str:
+        if self.e_cartao:
+            valor_total = self.cartao.slug
+        elif self.e_conta:
+            valor_total = self.conta.slug
+        else:
+            valor_total = 0.0
+        return valor_total
+
     @property
     def descricao(self) -> str:
         if self.e_cartao:
@@ -86,6 +97,16 @@ class CentroCusto(BaseModel):
         else:
             descricao = "N/A"
         return descricao
+
+    @property
+    def valor_total(self) -> str:
+        if self.e_cartao:
+            valor_total = self.cartao.valor_total
+        elif self.e_conta:
+            valor_total = self.conta.valor_total
+        else:
+            valor_total = 0.0
+        return valor_total
 
     @property
     def tem_lancamentos(self) -> bool:

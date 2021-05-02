@@ -34,7 +34,7 @@ class CartaoLista(LoginRequiredBase, ListView):
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         context["href_voltar"] = reverse_lazy(
-            "gerenciamento_carteiras:detalhar",
+            "carteiras:detalhar",
             kwargs={"slug": self.kwargs.get("carteira_slug")},
         )
         if not context.get("cartoes").exists():
@@ -59,7 +59,7 @@ class CartaoDetalhe(LoginRequiredBase, DetailView):
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         context["href_voltar"] = reverse_lazy(
-            "gerenciamento_carteiras_cartoes:listar",
+            "carteiras_cartoes:listar",
             kwargs={
                 "carteira_slug": self.kwargs.get("carteira_slug"),
             },
@@ -85,7 +85,7 @@ class CartaoCriar(LoginRequiredBase, CreateView):
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         context["href_voltar"] = reverse_lazy(
-            "gerenciamento_carteiras_cartoes:listar",
+            "carteiras_cartoes:listar",
             kwargs={
                 "carteira_slug": self.kwargs.get("carteira_slug"),
             },
@@ -105,7 +105,7 @@ class CartaoCriar(LoginRequiredBase, CreateView):
             )
             criar_novo_cartao(cartao=cartao, carteira=carteira)
             return redirect(
-                "gerenciamento_carteiras_cartoes:listar",
+                "carteiras_cartoes:listar",
                 carteira_slug=carteira_slug,
             )
         else:
@@ -130,7 +130,7 @@ class CartaoAtualizar(LoginRequiredBase, UpdateView):
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         context["href_voltar"] = reverse_lazy(
-            "gerenciamento_carteiras_cartoes:listar",
+            "carteiras_cartoes:listar",
             kwargs={
                 "carteira_slug": self.kwargs.get("carteira_slug"),
             },
@@ -147,7 +147,7 @@ class CartaoAtualizar(LoginRequiredBase, UpdateView):
         if form.is_valid():
             form.save()
             return redirect(
-                "gerenciamento_carteiras_cartoes:listar",
+                "carteiras_cartoes:listar",
                 carteira_slug=kwargs.get("carteira_slug"),
             )
         else:
@@ -172,7 +172,7 @@ class CartaoExcluir(LoginRequiredBase, DeleteView):
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         context["href_voltar"] = reverse_lazy(
-            "gerenciamento_carteiras_cartoes:listar",
+            "carteiras_cartoes:listar",
             kwargs={
                 "carteira_slug": self.kwargs.get("carteira_slug"),
             },
@@ -181,7 +181,7 @@ class CartaoExcluir(LoginRequiredBase, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy(
-            "gerenciamento_carteiras_cartoes:listar",
+            "carteiras_cartoes:listar",
             kwargs={
                 "carteira_slug": self.kwargs.get("carteira_slug"),
             },

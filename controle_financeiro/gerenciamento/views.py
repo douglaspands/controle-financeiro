@@ -28,12 +28,12 @@ class RedirectView(LoginRequiredBase, View):
 
         if carteiras.exists():
             carteira_principal = carteiras.filter(principal=True).first()
-            if not carteira_principal.exists():
+            if not carteira_principal:
                 carteira_principal = carteiras.first()
                 carteira_principal.principal = True
                 carteira_principal.save()
             return redirect(
-                "gerenciamento_carteiras:detalhar", slug=carteira_principal.slug
+                "carteiras:detalhar", slug=carteira_principal.slug
             )
         else:
-            return redirect("gerenciamento_carteiras:criar")
+            return redirect("carteiras:criar")
