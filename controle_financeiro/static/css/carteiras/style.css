@@ -1,3 +1,46 @@
+.cartao {
+    width: 100%;
+    max-width: 320px;
+}
+
+.gallery {
+    width: 100%;
+    max-width: 320px;
+    border-radius: 10px;
+    margin-bottom: 40px;
+}
+
+.gallery-cell {
+    width: 100%;
+    height: 200px;
+    border-radius: 10px;
+    margin-right: 10px;
+    background: #ACC2E5;
+    counter-increment: gallery-cell;
+}
+  
+.gallery-cell.is-selected {
+    background: #FE55A3;
+}
+  
+/* cell number */
+.gallery-cell:before {
+    display: block;
+    text-align: center;
+    content: counter(galeria-cell);
+    line-height: 200px;
+    font-size: 80px;
+    color: white;
+}
+
+@media only screen and (min-width: 576px) {
+    /* Para desktop: */
+    .gallery {
+        margin: 6px;
+        margin-bottom: 40px;
+    }
+}
+
 .lancamento-linha {
     margin-bottom: 5px;
     display: grid;
