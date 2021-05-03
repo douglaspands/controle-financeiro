@@ -301,7 +301,7 @@ a.nostyle:visited {
     border-radius: 10px;
     padding: 1rem;
     display: grid;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     grid-template-areas: 
         'cartaoCabecalho'
         'cartaoCorpo'
@@ -428,7 +428,7 @@ a.nostyle:visited {
 .botao {
     border-radius: 10px;
     height: 3rem;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     box-shadow: 3px 3px 3px 0px #e4e9ef;
     line-height: 3rem;
     text-align: center;
@@ -444,7 +444,7 @@ a.nostyle:visited {
 
 @media (min-width: 576px) {
     .botao {
-        margin: 6px;
+        margin-bottom: 0;
     }
 }
 
@@ -454,7 +454,13 @@ a.nostyle:visited {
     color: #fff !important;
 }
 
-.botao-primario-desativado {
+.botao-primario-inativo {
+    background-color: #77B0F0;
+    border-color: #77B0F0;
+    color: #fff !important;
+}
+
+.botao-primario-inativo:disabled {
     background-color: #77B0F0;
     border-color: #77B0F0;
     color: #fff !important;

@@ -43,6 +43,15 @@
     background-image: linear-gradient(0deg, #C5D5E6,#A4C2E7);
 }
 
+.carousel-cell-disabled {
+    width: 100%;
+    height: 200px;
+    margin-right: 15px;
+    border-radius: 10px;
+    counter-increment: gallery-cell;
+    background-image: linear-gradient(0deg, #C5D5E6,#A4C2E7);
+}
+
 /* cell number */
 .carousel-cell:before {
     display: block;

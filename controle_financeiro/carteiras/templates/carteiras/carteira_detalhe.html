@@ -14,7 +14,6 @@
 
 {% block conteudo %}
 <div class="feed">
-    {% if centro_custos %}
     <div class="wrapper-carousel">
         <div class="carousel" data-flickity data-flickity-options='{ "wrapAround": true }'>
             {% for centro_custo in centro_custos %}
@@ -39,28 +38,25 @@
                 </a>
                 {% endif %}
             </div>
+            {% empty %}
+            <div class="carousel-cell-disabled">
+                <a class="nostyle" href="{% url 'carteiras_cartoes:criar' carteira.slug %}">
+                    <div class="carousel-cartao">
+                        <div class="titulo">Meu primeiro cartão ou conta</div>
+                        <div class="detalhe"></div>
+                        <div class="icone"></div>
+                        <div class="valor">R$ 0,00</div>
+                    </div>
+                </a>
+            </div>
             {% endfor %}            
         </div>
-        <a class="nostyle botao-criar-centro-custo botao botao-primario" href="#">+ Conta/Cartão</a>
-        <a class="nostyle botao-criar-lancamento botao botao-primario" href="#">+ Despesa/Receita</a>
-    </div>
-    {% endif %}
-    <div class="cartao">
-        <div class="cartao-cabecalho">
-            <div class="cartao-titulo">Cartões e Contas</div>
-            <a class="cartao-menu nostyle" href="{% url 'carteiras_cartoes:criar' carteira.slug %}">
-                <img class="cartao-menu-icone" src="{% static 'icon/add_gray_24dp.svg' %}" />
-            </a>
-        </div>
-        <div class="cartao-conteudo">
-            {% for centro_custo in centro_custos %}
-            <div class="lancamento-linha">
-                <div class="lancamento-logo">?</div>
-                <div class="lancamento-titulo">{{ centro_custo.descricao }}</div>
-                <div class="lancamento-valor">R$ {{ centro_custo.valor_total|intcomma }}</div>
-            </div>
-            {% endfor %}
-        </div>
+        <a class="nostyle botao-criar-centro-custo botao botao-primario" href="{% url 'carteiras_cartoes:criar' carteira.slug %}">+ Conta/Cartão</a>
+        {% if centro_custos %}
+        <a class="nostyle botao-criar-lancamento botao botao-primario" href="{% url 'carteiras_lancamentos:criar' carteira.slug %}">+ Despesa/Receita</a>
+        {% else %}
+        <a class="nostyle botao-criar-lancamento botao botao-primario-inativo" href="#">+ Despesa/Receita</a>
+        {% endif %}
     </div>
     {% if lancamentos %}
     <div class="bloco col-12">
