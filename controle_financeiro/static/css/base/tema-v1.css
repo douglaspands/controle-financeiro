@@ -1,3 +1,38 @@
+:root {
+    --cor-primaria: #4695EF;
+    --cor-primaria-inativa: #77B0F0;
+    --cor-secundario: #FE55A3;
+    --cor-secundario-inativa: #FF9AA0;
+    --cor-terciario: #842FEF;
+    --cor-terciario-inativa: #be95f0;
+
+    --fonte-cor-bg-claro-primaria: #212529;
+    --fonte-cor-bg-claro-secundaria: #B5B3C0;
+    --fonte-cor-bg-escuro-primaria: #fff;
+    --fonte-cor-bg-escuro-secundaria: #B5B3C0;
+
+    --cor-fundo: #EEF2F6;
+    --cor-fundo-conteudo: #fff;
+
+    --cor-sombra-primaria: #e4e9ef;
+    --cor-sombra-secundaria: #b6bcc0;
+
+    --fonte-familia: "PTSans", sans-serif;
+    --fonte-familia-titulo: "Righteous", sans-serif;
+
+    --margin-bottom-tela-pequena: 10px;
+    --margin-tela-grande: 6px;
+
+    --tela-1-min-width: 576px;
+    --elemento-1-max-width: 540px;
+    --tela-2-min-width: 768px;
+    --elemento-2-max-width: 720;
+    --tela-3-min-width: 992px;
+    --elemento-3-max-width: 960px;
+    --tela-4-min-width: 1200px;
+    --elemento-4-max-width: 1140px;
+}
+
 * {
     box-sizing: border-box;
 }
@@ -309,7 +344,7 @@ a.nostyle:visited {
     box-shadow: 3px 3px 3px 0px #e4e9ef;
 }
 
-@media only screen and (min-width: 576px) {
+@media (min-width: 576px) {
     .cartao {
         margin: 6px;
     }
@@ -460,20 +495,26 @@ a.nostyle:visited {
     color: #fff !important;
 }
 
-.botao-primario-inativo:disabled {
-    background-color: #77B0F0;
-    border-color: #77B0F0;
-    color: #fff !important;
-}
-
 .botao-secundario {
     background-color: #FE55A3;
     border-color: #FE55A3;
     color: #fff !important;
 }
 
+.botao-secundario-inativo {
+    background-color: #FF9AA0;
+    border-color: #FF9AA0;
+    color: #fff !important;
+}
+
 .botao-terciario {
     background-color: #842FEF;
     border-color: #842FEF;
+    color: #fff !important;
+}
+
+.botao-terciario-inativo {
+    background-color: #be95f0;
+    border-color: #be95f0;
     color: #fff !important;
 }
