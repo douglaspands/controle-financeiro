@@ -225,7 +225,7 @@ a.nostyle:visited {
 .usuario-foto {
     width: 2rem;
     height: 2rem;
-    background-color: white;
+    background-color: #fff;
     border-radius: 10px;
     margin-top: -6px;
 }
@@ -250,7 +250,7 @@ a.nostyle:visited {
     height: 100vh;
     transition: 0.5s;
     z-index: 21;
-    background-color: white;
+    background-color: #fff;
     box-shadow: -3px 3px 20px 0 #e4e9ef;
 }
 
@@ -425,23 +425,49 @@ a.nostyle:visited {
     grid-area: blocoCorpo;
 }
 
-.botao-azul {
+.botao {
     border-radius: 10px;
-    background-color: #4695EF;
-    border-color: #4695EF;
     height: 3rem;
     margin-bottom: 15px;
     box-shadow: 3px 3px 3px 0px #e4e9ef;
     line-height: 3rem;
-    color: #fff;
     text-align: center;
     text-decoration: inherit;
     cursor: auto;
     font-weight: bold;
 }
 
-@media only screen and (min-width: 576px) {
-    .botao-azul {
+.botao:active {
+    box-shadow: 3px 3px 3px 0px #b6bcc0;
+    transform: translateY(1px);
+}
+
+@media (min-width: 576px) {
+    .botao {
         margin: 6px;
     }
+}
+
+.botao-primario {
+    background-color: #4695EF;
+    border-color: #4695EF;
+    color: #fff !important;
+}
+
+.botao-primario-desativado {
+    background-color: #77B0F0;
+    border-color: #77B0F0;
+    color: #fff !important;
+}
+
+.botao-secundario {
+    background-color: #FE55A3;
+    border-color: #FE55A3;
+    color: #fff !important;
+}
+
+.botao-terciario {
+    background-color: #842FEF;
+    border-color: #842FEF;
+    color: #fff !important;
 }

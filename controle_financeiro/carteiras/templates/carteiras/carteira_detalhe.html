@@ -5,8 +5,8 @@
 {% block titulo %}Gerenciamento{% endblock %}
 
 {% block style %}
-<link rel="stylesheet" href="{% static 'css/carteiras/style.css' %}">
 <link rel="stylesheet" href="{% static 'vendor/flickity/flickity.min.css' %}" media="screen">
+<link rel="stylesheet" href="{% static 'css/carteiras/style.css' %}">
 {% endblock %}
 
 {% block cabecalho %}
@@ -14,15 +14,37 @@
 
 {% block conteudo %}
 <div class="feed">
-    <div class="gallery js-flickity" data-flickity-options='{ "cellAlign": "left", "contain": true, "wrapAround": true }'>
-        <div class="gallery-cell"></div>
-        <div class="gallery-cell"></div>
-        <div class="gallery-cell"></div>
-        <div class="gallery-cell"></div>
-        <div class="gallery-cell"></div>
-        <div class="gallery-cell"></div>
-        <div class="gallery-cell"></div>
+    {% if centro_custos %}
+    <div class="wrapper-carousel">
+        <div class="carousel" data-flickity data-flickity-options='{ "wrapAround": true }'>
+            {% for centro_custo in centro_custos %}
+            <div class="carousel-cell">
+                {% if centro_custo.e_cartao %}
+                <a class="nostyle" href="{% url 'carteiras_cartoes:detalhar' carteira.slug centro_custo.cartao.slug %}">
+                    <div class="carousel-cartao">
+                        <div class="titulo">{{ centro_custo.cartao.nome }}</div>
+                        <div class="detalhe">**** **** **** ****</div>
+                        <div class="icone">CARTÃO</div>
+                        <div class="valor">R$ {{ centro_custo.cartao.valor_total|intcomma }}</div>
+                    </div>
+                </a>
+                {% else %}
+                <a class="nostyle" href="{% url 'carteiras_contas:detalhar' carteira.slug centro_custo.conta.slug %}">
+                    <div class="carousel-cartao">
+                        <div class="titulo">{{ centro_custo.conta.nome }}</div>
+                        <div class="detalhe">Agencia: **** Conta: *****-*</div>
+                        <div class="icone">CONTA</div>
+                        <div class="valor">R${{ centro_custo.conta.valor_total|intcomma }}</div>
+                    </div>
+                </a>
+                {% endif %}
+            </div>
+            {% endfor %}            
+        </div>
+        <a class="nostyle botao-criar-centro-custo botao botao-primario" href="#">+ Conta/Cartão</a>
+        <a class="nostyle botao-criar-lancamento botao botao-primario" href="#">+ Despesa/Receita</a>
     </div>
+    {% endif %}
     <div class="cartao">
         <div class="cartao-cabecalho">
             <div class="cartao-titulo">Cartões e Contas</div>
@@ -40,29 +62,31 @@
             {% endfor %}
         </div>
     </div>
-        <div class="bloco col-12">
-            <div class="bloco-ancora"></div>
-            <div class="bloco-cabecalho">
-                <div class="bloco-titulo">Lançamentos</div>
-                <a class="bloco-menu nostyle" href="{% url 'carteiras_lancamentos:criar' carteira.slug %}">
-                    <img class="bloco-menu-icone" src="{% static 'icon/add_gray_24dp.svg' %}" />
-                </a>
-            </div>
-            <div class="bloco-conteudo">
-                {% for lancamento in lancamentos %}
-                <div class="lancamento-linha">
-                    <div class="lancamento-logo">?</div>
-                    <div class="lancamento-titulo">{{ lancamento.descricao}}</div>
-                    <div class="lancamento-data">{{ lancamento.datahora|date:'d/m/Y H:i' }}</div>
-                    <div class="lancamento-valor">R$ {{ lancamento.valor|intcomma }}</div>
-                </div>
-                {% endfor %}
-            </div>
-            {% if lancamentos_continua %}
-            <div class="bloco-rodape"><a class="nostyle" href="{% url 'carteiras_lancamentos:listar' carteira.slug %}">Ver mais +</a></div>
-            {% endif %}
+    {% if lancamentos %}
+    <div class="bloco col-12">
+        <div class="bloco-ancora"></div>
+        <div class="bloco-cabecalho">
+            <div class="bloco-titulo">Ultimos Lançamentos</div>
+            <a class="bloco-menu nostyle" href="{% url 'carteiras_lancamentos:criar' carteira.slug %}">
+                <img class="bloco-menu-icone" src="{% static 'icon/add_gray_24dp.svg' %}" />
+            </a>
         </div>
-
+        <div class="bloco-conteudo">
+            {% for lancamento in lancamentos %}
+            <div class="lancamento-linha">
+                <div class="lancamento-logo">?</div>
+                <div class="lancamento-titulo">{{ lancamento.descricao}}</div>
+                <div class="lancamento-data">{{ lancamento.datahora|date:'d/m/Y H:i' }}</div>
+                <div class="lancamento-valor">R$ {{ lancamento.valor|intcomma }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% if lancamentos_continua %}
+        <div class="bloco-rodape"><a class="nostyle" href="{% url 'carteiras_lancamentos:listar' carteira.slug %}">Ver
+                mais +</a></div>
+        {% endif %}
+    </div>
+    {% endif %}
 </div>
 {% endblock %}
 

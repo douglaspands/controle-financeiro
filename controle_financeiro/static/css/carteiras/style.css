@@ -1,44 +1,119 @@
 .cartao {
     width: 100%;
-    max-width: 320px;
+    max-width: 370px;
 }
 
-.gallery {
+.wrapper-carousel {
     width: 100%;
-    max-width: 320px;
-    border-radius: 10px;
-    margin-bottom: 40px;
+    max-width: 370px;
+    display: grid;
+    grid-template-areas: 
+        'wrapperCarouselCartao wrapperCarouselCartao'
+        'wrapperCarouselBotao1 wrapperCarouselBotao2';
+    grid-template-columns: 50% 50%;
 }
 
-.gallery-cell {
+@media (min-width: 576px) {
+    .wrapper-carousel {
+        margin: 6px;
+    }
+}
+
+.carousel {
+    grid-area: wrapperCarouselCartao;
+    width: 100%;
+    /* max-width: 370px; */
+    border-radius: 10px;
+    margin-bottom: 35px;
+}
+
+/* @media (min-width: 576px) {
+    .carousel {
+        margin: 6px;
+        margin-bottom: 40px;
+    }
+} */
+
+.carousel-cell {
     width: 100%;
     height: 200px;
+    margin-right: 15px;
     border-radius: 10px;
-    margin-right: 10px;
-    background: #ACC2E5;
     counter-increment: gallery-cell;
+    background-image: linear-gradient(0deg, #C5D5E6,#A4C2E7);
 }
-  
-.gallery-cell.is-selected {
-    background: #FE55A3;
-}
-  
+
 /* cell number */
-.gallery-cell:before {
+.carousel-cell:before {
     display: block;
     text-align: center;
-    content: counter(galeria-cell);
     line-height: 200px;
     font-size: 80px;
     color: white;
 }
 
-@media only screen and (min-width: 576px) {
-    /* Para desktop: */
-    .gallery {
-        margin: 6px;
-        margin-bottom: 40px;
-    }
+.carousel-cell.is-selected {
+    background-image: linear-gradient(40deg, #FF9AA0,#FE55A3,#842FEF);
+}
+
+.flickity-page-dots .dot {
+    background: #B5B3C0;
+}
+
+.flickity-page-dots .dot.is-selected {
+    background: #4695EF;
+    width: 24px;
+    border-radius: 10px;
+}
+
+.flickity-button {
+    background: transparent;
+    color: hsla(0,0%,100%,.25);
+}
+
+.carousel-cartao {
+    display: grid;
+    grid-template-areas: 
+        'carouselCartaoTitulo carouselCartaoIcone1'
+        'carouselCartaoDetalhe carouselCartaoIcone1'
+        'carouselCartaoValor carouselCartaoValor';
+    grid-template-columns: 80% 20%;
+    color: white;
+    padding: 1rem;
+}
+
+.carousel-cartao .titulo {
+    grid-area: carouselCartaoTitulo;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.carousel-cartao .detalhe {
+    grid-area: carouselCartaoDetalhe;
+    font-size: 1rem;
+}
+
+.carousel-cartao .icone {
+    grid-area: carouselCartaoIcone1;
+    font-size: 0.7rem;
+    text-align: end;
+}
+
+.carousel-cartao .valor {
+    grid-area: carouselCartaoValor;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-top: 75px;
+}
+
+.botao-criar-centro-custo {
+    grid-area: wrapperCarouselBotao1;
+    margin-right: 2.5px;
+}
+
+.botao-criar-lancamento {
+    grid-area: wrapperCarouselBotao2;
+    margin-left: 2.5px;
 }
 
 .lancamento-linha {
