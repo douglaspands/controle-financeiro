@@ -49,11 +49,12 @@
                     </div>
                 </a>
             </div>
-            {% endfor %}            
+            {% endfor %}
         </div>
-        <a class="nostyle botao-criar-centro-custo botao botao-primario" href="{% url 'carteiras_cartoes:criar' carteira.slug %}">+ Conta/Cartão</a>
+        <div class="botao-criar-centro-custo botao botao-primario" onclick="modalCriarContaCartao.open();">+ Conta/Cartão</div>
         {% if centro_custos %}
-        <a class="nostyle botao-criar-lancamento botao botao-primario" href="{% url 'carteiras_lancamentos:criar' carteira.slug %}">+ Despesa/Receita</a>
+        <a class="nostyle botao-criar-lancamento botao botao-primario"
+            href="{% url 'carteiras_lancamentos:criar' carteira.slug %}">+ Despesa/Receita</a>
         {% else %}
         <a class="nostyle botao-criar-lancamento botao botao-primario-inativo" href="#">+ Despesa/Receita</a>
         {% endif %}
@@ -84,8 +85,26 @@
     </div>
     {% endif %}
 </div>
+
+<!-- The Modal -->
+<div id="modalCriarContaCartao" class="modal">
+    <div class="modal-content">
+        <div class="modal-close" onclick="modalCriarContaCartao.close();">&times;</div>
+        <div class="modal-criar-centro-custo">
+            <div class="texto">O que deseja adicionar?</div>
+            <div class="botao1">
+                <a class="nostyle botao botao-primario" href="{% url 'carteiras_cartoes:criar' carteira.slug %}">Cartão</a>
+            </div>
+            <div class="botao2">
+                <a class="nostyle botao botao-primario" href="{% url 'carteiras_contas:criar' carteira.slug %}">Conta</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
 
 {% block script %}
 <script src="{% static 'vendor/flickity/flickity.pkgd.min.js' %}"></script>
+<script src="{% static 'js/carteiras/script.js' %}"></script>
 {% endblock %}

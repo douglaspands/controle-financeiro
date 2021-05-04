@@ -7,3 +7,20 @@ function menuLateralAbrir(acao = true){
         }
     }
 }
+
+class Modal {
+    constructor(modalId) {
+        this.modal = document.getElementById(modalId);
+        window.onclick = function(event) {
+            if (event.target == this.modal) {
+              modal.style.display = "none";
+            }
+        }
+    }
+    open() {
+        this.modal.style.display = "block";
+    }
+    close() {
+        this.modal.style.display = "none";
+    }
+}

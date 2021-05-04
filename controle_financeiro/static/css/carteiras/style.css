@@ -162,3 +162,43 @@
     font-size: 1.1rem;
     font-weight: bold;
 }
+
+.modal-criar-centro-custo {
+    display: grid;
+    grid-template-areas: 
+        'modalCentroCustoFechar modalCentroCustoFechar'
+        'modalCentroCustoTexto modalCentroCustoTexto'
+        'modalCentroCustoBotao1 modalCentroCustoBotao2';
+    grid-template-columns: 50% 50%;
+}
+
+.modal-criar-centro-custo .texto {
+    grid-area: modalCentroCustoTexto;
+    margin-top: 5px;
+    margin-bottom: 25px;
+    font-size: 1.1rem;
+    /* font-weight: bold; */
+}
+
+.modal-criar-centro-custo .botao1 {
+    grid-area: modalCentroCustoBotao1;
+    margin-right: 2.5px;
+    display: inherit;
+}
+
+.modal-criar-centro-custo .botao2 {
+    grid-area: modalCentroCustoBotao2;
+    margin-left: 2.5px;
+    display: inherit;
+}
+
+.modal-content {
+    max-width: 500px;
+}
+
+.modal-close {
+    grid-area: modalCentroCustoFechar;
+    text-align: right;
+    line-height: 10px;
+    margin-top: 7px;
+}
