@@ -22,35 +22,35 @@
 {% if carteira.tem_cartoes %}
 <div style="float: left; margin-left: 3px;">
   <a class="btn btn-outline-primary" role="button"
-    href="{% url 'carteiras_cartoes:listar' carteira.slug %}">Listar Cartões</a>
+    href="{% url 'carteiras:cartoes:listar' carteira.slug %}">Listar Cartões</a>
 </div>
 {% else %}
 <div style="float: left; margin-left: 3px;">
   <a class="btn btn-outline-primary" role="button"
-    href="{% url 'carteiras_cartoes:criar' carteira.slug %}">Criar Primeiro Cartão</a>
+    href="{% url 'carteiras:cartoes:criar' carteira.slug %}">Criar Primeiro Cartão</a>
 </div>
 {% endif %}
 {% if carteira.tem_contas %}
 <div style="float: left; margin-left: 3px;">
   <a class="btn btn-outline-primary" role="button"
-    href="{% url 'carteiras_contas:listar' carteira.slug %}">Listar Contas</a>
+    href="{% url 'carteiras:contas:listar' carteira.slug %}">Listar Contas</a>
 </div>
 {% else %}
 <div style="float: left; margin-left: 3px;">
   <a class="btn btn-outline-primary" role="button"
-    href="{% url 'carteiras_contas:criar' carteira.slug %}">Criar Primeira Conta</a>
+    href="{% url 'carteiras:contas:criar' carteira.slug %}">Criar Primeira Conta</a>
 </div>
 {% endif %}
 {% if carteira.tem_centro_custos %}
 {% if carteira.tem_lancamentos %}
 <div style="float: left; margin-left: 3px;">
   <a class="btn btn-outline-primary" role="button"
-    href="{% url 'carteiras_lancamentos:listar' carteira.slug %}">Listar Lançamento</a>
+    href="{% url 'carteiras:lancamentos:listar' carteira.slug %}">Listar Lançamento</a>
 </div>
 {% else %}
 <div style="float: left; margin-left: 3px;">
   <a class="btn btn-outline-primary" role="button"
-    href="{% url 'carteiras_lancamentos:criar' carteira.slug %}">Criar Lançamento</a>
+    href="{% url 'carteiras:lancamentos:criar' carteira.slug %}">Criar Lançamento</a>
 </div>
 {% endif %}
 {% endif %}

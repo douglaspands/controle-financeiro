@@ -26,11 +26,11 @@
 </form>
 {% if conta.tem_lancamentos %}
 <div style="float: left; margin-left: 3px;">
-  <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras_contas_lancamentos:listar' carteira_slug conta.slug %}">Listar Lançamentos</a>
+  <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:contas_lancamentos:listar' carteira_slug conta.slug %}">Listar Lançamentos</a>
 </div>
 {% else %}
 <div style="float: left; margin-left: 3px;">
-  <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras_contas_lancamentos:criar' carteira_slug conta.slug %}">Criar Primeiro Lançamento</a>
+  <a class="btn btn-outline-primary" role="button" href="{% url 'carteiras:contas_lancamentos:criar' carteira_slug conta.slug %}">Criar Primeiro Lançamento</a>
 </div>
 {% endif %}
 <div style="float: right; margin-left: 3px;">

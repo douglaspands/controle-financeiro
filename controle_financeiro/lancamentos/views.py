@@ -63,7 +63,7 @@ class LancamentoDetalhe(LoginRequiredBase, View):
     def get_context_data(self, *args, **kwargs) -> Dict[str, Any]:
         context = {
             "href_voltar": reverse_lazy(
-                "carteiras_lancamentos:listar",
+                "carteiras:lancamentos:listar",
                 kwargs={"carteira_slug": kwargs.get("carteira_slug")},
             ),
             **kwargs,
@@ -89,7 +89,7 @@ class LancamentoCriar(LoginRequiredBase, View):
 
     def get_success_url(self) -> HttpResponse:
         return reverse_lazy(
-            "carteiras_lancamentos:listar",
+            "carteiras:lancamentos:listar",
             kwargs={"carteira_slug": self.kwargs.get("carteira_slug")},
         )
 
@@ -188,7 +188,7 @@ class LancamentoExcluir(LoginRequiredBase, DeleteView):
 
     def get_success_url(self) -> str:
         return reverse_lazy(
-            "carteiras_lancamentos:listar",
+            "carteiras:lancamentos:listar",
             kwargs={"carteira_slug": self.kwargs.get("carteira_slug")},
         )
 

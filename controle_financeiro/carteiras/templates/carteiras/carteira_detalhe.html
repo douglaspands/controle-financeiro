@@ -19,7 +19,7 @@
             {% for centro_custo in centro_custos %}
             <div class="carousel-cell">
                 {% if centro_custo.e_cartao %}
-                <a class="nostyle" href="{% url 'carteiras_cartoes:detalhar' carteira.slug centro_custo.cartao.slug %}">
+                <a class="nostyle" href="{% url 'carteiras:cartoes:detalhar' carteira.slug centro_custo.cartao.slug %}">
                     <div class="carousel-cartao">
                         <div class="titulo">{{ centro_custo.cartao.nome }}</div>
                         <div class="detalhe">**** **** **** ****</div>
@@ -28,7 +28,7 @@
                     </div>
                 </a>
                 {% else %}
-                <a class="nostyle" href="{% url 'carteiras_contas:detalhar' carteira.slug centro_custo.conta.slug %}">
+                <a class="nostyle" href="{% url 'carteiras:contas:detalhar' carteira.slug centro_custo.conta.slug %}">
                     <div class="carousel-cartao">
                         <div class="titulo">{{ centro_custo.conta.nome }}</div>
                         <div class="detalhe">Agencia: **** Conta: *****-*</div>
@@ -40,7 +40,7 @@
             </div>
             {% empty %}
             <div class="carousel-cell-disabled">
-                <a class="nostyle" href="{% url 'carteiras_cartoes:criar' carteira.slug %}">
+                <a class="nostyle" href="{% url 'carteiras:cartoes:criar' carteira.slug %}">
                     <div class="carousel-cartao">
                         <div class="titulo">Meu primeiro cartão ou conta</div>
                         <div class="detalhe"></div>
@@ -63,7 +63,7 @@
         <div class="bloco-ancora"></div>
         <div class="bloco-cabecalho">
             <div class="bloco-titulo">Ultimos Lançamentos</div>
-            <a class="bloco-menu nostyle" href="{% url 'carteiras_lancamentos:criar' carteira.slug %}">
+            <a class="bloco-menu nostyle" href="{% url 'carteiras:lancamentos:criar' carteira.slug %}">
                 <img class="bloco-menu-icone" src="{% static 'icon/add_gray_24dp.svg' %}" />
             </a>
         </div>
@@ -78,7 +78,7 @@
             {% endfor %}
         </div>
         {% if lancamentos_continua %}
-        <div class="bloco-rodape"><a class="nostyle" href="{% url 'carteiras_lancamentos:listar' carteira.slug %}">Ver
+        <div class="bloco-rodape"><a class="nostyle" href="{% url 'carteiras:lancamentos:listar' carteira.slug %}">Ver
                 mais +</a></div>
         {% endif %}
     </div>
@@ -91,10 +91,10 @@
         <div class="modal-criar-centro-custo">
             <div class="texto">O que deseja adicionar?</div>
             <div class="botao1">
-                <a class="nostyle botao botao-primario" href="{% url 'carteiras_cartoes:criar' carteira.slug %}">Cartão</a>
+                <a class="nostyle botao botao-primario" href="{% url 'carteiras:cartoes:criar' carteira.slug %}">Cartão</a>
             </div>
             <div class="botao2">
-                <a class="nostyle botao botao-primario" href="{% url 'carteiras_contas:criar' carteira.slug %}">Conta</a>
+                <a class="nostyle botao botao-primario" href="{% url 'carteiras:contas:criar' carteira.slug %}">Conta</a>
             </div>
         </div>
     </div>
@@ -106,10 +106,10 @@
         <div class="modal-criar-centro-custo">
             <div class="texto">O que deseja adicionar?</div>
             <div class="botao1">
-                <a class="nostyle botao botao-primario" href="{% url 'carteiras_lancamentos:criar' carteira.slug %}">Despesa</a>
+                <a class="nostyle botao botao-primario" href="{% url 'carteiras:lancamentos:criar' carteira.slug %}">Despesa</a>
             </div>
             <div class="botao2">
-                <a class="nostyle botao botao-primario" href="{% url 'carteiras_lancamentos:criar' carteira.slug %}">Receita</a>
+                <a class="nostyle botao botao-primario" href="{% url 'carteiras:lancamentos:criar' carteira.slug %}">Receita</a>
             </div>
         </div>
     </div>

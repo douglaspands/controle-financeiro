@@ -59,7 +59,7 @@ class ContaDetalhe(LoginRequiredBase, DetailView):
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         context["href_voltar"] = reverse_lazy(
-            "carteiras_contas:listar",
+            "carteiras:contas:listar",
             kwargs={
                 "carteira_slug": self.kwargs.get("carteira_slug"),
             },
@@ -85,7 +85,7 @@ class ContaCriar(LoginRequiredBase, CreateView):
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         context["href_voltar"] = reverse_lazy(
-            "carteiras_contas:listar",
+            "carteiras:contas:listar",
             kwargs={
                 "carteira_slug": self.kwargs.get("carteira_slug"),
             },
@@ -102,7 +102,7 @@ class ContaCriar(LoginRequiredBase, CreateView):
             carteira = get_object_or_404(Carteira, slug=carteira_slug, usuario_id=request.user.pk)
             criar_nova_conta(conta=conta, carteira=carteira)
             return redirect(
-                "carteiras_contas:listar",
+                "carteiras:contas:listar",
                 carteira_slug=carteira_slug,
             )
         else:
@@ -127,7 +127,7 @@ class ContaAtualizar(LoginRequiredBase, UpdateView):
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         context["href_voltar"] = reverse_lazy(
-            "carteiras_contas:listar",
+            "carteiras:contas:listar",
             kwargs={
                 "carteira_slug": self.kwargs.get("carteira_slug"),
             },
@@ -144,7 +144,7 @@ class ContaAtualizar(LoginRequiredBase, UpdateView):
         if form.is_valid():
             form.save()
             return redirect(
-                "carteiras_contas:listar",
+                "carteiras:contas:listar",
                 carteira_slug=kwargs.get("carteira_slug"),
             )
         else:
@@ -169,7 +169,7 @@ class ContaExcluir(LoginRequiredBase, DeleteView):
         context = super().get_context_data(*args, **kwargs)
         context.update(self.kwargs)
         context["href_voltar"] = reverse_lazy(
-            "carteiras_contas:listar",
+            "carteiras:contas:listar",
             kwargs={
                 "carteira_slug": self.kwargs.get("carteira_slug"),
             },
@@ -178,7 +178,7 @@ class ContaExcluir(LoginRequiredBase, DeleteView):
 
     def get_success_url(self):
         return reverse_lazy(
-            "carteiras_contas:listar",
+            "carteiras:contas:listar",
             kwargs={
                 "carteira_slug": self.kwargs.get("carteira_slug"),
             },

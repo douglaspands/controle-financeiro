@@ -14,7 +14,7 @@
 {% block conteudo %}
 <div style="float: right;">
     <p>
-        <a class="btn btn-primary" role="button" href="{% url 'carteiras_lancamentos:criar' carteira_slug %}">Criar</a>
+        <a class="btn btn-primary" role="button" href="{% url 'carteiras:lancamentos:criar' carteira_slug %}">Criar</a>
     </p>
 </div>
 <table class="table">
@@ -28,12 +28,12 @@
     </thead>
     <tbody>
         {% for lancamento in lancamentos %}
-        <tr onclick="window.location='{% url 'carteiras_lancamentos:detalhar' carteira_slug lancamento.id %}'">
+        <tr onclick="window.location='{% url 'carteiras:lancamentos:detalhar' carteira_slug lancamento.id %}'">
             <td>{{ lancamento.datahora|date:'d/m/Y H:i' }}</td>
             <td>{{ lancamento.descricao }}</td>
             <td>R$ {{ lancamento.valor|intcomma }}</td>
             <td>
-                <a href="{% url 'carteiras_lancamentos:excluir' carteira_slug lancamento.id %}">excluir</a>
+                <a href="{% url 'carteiras:lancamentos:excluir' carteira_slug lancamento.id %}">excluir</a>
             </td>
         </tr>
         {% endfor %}

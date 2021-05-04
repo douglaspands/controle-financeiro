@@ -5,6 +5,8 @@ from .base import *
 
 SETTING_NAME = "test"
 
+ROOT_URLCONF = "controle_financeiro.urls.test"
+
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
