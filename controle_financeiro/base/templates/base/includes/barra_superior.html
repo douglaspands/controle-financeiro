@@ -1,3 +1,4 @@
+{% load static %}
 <nav class="barra-superior">
     <a class="nostyle"
         href="{% if request.user.is_authenticated %}{% url 'gerenciamento:index' %}{% else %}{% url 'paginas:index' %}{% endif %}">
@@ -7,7 +8,9 @@
         <div class="botao-menu-lateral" onclick="menuLateralAbrir(true)">
             {% if request.user.is_authenticated %}
             <div class="usuario-nome">{{ request.user.nome_apresentacao }}</div>
-            <div class="usuario-foto"></div>
+            <div class="usuario-foto">
+                    <img class="usuario-icone" src="{% static 'icon/person_gray_24dp.svg' %}" />
+            </div>
             {% else %}
             <div class="botao-menu">
                 <div>

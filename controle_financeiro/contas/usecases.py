@@ -27,7 +27,7 @@ def criar_nova_conta(conta: Conta, carteira: Carteira) -> Conta:
 
     try:
         centro_custo = CentroCusto.objects.create(
-            tipo=CentroCusto.CONTA,
+            tipo=CentroCusto.TIPO_CONTA,
             carteira=carteira,
         )
         conta.centro_custo = centro_custo

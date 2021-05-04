@@ -267,6 +267,11 @@ a.nostyle:visited {
     margin-top: -6px;
 }
 
+.usuario-foto .usuario-icone {
+    width: 30px;
+    margin-left: 1px;
+}
+
 .botao-menu {
     margin-right: 3px;
     margin-top: -7px;

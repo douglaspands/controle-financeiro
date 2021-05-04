@@ -108,6 +108,10 @@
     text-align: end;
 }
 
+.carousel-cartao .detalhe>span {
+    font-weight: bolder;
+}
+
 .carousel-cartao .valor {
     grid-area: carouselCartaoValor;
     font-size: 2rem;
